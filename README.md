@@ -5,3 +5,4 @@
 - TypeScript
 - Tailwind
 - Firebase
+- Vite
