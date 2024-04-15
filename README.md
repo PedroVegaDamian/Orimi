@@ -13,5 +13,3 @@ https://orimi-develop.vercel.app/
 - ESLint
 - Prettier
 
-
-
