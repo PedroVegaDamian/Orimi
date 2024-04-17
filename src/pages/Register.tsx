@@ -1,25 +1,26 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
-import { auth, db } from '../firebase/index'
+import { auth, db } from '@/firebase/index'
 import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-export function Register() {
+export function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [fname, setFname] = useState("");
-    const [lname, setLname] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
-    const [confirmPassword, setconfirmPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate();
 
+//Intentar separar la lógica del componente en un Hook
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Validación del nombre
         const nameRegex = /^[A-Za-z]+( [A-Za-z]+)?$/;
-        if (!nameRegex.test(fname.trim())) {
+        if (!nameRegex.test(firstName.trim())) {
             console.error("Invalid name format. The name must contain only these letters, and have at most one space.");
             return;
         }
@@ -45,13 +46,14 @@ export function Register() {
         }
 
         try {
+//services => manejar la función de createUserWithEmailAndPassword en el directorio de servicios
             await createUserWithEmailAndPassword(auth, email, password);
             const user = auth.currentUser;
             if (user) {
-                await setDoc(doc(db, "Users", user.uid), {
+                await setDoc(doc(db, "users", user.uid), {
                     email: user.email,
-                    firstName: fname,
-                    lastName: lname,
+                    firstName: firstName,
+                    lastName: lastName,
                     phone: phone
                 });
                 console.log("User Registered Successfully!!");
@@ -59,10 +61,10 @@ export function Register() {
                 // Reseteo de los campos del formulario
                 setEmail('');
                 setPassword('');
-                setFname('');
-                setLname('');
+                setFirstName('');
+                setLastName('');
                 setPhone('');
-                setconfirmPassword('');
+                setConfirmPassword('');
 
                 // Loader
                 // Navegar a HomePage cambiar a perfil
@@ -90,7 +92,7 @@ export function Register() {
                 type="text"
                 className="form-control"
                 placeholder="First name"
-                onChange={(e) => setFname(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
                 />
             </div>
@@ -101,7 +103,7 @@ export function Register() {
                 type="text"
                 className="form-control"
                 placeholder="Last name"
-                onChange={(e) => setLname(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
                 />
             </div>
 
@@ -143,7 +145,7 @@ export function Register() {
                 type="password"
                 className="form-control"
                 placeholder="Confirm Password"
-                onChange={(e) => setconfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 />
             </div>
@@ -157,4 +159,4 @@ export function Register() {
         </form>
     );
 }
-export default Register;
+export default RegisterPage;
