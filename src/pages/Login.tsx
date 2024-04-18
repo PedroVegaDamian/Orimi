@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { signInWithEmailAndPassword} from 'firebase/auth'
-import { auth } from '../firebase'
+import { auth } from '@/firebase'
 import { useNavigate } from 'react-router-dom'
 import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
 import { messageErrorCode } from '@/utils/errorCodeMessages'
 import { FirebaseError } from 'firebase/app'
 
-export const Login = () => {
+export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
