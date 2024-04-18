@@ -1,12 +1,17 @@
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '@/firebase'
-import { useNavigate } from 'react-router-dom'
-import { FirebaseError } from 'firebase/app'
-import { messageErrorCode } from '@/utils/errorCodeMessages'
+import { signInWithEmailAndPassword, Auth } from 'firebase/auth'
 
-export const signIn = async ( email: string, password: string) => {
-
+export const signInService = async (auth: Auth, email: string, password: string) => {
+  try {
     await signInWithEmailAndPassword(auth, email, password)
-   
+    if (auth.currentUser) {
+      return { success: true }
+    } else {
+      return { success: false, message: 'User is not logged in' }
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { success: false, message: error.message }
+    }
   }
+}
 

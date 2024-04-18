@@ -1,70 +1,17 @@
-import { useState } from 'react'
-import { signInWithEmailAndPassword} from 'firebase/auth'
-import { auth } from '@/firebase'
 import { useNavigate } from 'react-router-dom'
-import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
-import { messageErrorCode } from '@/utils/errorCodeMessages'
-import { FirebaseError } from 'firebase/app'
+import { useLogin } from '@/hooks/useLogin'
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorEmail, setErrorEmail] = useState('')
-  const [errorPassword, setErrorPassword] = useState('')
-  const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  function goTo(link: string) {
-    navigate(link)
-  }
-
-  const signIn = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password)
-      if (auth.currentUser) {
-        goTo('/')
-      } else {
-        console.log('User is not logged in')
-      }
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        const message = messageErrorCode(error.code, error.message)
-        setError('Invalid email or password. Please try again.')
-        console.error(message)
-      }
-    }
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setErrorPassword('')
-    setErrorEmail('')
-    setError('')
-    if (!email && !password) {
-      setErrorEmail('* Required')
-      setErrorPassword('* Required')
-      return
-    }
-    if (!email) {
-      setErrorEmail('* Required')
-      return
-    }
-    if (!password) {
-      setErrorPassword('* Required')
-      return
-    }
-    // VALIDATE EMAIL
-    if (!emailRegex.test(email)) {
-      setErrorEmail('Invalid email format.')
-      return
-    }
-    // VALIDATE PASSWORD
-    if (!passwordRegex.test(password)) {
-      setErrorPassword('Password incorrect')
-      return
-    }
-    signIn()
-  }
+  const {
+    setEmail,
+    setPassword,
+    errorEmail,
+    errorPassword,
+    error,
+    handleSubmit
+  } = useLogin()
 
   return (
     <>
@@ -119,7 +66,7 @@ export const LoginPage = () => {
                 </a>
                 <a
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 justify-center"
-                  onClick={() => goTo('/reset-password')}
+                  onClick={() => navigate('/reset-password')}
                 >
                   Forgot password?
                 </a>
@@ -127,7 +74,7 @@ export const LoginPage = () => {
                   Don’t have an account yet?{' '}
                   <a
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                    onClick={() => goTo('/register')}
+                    onClick={() => navigate('/register')}
                   >
                     Create account
                   </a>
