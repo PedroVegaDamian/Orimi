@@ -8,3 +8,7 @@ export const useStore = create<State>(set => ({
   increasePopulation: () => set((state: State) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 })
 }))
+
+
+// add userValidation function
+
