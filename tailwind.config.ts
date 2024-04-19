@@ -1,67 +1,48 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: {
-        white: '#ffffff',
-        grey: {
-          DEFAULT: '#d9d9d9',
-          500: '#8c8c8c',
-          800: '#312b3d',
-          900: '#2f2d33',
-        },
-        black: '#000000',
-        blue: {
-          DEFAULT: '#1892d6',
-          500: '#1856d6',
-          800: '#181ad6',
-        },
-        primary: {
-          DEFAULT: '#decfff',
-          500: '#5633a3',
-          800: '#5418d6',
-          tono1: '#4614b3',
-          tono2: '#5418d6',
-          tono3: '#360f8a',
-          tono4: '#260b61',
-          tono5: '#160638',
-        },
-        secondary: '#9218d6',
-        green: {
-          DEFAULT: '#a0edaf',
-          500: '#18d632',
-          800: '#35573a',
-        },
-        orange: {
-          DEFAULT: '#d67918',
-          500: '#d64118',
-        },
-        yellow: {
-          DEFAULT: '#d6ca18',
-          500: '#d6b318',
-          800: '#817d39',
-        },
-        cian: '#18d69e',
-        red: {
-          DEFAULT: '#ff3d3d',
-          500: '#ff0202',
-        },
-        background: '#f6f3f3'
-      },
       fontFamily: {
         nunito: ['Nunito', 'sans-serif'],
         roboto: ['Roboto', 'sans-serif'],
         sen: ['Sen', 'sans-serif'],
-      },
-      fontWeight: {
-        regular: '400',
-        medium: '500',
-        semibold: '600',
-        bold: '700',
+        inter: ['Inter', 'sans-serif']
       }
     },
+    colors: {
+      primary_tono5_color: 'rgba(22, 6, 56, 1)',
+      primary_tono4_color: 'rgba(38, 11, 97, 1)',
+      primary_tono3_color: 'rgba(54, 15, 138, 1)',
+      primary_tono2_color: 'rgba(84, 24, 214, 1)',
+      primary_tono1_color: 'rgba(70, 20, 179, 1)',
+      secondary_color: 'rgba(146, 24, 214, 1)',
+      primary_800_color: 'rgba(84, 24, 214, 1)',
+      primary_500_color: 'rgba(86, 51, 163, 0.64)',
+      primary_color: 'rgba(222, 207, 255, 1)',
+      white_color: 'rgba(255, 255, 255, 1)',
+      grey_color: 'rgba(217, 217, 217, 1)',
+      grey_500_color: 'rgba(140, 140, 140, 1)',
+      grey_800_color: 'rgba(49, 43, 61, 1)',
+      grey_900_color: 'rgba(47, 45, 51, 1)',
+      black_color: 'rgba(0, 0, 0, 1)',
+      blue_color: 'rgba(24, 146, 214, 1)',
+      blue_500_color: 'rgba(24, 86, 214, 1)',
+      blue_800_color: 'rgba(24, 26, 214, 1)',
+      cian_color: 'rgba(24, 214, 158, 1)',
+      green_color: 'rgba(160, 237, 175, 1)',
+      green_500_color: 'rgba(24, 214, 50, 1)',
+      green_800_color: 'rgba(53, 87, 58, 1)',
+      yellow_color: 'rgba(214, 202, 24, 1)',
+      yellow_500_color: 'rgba(214, 179, 24, 1)',
+      yellow_800_color: 'rgba(129, 125, 57, 1)',
+      orange_color: 'rgba(214, 121, 24, 1)',
+      orange_500_color: 'rgba(214, 65, 24, 1)',
+      red_color: 'rgba(255, 61, 61, 1)',
+      red_500_color: 'rgba(255, 2, 2, 1)',
+      bg_color: 'rgba(246, 243, 243, 1)'
+    }
   },
-  plugins: [],
-} satisfies Config;
+  plugins: []
+} satisfies Config

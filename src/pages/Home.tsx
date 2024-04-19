@@ -5,7 +5,7 @@ export const HomePage = () => {
 
   return (
     <div>
-      return <h1>{bears} around here...</h1>
+     <h1>{bears} around here...</h1>
     </div>
   )
 }
