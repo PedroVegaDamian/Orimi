@@ -4,11 +4,11 @@ export function RegisterPage() {
     const { userData, handleInputChange, handleRegister, firstNameError, lastNameError,phoneError, emailError, passwordError, confirmPasswordError } = useRegister();
 
     return (
-        <form onSubmit={handleRegister}>
+        <form onSubmit={handleRegister} className='text-center'>
             <h3 className='p-4'>Sign Up</h3>
 
             <div className="mb-3">
-                <label htmlFor="firstName">First name<span className="text-red">*</span></label>
+                <label htmlFor="firstName">First name<span className="text-red_color">*</span></label>
                 <input
                 id="firstName"
                 type="text"
@@ -18,11 +18,11 @@ export function RegisterPage() {
                 value={userData.firstName}
                 onChange={handleInputChange}
                 />
-                {firstNameError && <p className="text-red p-2 error-message">{firstNameError}</p>}
+                {firstNameError && <p className="text-red_color p-2 error-message">{firstNameError}</p>}
             </div>
 
             <div className="mb-3">
-                <label htmlFor="lastName">Last name<span className="text-red">*</span></label>
+                <label htmlFor="lastName">Last name<span className="text-red_color">*</span></label>
                 <input
                 id="lastName"
                 type="text"
@@ -32,11 +32,11 @@ export function RegisterPage() {
                 value={userData.lastName}
                 onChange={handleInputChange}
                 />
-                {lastNameError && <p className="text-red p-2 error-message">{lastNameError}</p>}
+                {lastNameError && <p className="text-red_color p-2 error-message">{lastNameError}</p>}
             </div>
 
             <div className="mb-3">
-                <label htmlFor='phone'>Phone<span className="text-red">*</span></label>
+                <label htmlFor='phone'>Phone<span className="text-red_color">*</span></label>
                 <input
                 id="phone"
                 type="text"
@@ -46,11 +46,11 @@ export function RegisterPage() {
                 value={userData.phone}
                 onChange={handleInputChange}
                 />
-                {phoneError && <p className="text-red p-2 error-message">{phoneError}</p>}
+                {phoneError && <p className="text-red_color p-2 error-message">{phoneError}</p>}
             </div>
 
             <div className="mb-3">
-                <label htmlFor='email'>Email address<span className="text-red">*</span></label>
+                <label htmlFor='email'>Email address<span className="text-red_color_color">*</span></label>
                 <input
                 id="email"
                 type="email"
@@ -60,11 +60,11 @@ export function RegisterPage() {
                 value={userData.email}
                 onChange={handleInputChange}
                 />
-                {emailError && <p className="text-red p-2 error-message">{emailError}</p>}
+                {emailError && <p className="text-red_color p-2 error-message">{emailError}</p>}
             </div>
 
             <div className="mb-3">
-                <label htmlFor='password'>Password<span className="text-red">*</span></label>
+                <label htmlFor='password'>Password<span className="text-red_color">*</span></label>
                 <input
                 id="password"
                 type="password"
@@ -74,11 +74,11 @@ export function RegisterPage() {
                 value={userData.password}
                 onChange={handleInputChange}
                 />
-                {passwordError && <p className="text-red p-2 error-message">{passwordError}</p>}
+                {passwordError && <p className="text-red_color p-2 error-message">{passwordError}</p>}
             </div>
 
             <div className="mb-3">
-                <label htmlFor="confirmPassword">Confirm Password<span className="text-red">*</span></label>
+                <label htmlFor="confirmPassword">Confirm Password<span className="text-red_color">*</span></label>
                 <input
                 id="confirmPassword"
                 type="password"
@@ -88,12 +88,12 @@ export function RegisterPage() {
                 value={userData.confirmPassword} 
                 onChange={handleInputChange}
                 />
-                {confirmPasswordError && <p className="text-red p-2 error-message">{confirmPasswordError}</p>}
+                {confirmPasswordError && <p className="text-red_color p-2 error-message">{confirmPasswordError}</p>}
             </div>
 
 
             <div className="d-grid">
-                <button type="submit" className="btn btn-primary bg-primary-500 text-white p-4">
+                <button type="submit" className="btn btn-primary bg-primary_color text-white p-4">
                 Sign Up
                 </button>
             </div>
