@@ -1,6 +1,6 @@
 import { HomePage } from '@/pages/Home'
 import { AboutPage } from '@/pages/About'
-import { LoginPage } from '@/pages/LoginPage'
+import { LoginPage } from '@/pages/Login'
 import { DefaultLayout } from '../layouts/DefaulLayout'
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
