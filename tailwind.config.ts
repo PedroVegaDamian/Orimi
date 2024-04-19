@@ -9,6 +9,12 @@ export default {
         roboto: ['Roboto', 'sans-serif'],
         sen: ['Sen', 'sans-serif'],
         inter: ['Inter', 'sans-serif']
+      },
+      fontWeight: {
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
       }
     },
     colors: {
