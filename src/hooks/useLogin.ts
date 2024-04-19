@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { signInService } from '@/services/login'
+import { signIn } from '@/services/login'
 import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '@/firebase'
@@ -41,7 +41,7 @@ export const useLogin = () => {
       setErrorPassword('Password incorrect')
       return
     }
-    const result = await signInService(auth, email, password)
+    const result = await signIn(auth, email, password)
     if (result?.success) {
       navigate('/')
     } else {
