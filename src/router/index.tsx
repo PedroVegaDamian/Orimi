@@ -1,8 +1,13 @@
-import { HomePage } from '@/pages/Home'
-import { AboutPage } from '@/pages/About'
-import { DefaultLayout } from '../layouts/DefaulLayout'
 import { Navigate, createBrowserRouter } from 'react-router-dom'
-import { RegisterPage } from '@/pages/Register'
+
+import { DefaultLayout } from '@/layouts/DefaulLayout'
+import { HomePage } from '@/pages/Home'
+import { CartPage } from '@/pages/Cart'
+import { AboutPage } from '@/pages/About'
+import { LoginPage } from '@/pages/Login'
+import { ContactPage } from '@/pages/Contact'
+import { ProductsPage } from '@/pages/Products'
+import { FavoritesPage } from '@/pages/Favorites'
 
 export const router = createBrowserRouter([
   {
@@ -14,12 +19,28 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
+        path: 'products',
+        element: <ProductsPage />
+      },
+      {
         path: 'about',
         element: <AboutPage />
       },
       {
-        path: 'register',
-        element: <RegisterPage />
+        path: 'contact',
+        element: <ContactPage />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
+      },
+      {
+        path: 'favorites',
+        element: <FavoritesPage />
+      },
+      {
+        path: 'cart',
+        element: <CartPage />
       }
     ]
   },
