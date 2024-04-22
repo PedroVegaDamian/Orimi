@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserData } from '@/models/userModels';
-import { registerUser } from '@/services/authService';
+import { UserData } from '@/models/user';
+import { registerUser } from '@/services/register';
 import { emailRegex, passwordRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 
@@ -29,7 +29,7 @@ export function useRegister() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         // console.log("Input changed:", name, value);
-        setUserData(prev => ({ ...prev, [name]: value }));
+        setUserData((prev:UserData) => ({ ...prev, [name]: value }));
     };
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
