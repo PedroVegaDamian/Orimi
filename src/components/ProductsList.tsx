@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getProducts } from '@/services/getProducts'
-import { Products } from '@/models'
+import { Product } from '@/models'
 
 export const ProductItem = () => {
-  const [products, setProducts] = useState<Products[]>([])
+  const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,12 +33,6 @@ export const ProductItem = () => {
                   </span>
                 </p>
               </div>
-              {/* <a
-                href="#"
-                className="flex items-center justify-center  bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-              >
-                Add to cart
-              </a> */}
             </div>
           </div>
         </div>

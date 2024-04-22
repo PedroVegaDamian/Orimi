@@ -1,10 +1,6 @@
-// import { useStore } from '@/store'
-
 import { ProductItem } from '@/components/ProductsList'
 
 export const HomePage = () => {
-  // const bears = useStore(state => state.bears)
-
   return (
     <div className="bg-bg_color">
       <div className="h-[20vh] w-full">
