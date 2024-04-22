@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .title-style {
+        @apply font-nunito font-bold text-22 text-center text-primary_800_color mt-7.25 py-9;
+    }
+    .form-flex {
+        @apply flex flex-col flex-wrap items-start justify-center content-center mx-auto;
+        max-height: 354px; 
+        gap: 20px 80px;
+    }
+    .label-flex {
+        @apply flex flex-col flex-nowrap justify-center content-center;
+        max-width: 450px;
+    }
+    .label-text{
+        @apply font-nunito font-semibold text-14 text-start text-black_color;
+    }
+    .form-control{
+        @apply mt-17 border-1 border-grey_color rounded-10 px-17 w-475 h-40;
+    }
+    .btn_big{
+        @apply bg-primary_color text-black_color rounded-10 font-nunito font-semibold text-16 w-144 h-47.44 shadow-md;
+    }
+    .error-message{
+        @apply font-nunito font-bold text-12;
+    }
+}

@@ -4,7 +4,7 @@ import { Navbar } from '@/components/Navbar'
 
 export const DefaultLayout = () => {
   return (
-    <main className="bg-bg_color">
+    <main className="bg-white_color">
       <Navbar />
       <Outlet />
       <Footer />
