@@ -1,10 +1,11 @@
+import HeaderImage from '@/assets/portada.png'
 import { ProductItem } from '@/components/ProductsList'
 
 export const HomePage = () => {
   return (
     <div className="bg-bg_color">
       <div className="h-[20vh] w-full">
-        <img src="./src/assets/portada.png" alt="header" />
+        <img src={HeaderImage} alt="header" />
       </div>
 
       <div className="m-40">
