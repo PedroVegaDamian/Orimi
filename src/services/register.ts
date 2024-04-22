@@ -1,8 +1,8 @@
 import { createUserWithEmailAndPassword, AuthError } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
-import { auth, db } from '@/firebase/index';
+import { auth, db } from '@/firebase';
 import { messageErrorCode } from '@/utils/errorCodeMessages';
-import { UserData } from '@/models/userModels';
+import { UserData } from '@/models/user';
 
 export const registerUser = async (userData: UserData) => {
     const { email, password, firstName, lastName, phone } = userData;

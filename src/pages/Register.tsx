@@ -1,4 +1,4 @@
-import { useRegister } from '@/hook/useRegister';
+import { useRegister } from '@/hooks/useRegister';
 
 export function RegisterPage() {
     const { userData, handleInputChange, handleRegister, firstNameError, lastNameError,phoneError, emailError, passwordError, confirmPasswordError } = useRegister();
