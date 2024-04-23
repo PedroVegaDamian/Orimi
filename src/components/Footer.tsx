@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="bg-white_color h-[149px] flex flex-col font-inter text-[24px] justify-center gap-4">
       <div className="flex justify-center">
         <img className="w-[31px] mr-2" src={IconHeart} alt="Heart Icon" />
-        <p>Hecho por:</p>
+        <p>Made by:</p>
       </div>
       <div className="flex justify-center gap-[15px]">
         <a
