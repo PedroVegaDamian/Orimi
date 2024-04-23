@@ -14,5 +14,5 @@ https://proyectos-it-docs.vercel.app/
 - Firebase
 - Vite
 - ESLint
-- Prettier
+
 
