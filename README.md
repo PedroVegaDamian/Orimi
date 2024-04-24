@@ -15,4 +15,5 @@ https://proyectos-it-docs.vercel.app/
 - Vite
 - ESLint
 - Prettier
+- Zustand
 
