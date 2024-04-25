@@ -2,7 +2,6 @@ import { getProduct } from '@/services/getProduct'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Product } from '@/models'
-import { set } from 'firebase/database'
 
 export const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -46,6 +45,9 @@ export const ProductPage = () => {
               <img src={product?.image} alt="item detail" />
               <h1 className="col-span-3 font-nunito text-22 font-bold text-left text-primary_800_color text-2xl">
                 {product?.name}
+                <span className=" pl-10 font-nunito text-lg font-bold text-left text-grey_800_color ">
+                  ${product?.price}
+                </span>
               </h1>
               <p className="col-span-3 mb-10 text-pretty">
                 {product?.description}
@@ -53,7 +55,7 @@ export const ProductPage = () => {
             </div>
           </div>
 
-          <div className="flex ">
+          <div className="flex">
             <div className="items-center gap-4">
               <div className="flex items-center m-5 rounded-md border-1 font-nunito font-medium text-lg leading-8">
                 <p className="pr-3">QTY</p>
@@ -74,7 +76,11 @@ export const ProductPage = () => {
               <a
                 href="#"
                 className="flex items-center justify-center m-6 bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color 0"
-                // onClick={() => addToCart(product)} // Add to cart function
+                onClick={event => {
+                  event.preventDefault()
+                  increment()
+                }}
+                //if click twice the same product, it should increment the quantity
               >
                 Add to cart
               </a>
