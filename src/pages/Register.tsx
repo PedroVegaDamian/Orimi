@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRegister } from '@/hooks/useRegister';
-import { Title,Label, Input, Button } from '@/components/ui';
+import { Title,Label, Input, Button, Link, ErrorMessage } from '@/components/ui';
 
 export const RegisterPage: React.FC = () => {
     const { userData, handleInputChange, handleRegister, firstNameError, lastNameError,phoneError, emailError, passwordError, confirmPasswordError } = useRegister();
@@ -9,8 +9,8 @@ export const RegisterPage: React.FC = () => {
         <div className="bg-white_color">
         <Title>Create an account</Title>
         <form onSubmit={handleRegister} >
-            <div className='form-flex'>
-            <div className="label-flex">
+            <div className='flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-303 gap-x-80 gap-y-20'>
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor="firstName">First name<span className="text-red_color">*</span></Label>
                 <Input
                     id="firstName"
@@ -20,10 +20,10 @@ export const RegisterPage: React.FC = () => {
                     value={userData.firstName}
                     onChange={handleInputChange}
                 />
-                {firstNameError && <p className="text-red_color p-2 error-message text-12">{firstNameError}</p>}
+                <ErrorMessage message={firstNameError} />
             </div>
 
-            <div className="label-flex">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor="lastName">Last name<span className="text-red_color">*</span></Label>
                 <Input
                     id="lastName"
@@ -33,10 +33,10 @@ export const RegisterPage: React.FC = () => {
                     value={userData.lastName}
                     onChange={handleInputChange}
                 />
-                {lastNameError && <p className="text-red_color p-2 error-message text-12">{lastNameError}</p>}
+                <ErrorMessage message={lastNameError} />
             </div>
 
-            <div className="label-flex">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
                 <Input
                     id="phone"
@@ -46,10 +46,10 @@ export const RegisterPage: React.FC = () => {
                     value={userData.phone}
                     onChange={handleInputChange}
                 />
-                {phoneError && <p className="text-red_color p-2 error-message text-12">{phoneError}</p>}
+                <ErrorMessage message={phoneError} />
             </div>
 
-            <div className="label-flex">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor='email'>Email address<span className="text-red_color">*</span></Label>
                 <Input
                     id="email"
@@ -59,10 +59,10 @@ export const RegisterPage: React.FC = () => {
                     value={userData.email}
                     onChange={handleInputChange}
                 />
-                {emailError && <p className="text-red_color p-2 error-message text-12">{emailError}</p>}
+                <ErrorMessage message={emailError} />
             </div>
 
-            <div className="label-flex">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor='password'>Password<span className="text-red_color">*</span></Label>
                 <Input
                     id="password"
@@ -72,10 +72,10 @@ export const RegisterPage: React.FC = () => {
                     value={userData.password}
                     onChange={handleInputChange}
                 />
-                {passwordError && <p className="text-red_color p-2 error-message text-12">{passwordError}</p>}
+                <ErrorMessage message={passwordError} />
             </div>
 
-            <div className="label-flex">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
                 <Label htmlFor="confirmPassword">Confirm Password<span className="text-red_color">*</span></Label>
                 <Input
                     id="confirmPassword"
@@ -85,7 +85,7 @@ export const RegisterPage: React.FC = () => {
                     value={userData.confirmPassword} 
                     onChange={handleInputChange}
                 />
-                {confirmPasswordError && <p className="text-red_color p-2 error-message text-12">{confirmPasswordError}</p>}
+                <ErrorMessage message={confirmPasswordError} />
             </div>
             </div>
 
@@ -93,6 +93,8 @@ export const RegisterPage: React.FC = () => {
                 <Button type="submit"> Create account</Button>
             </div>
         </form>
+
+        <Link href='/login'>Sign in</Link>
 
         </div>
 
