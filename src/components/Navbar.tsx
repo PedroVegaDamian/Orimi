@@ -9,7 +9,7 @@ import IconFlagSpain from '@/assets/icons/icon_flag_spain.svg'
 
 export const Navbar = () => {
   return (
-    <header className="bg-white_color flex justify-between items-center h-[107px] px-16 font-nunito shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] sticky z-10">
+    <header className="bg-white_color flex justify-between items-center h-[107px] px-16 font-nunito shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] sticky z-10 top-0">
       <Link to="/">
         <img src={Logo} alt="Oromi Logo" />
       </Link>
