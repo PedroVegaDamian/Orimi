@@ -1,4 +1,5 @@
 export interface UserData {
+    [key: string]: string | number;
     firstName: string;
     lastName: string;
     phone: string;

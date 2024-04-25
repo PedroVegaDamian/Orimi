@@ -74,7 +74,7 @@ export default {
       '475': '475px', 
     },
     maxHeight: {
-      '354': '354px',  
+      '303': '303px',  
     },
     borderWidth: {
       '1': '1px',  

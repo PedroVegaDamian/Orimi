@@ -22,6 +22,7 @@ export function useRegister() {
     const [passwordError, setPasswordError] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 
     const navigate = useNavigate();
@@ -30,12 +31,14 @@ export function useRegister() {
         const { name, value } = e.target;
         // console.log("Input changed:", name, value);
         setUserData((prev:UserData) => ({ ...prev, [name]: value }));
+        setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+        const newErrors = {};
         let isValid = true; // Suponemos que el formulario es válido inicialmente
+
         setEmailError('');
         setFirstNameError('');
         setLastNameError('');
@@ -78,6 +81,8 @@ export function useRegister() {
             setConfirmPasswordError(errorMessages[CustomErrorCodes.INVALID_CONFIRM_PASSWORD]);
             isValid = false;
         }
+
+        setErrors(newErrors);
     
         if (!isValid) {
             return; // No continúa con el registro si el formulario es inválido
@@ -110,6 +115,7 @@ export function useRegister() {
         passwordError,
         confirmPasswordError,
         handleInputChange,
-        handleRegister
+        handleRegister,
+        errors 
     };
 }
