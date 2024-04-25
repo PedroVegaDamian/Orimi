@@ -8,6 +8,7 @@ import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
+import { ProfilePage } from '@/pages/Profile'
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +42,11 @@ export const router = createBrowserRouter([
       {
         path: 'cart',
         element: <CartPage />
-      }
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />
+      },
     ]
   },
   {
