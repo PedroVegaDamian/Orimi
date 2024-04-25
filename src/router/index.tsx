@@ -6,7 +6,7 @@ import { CartPage } from '@/pages/Cart'
 import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
-import { ProductsPage } from '@/pages/Products'
+import { ProductPage } from '@/pages/Product'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
 
@@ -20,8 +20,8 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path: 'products',
-        element: <ProductsPage />
+        path: 'product/:slug',
+        element: <ProductPage />
       },
       {
         path: 'about',
