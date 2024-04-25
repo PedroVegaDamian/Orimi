@@ -6,7 +6,9 @@ export const DefaultLayout = () => {
   return (
     <main className="bg-bg_color">
       <Navbar />
-      <Outlet />
+      <section className="min-h-[calc(100vh-256px)]">
+        <Outlet />
+      </section>
       <Footer />
     </main>
   )
