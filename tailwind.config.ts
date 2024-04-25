@@ -61,6 +61,7 @@ export default {
     spacing: {
       '7.25': '1.8125rem', // Aproximadamente 29px
       '9': '2.25rem',        // Exactamente 36px
+      '10': '10px',
       '17': '17px', 
       '20': '20px',
       '30.5': '7.625rem', // 122px si 1rem = 16px
