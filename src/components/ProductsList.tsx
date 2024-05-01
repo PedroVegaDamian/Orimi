@@ -3,9 +3,10 @@ import { getProducts } from '@/services/getProducts'
 import { Product } from '@/models'
 import { Link } from 'react-router-dom'
 
+
 export const ProductItem = () => {
   const [products, setProducts] = useState<Product[]>([])
-
+ 
   useEffect(() => {
     const fetchProducts = async () => {
       const productsList = await getProducts()
