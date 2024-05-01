@@ -4,12 +4,16 @@ import { useParams } from 'react-router-dom'
 import { Product } from '@/models'
 import IconPlus from '@/assets/icons/icon_plus_color.svg'
 import IconMinus from '@/assets/icons/icon_minus_color.svg'
+import toast from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 
 export const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
   const [product, setProduct] = useState<Product | null>(null)
   const [quantity, setQuantity] = useState(0)
   const [image, setImage] = useState(product?.image1)
+  const notify = () => toast.success('Succesfully added to the cart.')
+  const [isClicked, setIsClicked] = useState(false)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -107,14 +111,21 @@ export const ProductPage = () => {
                   </div>
                   <a
                     href="#"
-                    className="flex items-center justify-center bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color"
+                    className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
+                      isClicked ? 'cursor-not-allowed bg-primary_500_color' : ''
+                    }`}
                     onClick={event => {
                       event.preventDefault()
-                      increment()
+                      if (!isClicked) {
+                        increment()
+                        notify()
+                        setIsClicked(true)
+                      }
                     }}
                   >
                     Add to cart
                   </a>
+                  <Toaster position="top-center" reverseOrder={false} />
                 </div>
               </div>
             </div>
