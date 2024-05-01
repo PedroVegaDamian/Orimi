@@ -22,7 +22,7 @@ export const ProductItem = () => {
           <Link to={`/product/${product.slug}`}>
             <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg bg-white">
               <div className="relative mx-3 mt-3 flex h-60 ">
-                <img src={product.image1} alt={product.name} />
+                <img className="rounded-lg" src={product.image1} alt={product.name} />
               </div>
               <div className="mt-4 px-5 pb-5">
                 <h5 className=" items-center tracking-tight font-nunito text-20 font-bold text-center text-primary_800_color text-2xl">
