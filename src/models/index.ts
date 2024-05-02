@@ -23,5 +23,14 @@ export interface Product {
   price: string
   slug: string
   stock: number
->>>>>>> 2187c83f57b868c2b4a4b70140684df39223f887
+  quantity: number
+}
+
+export interface CartState {
+  cart: Product[],
+  increment: (id: string|undefined) => void,
+  decrement: (id: string|undefined) => void,
+  addProduct: (product: Product) => void,
+  removeProduct: (slug: string| undefined) => void
+  
 }
