@@ -6,40 +6,33 @@ import IconPlus from '@/assets/icons/icon_plus_color.svg'
 import IconMinus from '@/assets/icons/icon_minus_color.svg'
 import toast from 'react-hot-toast'
 import { Toaster } from 'react-hot-toast'
+import { useCartStore } from '@/store/cartStore'
 
 export const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
   const [product, setProduct] = useState<Product | null>(null)
-  const [quantity, setQuantity] = useState(0)
   const [image, setImage] = useState(product?.image1)
   const notify = () => toast.success('Succesfully added to the cart.')
   const [isClicked, setIsClicked] = useState(false)
+  const { cart, increment, decrement } = useCartStore()
+
+  const index = cart.findIndex(product => product.slug === slug)
 
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
-      console.log(product)
     }
     fetchProducts()
   }, [slug])
-  const decrement = () => {
-    if (quantity === 0) return
-    else {
-      setQuantity(quantity - 1)
-    }
-  }
-  const increment = () => {
-    setQuantity(quantity + 1)
-  }
-
+  console.log(cart)
   return (
     <>
       <section className="py-12">
         <div className="container  mx-auto px-4">
           <div className="mt-8 grid grid-cols-5">
-            {/* imagenenes */}
+            {/* imagenes */}
             <div className="col-span-3">
               <div className="flex items-center justify-center overflow-hiddenrounded-lg">
                 <img
@@ -99,13 +92,15 @@ export const ProductPage = () => {
 
               <div>
                 <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center m-5 rounded-md border-1 font-nunito font-medium text-lg leading-8">
+                  <div className="flex items-center m-5 rounded-md font-nunito font-medium text-lg leading-8">
                     <p className="pr-3">QTY</p>
-                    <button onClick={() => decrement()}>
+                    <button onClick={() => decrement(product?.id)}>
                       <img src={IconMinus} alt="minus" />
                     </button>
-                    <p className="px-6 text-2xl">{quantity}</p>
-                    <button onClick={() => increment()}>
+                    <p className="px-6 text-2xl">
+                      {cart[index]?.quantity || 0}
+                    </p>
+                    <button onClick={() => increment(product?.id)}>
                       <img src={IconPlus} alt="plus" />
                     </button>
                   </div>
@@ -117,7 +112,7 @@ export const ProductPage = () => {
                     onClick={event => {
                       event.preventDefault()
                       if (!isClicked) {
-                        increment()
+                        cart.push(product as Product)
                         notify()
                         setIsClicked(true)
                       }
