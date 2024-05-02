@@ -1,22 +1,32 @@
 import { AuthErrorCodes } from 'firebase/auth'
 
-export const messageErrorCode = (code: string, message: string) => {
-  const messages: Record<string, string> = {
-    [AuthErrorCodes.INVALID_PASSWORD]:
-      'Password incorrecto, por favor intentelo nuevamente.',
-    [AuthErrorCodes.USER_DELETED]:
-      'Usuario no encontrado, por favor intente nuevamente.',
-    [AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER]:
-      'Hizo muchos intentos de iniciar sesión, intente más tarde.',
-    [AuthErrorCodes.EMAIL_EXISTS]:
-      'El correo ya está en uso, pruebe con otro por favor.',
-    [AuthErrorCodes.INVALID_EMAIL]:
-      'El correo es inválido, pruebe con otro por favor.',
-    [AuthErrorCodes.WEAK_PASSWORD]:
-      'La contraseña debe de tener al menos 6 caractéres.',
-    [AuthErrorCodes.INTERNAL_ERROR]:
-      'Upss.. ocuründ un error al autenticarse. Intentelo nuevamente.'
-  }
+export const CustomErrorCodes = {
+  ...AuthErrorCodes,
+  INVALID_NAME: 'auth/invalid-name',  
+  INVALID_CONFIRM_PASSWORD: 'auth/invalid-confirm-password',
+  FAIL_REGISTER_USER: 'auth/fail-register-user',
+  ERROR_DURING_REGISTRATION: 'auth/error-during-registration',
+  ERROR_REGISTERING: 'auth/error-registering',
+};
 
-  return messages[code] || message
+// Si también tienes mensajes de error, asegúrate de que sean exportados si los necesitas
+export const errorMessages = {
+  [AuthErrorCodes.INVALID_PASSWORD]: 'Incorrect password, please try again.',
+  [AuthErrorCodes.USER_DELETED]: 'User not found, please try again.',
+  [AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER]: 'Too many login attempts, please try later.',
+  [AuthErrorCodes.EMAIL_EXISTS]: 'This email is already in use. Please use a different email.',
+  [AuthErrorCodes.INVALID_EMAIL]: 'The email is invalid, please try another.',
+  [AuthErrorCodes.WEAK_PASSWORD]: 'The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.',
+  [AuthErrorCodes.INTERNAL_ERROR]: 'Oops.. there was an error during authentication. Please try again.',
+
+  [CustomErrorCodes.INVALID_NAME]: 'Invalid format. Must contain only these letters, and have at most one space.',
+  [CustomErrorCodes.INVALID_PHONE_NUMBER]: 'Invalid phone number.',
+  [CustomErrorCodes.INVALID_CONFIRM_PASSWORD]: 'Passwords do not match.',
+  [CustomErrorCodes.FAIL_REGISTER_USER]: 'Failed to register user.',
+  [CustomErrorCodes.ERROR_DURING_REGISTRATION]: 'Error during registration.',
+  [CustomErrorCodes.ERROR_REGISTERING]: 'Unknown error occurred during registration.',
+};
+
+export const messageErrorCode = (code: string, defaultMsg: string = 'An unexpected error occurred.') => {
+  return errorMessages[code] || defaultMsg;
 }
