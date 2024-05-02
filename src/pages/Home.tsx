@@ -4,11 +4,15 @@ import { ProductItem } from '@/components/ProductsList'
 export const HomePage = () => {
   return (
     <div className="bg-bg_color">
-      <div className="h-[20vh] w-full">
-        <img src={HeaderImage} alt="header" />
+      <div className="">
+        <img
+          src={HeaderImage}
+          alt="header"
+          className="h-50 w-full overflow-hidden"
+        />
       </div>
 
-      <div className="m-40">
+      <div className="m-20">
         <h1 className="font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
           Best Sellers
         </h1>
