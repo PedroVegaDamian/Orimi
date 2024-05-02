@@ -7,7 +7,9 @@ import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
 import { ProductPage } from '@/pages/Product'
+import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
+import { RegisterPage } from '@/pages/Register'
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <HomePage />
+      },
+      {
+        path: 'products',
+        element: <ProductsPage />
       },
       {
         path: 'product/:slug',
@@ -41,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: 'cart',
         element: <CartPage />
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />
       }
     ]
   },
