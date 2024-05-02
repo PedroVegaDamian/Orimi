@@ -2,7 +2,6 @@ import { CartState, Product } from '@/models'
 import { create } from 'zustand'
 
 export const useCartStore = create<CartState>(set => ({
-  // quantity: 33,
   cart: [],
   increment: (id: string|undefined) =>
     set((state) => ({

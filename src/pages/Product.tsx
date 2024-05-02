@@ -14,6 +14,8 @@ export const ProductPage = () => {
   const [image, setImage] = useState(product?.image1)
   const notify = () => toast.success('Succesfully added to the cart.')
   const [isClicked, setIsClicked] = useState(false)
+
+  
   const { cart, increment, decrement } = useCartStore()
 
   const index = cart.findIndex(product => product.slug === slug)
