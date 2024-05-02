@@ -4,21 +4,12 @@ import { DefaultLayout } from '@/layouts/DefaulLayout'
 import { HomePage } from '@/pages/Home'
 import { CartPage } from '@/pages/Cart'
 import { AboutPage } from '@/pages/About'
-<<<<<<< HEAD
-import { DefaultLayout } from '../layouts/DefaulLayout'
-import { Navigate, createBrowserRouter } from 'react-router-dom'
-import CartPage from '@/pages/Cart'
-||||||| 4ca7c18
-import { DefaultLayout } from '../layouts/DefaulLayout'
-import { Navigate, createBrowserRouter } from 'react-router-dom'
-=======
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
 import { ProductPage } from '@/pages/Product'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
->>>>>>> 2187c83f57b868c2b4a4b70140684df39223f887
 
 export const router = createBrowserRouter([
   {
@@ -40,13 +31,6 @@ export const router = createBrowserRouter([
       {
         path: 'about',
         element: <AboutPage />
-<<<<<<< HEAD
-      },
-      {
-        path: 'cart-shopping',
-        element: <CartPage />
-||||||| 4ca7c18
-=======
       },
       {
         path: 'contact',
@@ -67,7 +51,6 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegisterPage />
->>>>>>> 2187c83f57b868c2b4a4b70140684df39223f887
       }
     ]
   },
