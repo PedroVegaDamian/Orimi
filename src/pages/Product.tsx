@@ -15,8 +15,17 @@ export const ProductPage = () => {
   const notify = () => toast.success('Succesfully added to the cart.')
   const [isClicked, setIsClicked] = useState(false)
 
-
-  const { cart, increment, decrement } = useCartStore()
+  const { cart, increment, decrement, multiply, totalSum } = useCartStore()
+  const handleIncrement = (id: string | undefined) => {
+    increment(id)
+    multiply()
+    totalSum()
+  }
+  const handleDecrement = (id: string | undefined) => {
+    decrement(id)
+    multiply()
+    totalSum()
+  }
 
   const index = cart.findIndex(product => product.slug === slug)
 
@@ -96,13 +105,13 @@ export const ProductPage = () => {
                 <div className="flex flex-col items-center gap-4">
                   <div className="flex items-center m-5 rounded-md font-nunito font-medium text-lg leading-8">
                     <p className="pr-3">QTY</p>
-                    <button onClick={() => decrement(product?.id)}>
+                    <button onClick={() => handleDecrement(product?.id)}>
                       <img src={IconMinus} alt="minus" />
                     </button>
                     <p className="px-6 text-2xl">
                       {cart[index]?.quantity || 0}
                     </p>
-                    <button onClick={() => increment(product?.id)}>
+                    <button onClick={() => handleIncrement(product?.id)}>
                       <img src={IconPlus} alt="plus" />
                     </button>
                   </div>
@@ -118,6 +127,8 @@ export const ProductPage = () => {
                         notify()
                         increment(product?.id)
                         setIsClicked(true)
+                        multiply()
+                        totalSum()
                       }
                     }}
                   >
