@@ -3,6 +3,7 @@ import { useEffect} from 'react'
 import IconPlus from '@/assets/icons/icon_plus_color.svg'
 import IconMinus from '@/assets/icons/icon_minus_color.svg'
 import IconBin from '@/assets/icons/icon_rubbish_bin.png'
+import { Link } from 'react-router-dom'
 
 export const CartPage = () => {
   const { cart, increment, decrement, removeProduct } = useCartStore()
@@ -32,6 +33,7 @@ export const CartPage = () => {
           <>
               <div key={product.slug} className="grid grid-cols-2 border-t border-gray-200 py-6">
                 <div className="flex items-center flex-row gap-6 w-full mx-auto">
+                    <Link className="flex items-center flex-row gap-6 w-full mx-auto" to={`/product/${product.slug}`}>
                   <div className="">
                     <img
                       src={product.image1}
@@ -46,6 +48,7 @@ export const CartPage = () => {
                       ${product.price}
                     </h6>
                   </div>
+                      </Link>
                 </div>
                 <div className="flex items-center justify-end flex-row w-full max-w-xl mx-auto gap-2">
                   <div className="flex pr-20">
