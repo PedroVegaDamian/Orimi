@@ -5,7 +5,7 @@ export interface Product {
   image2: string
   image3: string
   name: string
-  price: string
+  price: number
   slug: string
   stock: number
   quantity: number
@@ -18,5 +18,7 @@ export interface CartState {
   increment: (id: string|undefined) => void,
   decrement: (id: string|undefined) => void,
   removeProduct: (slug: string| undefined) => void
+  multiply: () => void
+  totalSum: () => void
   
 }
