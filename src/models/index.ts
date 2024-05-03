@@ -9,13 +9,14 @@ export interface Product {
   slug: string
   stock: number
   quantity: number
+  subtotal: number
 }
 
 export interface CartState {
+  total: number,
   cart: Product[],
   increment: (id: string|undefined) => void,
   decrement: (id: string|undefined) => void,
-  addProduct: (product: Product) => void,
   removeProduct: (slug: string| undefined) => void
   
 }
