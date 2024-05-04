@@ -13,7 +13,6 @@ export const CartPage = () => {
     multiply()
     totalSum()
   }
-  console.log(cart[0].stock)
   return (
     <div>
       {cart.length === 0 ? (
@@ -33,7 +32,6 @@ export const CartPage = () => {
                 <span className="w-full max-w-[200px] text-center">Total</span>
               </p>
             </div>
-
             {cart.map(product => (
               <div
                 key={product.id}

@@ -21,6 +21,9 @@ export const ProductPage = () => {
   //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
 
+  const productInCart = cart.find(product => product.id === product?.id)
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
@@ -108,6 +111,9 @@ export const ProductPage = () => {
                     }`}
                     onClick={event => {
                       event.preventDefault()
+                      if (productInCart ){
+                        return
+                      }
                       if (!isClicked) {
                         cart.push(product as Product)
                         notify()
