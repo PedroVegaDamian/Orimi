@@ -1,13 +1,31 @@
 import { useCartStore } from '@/store/cartStore'
+import IconPlus from '@/assets/icons/icon_plus_color.svg'
+import IconMinus from '@/assets/icons/icon_minus_color.svg'
 import IconBin from '@/assets/icons/icon_rubbish_bin.png'
 import { Link } from 'react-router-dom'
 import { EmptyCart } from '@/components/EmptyCart'
-import { Increment } from '@/components/Increment'
-import { Decrement } from '@/components/Decrement'
 
 export const CartPage = () => {
-  const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
+  const {
+    total,
+    cart,
+    increment,
+    decrement,
+    removeProduct,
+    multiply,
+    totalSum
+  } = useCartStore()
 
+  const handleIncrement = (id: string | undefined) => {
+    increment(id)
+    multiply()
+    totalSum()
+  }
+  const handleDecrement = (id: string | undefined) => {
+    decrement(id)
+    multiply()
+    totalSum()
+  }
   const handleRemove = (slug: string | undefined) => {
     removeProduct(slug)
     multiply()
@@ -63,11 +81,13 @@ export const CartPage = () => {
                   </div>
                   <div className="flex items-center justify-end flex-row w-full max-w-xl mx-auto gap-2">
                     <div className="flex pr-20">
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Increment id={product?.id} />
-                        <p className="px-6 text-2xl">{product.quantity}</p>
-                        <Decrement id={product?.id} />
-                      </div>
+                      <button onClick={() => handleDecrement(product.id)}>
+                        <img src={IconMinus} alt="minus" />
+                      </button>
+                      <p className="px-6 text-2xl">{product.quantity}</p>
+                      <button onClick={() => handleIncrement(product.id)}>
+                        <img src={IconPlus} alt="plus" />
+                      </button>
                     </div>
                     <h6 className=" pl-10 font-nunito text-xl font-bold text-left text-grey_800_color">
                       {`$  ${product.subtotal ?? product.price}`}
