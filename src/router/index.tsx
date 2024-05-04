@@ -2,7 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import { DefaultLayout } from '@/layouts/DefaulLayout'
 import { HomePage } from '@/pages/Home'
-import { CartPage } from '@/pages/Cart'
+import { CartPage } from '@/pages/CartPage'
 import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'

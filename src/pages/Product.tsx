@@ -2,31 +2,23 @@ import { getProduct } from '@/services/getProduct'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Product } from '@/models'
-import IconPlus from '@/assets/icons/icon_plus_color.svg'
-import IconMinus from '@/assets/icons/icon_minus_color.svg'
 import toast from 'react-hot-toast'
 import { Toaster } from 'react-hot-toast'
 import { useCartStore } from '@/store/cartStore'
+import { Decrement } from '@/components/Decrement'
+import { Increment } from '@/components/Increment'
 
 export const ProductPage = () => {
+  //UseParams
   const { slug } = useParams<{ slug: string }>()
+  //useState
   const [product, setProduct] = useState<Product | null>(null)
   const [image, setImage] = useState(product?.image1)
-  const notify = () => toast.success('Succesfully added to the cart.')
   const [isClicked, setIsClicked] = useState(false)
-
-  const { cart, increment, decrement, multiply, totalSum } = useCartStore()
-  const handleIncrement = (id: string | undefined) => {
-    increment(id)
-    multiply()
-    totalSum()
-  }
-  const handleDecrement = (id: string | undefined) => {
-    decrement(id)
-    multiply()
-    totalSum()
-  }
-
+  //Toast
+  const notify = () => toast.success('Succesfully added to the cart.')
+  const { cart, increment, multiply, totalSum } = useCartStore()
+  //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
 
   useEffect(() => {
@@ -37,7 +29,7 @@ export const ProductPage = () => {
     }
     fetchProducts()
   }, [slug])
-  console.log(cart)
+
   return (
     <>
       <section className="py-12">
@@ -52,7 +44,6 @@ export const ProductPage = () => {
                   alt="item detail"
                 />
               </div>
-
               <div className="flex flex-row justify-center pt-10 space-x-10">
                 <button
                   type="button"
@@ -103,17 +94,12 @@ export const ProductPage = () => {
 
               <div>
                 <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center m-5 rounded-md font-nunito font-medium text-lg leading-8">
-                    <p className="pr-3">QTY</p>
-                    <button onClick={() => handleDecrement(product?.id)}>
-                      <img src={IconMinus} alt="minus" />
-                    </button>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Decrement id={product?.id} />
                     <p className="px-6 text-2xl">
                       {cart[index]?.quantity || 0}
                     </p>
-                    <button onClick={() => handleIncrement(product?.id)}>
-                      <img src={IconPlus} alt="plus" />
-                    </button>
+                    <Increment id={product?.id} />
                   </div>
                   <a
                     href="#"
