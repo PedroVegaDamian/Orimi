@@ -4,7 +4,6 @@ import { create } from 'zustand'
 export const useCartStore = create<CartState>(set => ({
   total: 0,
   cart: [],
-  // isStock: true,
   increment: (id: string | undefined) =>
     set(state => ({
       cart: state.cart.map(product =>
@@ -12,8 +11,7 @@ export const useCartStore = create<CartState>(set => ({
           ? {
               ...product,
               quantity: product.quantity + 1 || 1,
-              stock: product.stock - 1,
-              isStock: product.stock - 1 >= 0
+              stock: product.stock - 1
             }
           : product
       )
@@ -22,7 +20,11 @@ export const useCartStore = create<CartState>(set => ({
     set(state => ({
       cart: state.cart.map(product =>
         product.id === id && product.quantity > 0
-          ? { ...product, quantity: product.quantity - 1 || 1 }
+          ? {
+              ...product,
+              quantity: product.quantity - 1 || 1,
+              stock: product.stock + 1
+            }
           : product
       )
     })),
