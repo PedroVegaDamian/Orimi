@@ -4,11 +4,17 @@ import { create } from 'zustand'
 export const useCartStore = create<CartState>(set => ({
   total: 0,
   cart: [],
+  // isStock: true,
   increment: (id: string | undefined) =>
     set(state => ({
       cart: state.cart.map(product =>
-        product.id === id
-          ? { ...product, quantity: product.quantity + 1 || 1 }
+        product.id === id && product.stock > 0
+          ? {
+              ...product,
+              quantity: product.quantity + 1 || 1,
+              stock: product.stock - 1,
+              isStock: product.stock - 1 >= 0
+            }
           : product
       )
     })),
@@ -19,7 +25,7 @@ export const useCartStore = create<CartState>(set => ({
           ? { ...product, quantity: product.quantity - 1 || 1 }
           : product
       )
-    })) ,
+    })),
   removeProduct: (slug: string | undefined) =>
     set(state => ({
       cart: state.cart.filter(product => product.slug !== slug)
@@ -32,14 +38,22 @@ export const useCartStore = create<CartState>(set => ({
       }))
     }))
   },
-
-
-
-
   totalSum: () => {
     set(state => {
-      const total = state.cart.reduce((sum, product) => sum + (product.subtotal ?? product.price), 0);
-      return { ...state, total };
-    });
+      const total = state.cart.reduce(
+        (sum, product) => sum + (product.subtotal ?? product.price),
+        0
+      )
+      return { ...state, total }
+    })
   },
+  isStock: (id: string | undefined) => {
+    set(state => ({
+      cart: state.cart.map(product =>
+        product.id === id
+          ? { ...product, isStock: product.stock > 0 }
+          : { ...product, isStock: false }
+      )
+    }))
+  }
 }))

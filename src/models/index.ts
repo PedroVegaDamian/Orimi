@@ -10,6 +10,7 @@ export interface Product {
   stock: number
   quantity: number
   subtotal: number
+  isStock: boolean
 }
 
 export interface CartState {
@@ -20,5 +21,6 @@ export interface CartState {
   removeProduct: (slug: string| undefined) => void
   multiply: () => void
   totalSum: () => void
+  isStock: (id: string|undefined) => void
   
 }
