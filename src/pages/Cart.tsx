@@ -26,10 +26,10 @@ export const CartPage = () => {
             {/* {*SUBTITULOS*} */}
             <div className="grid py-6">
               <p className="font-nunito text-xl text-gray-500 flex justify-end">
-                <span className="w-full max-w-[260px] text-center">
+                <span className="pl-20 w-full max-w-[260px] text-center">
                   Quantity
                 </span>
-                <span className="w-full max-w-[200px] text-center">Total</span>
+                <span className="w-full max-w-[200px] pl-8 text-center">Total</span>
               </p>
             </div>
             {cart.map(product => (
