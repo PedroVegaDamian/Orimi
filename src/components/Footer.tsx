@@ -2,7 +2,7 @@ import IconHeart from '@/assets/icons/icon_heart.svg'
 
 export const Footer = () => {
   return (
-    <footer className="bg-white_color h-[149px] flex flex-col font-inter text-[24px] justify-center gap-4 sticky bottom-0">
+    <footer className="bg-white_color h-[149px] flex flex-col font-inter text-[24px] justify-center gap-4  bottom-0">
       <div className="flex justify-center">
         <img className="w-[31px] mr-2" src={IconHeart} alt="Heart Icon" />
         <p>Made by:</p>

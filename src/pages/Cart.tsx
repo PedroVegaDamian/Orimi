@@ -7,13 +7,19 @@ import { Decrement } from '@/components/Decrement'
 
 export const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
-
+  
   const handleRemove = (slug: string | undefined) => {
     removeProduct(slug)
     multiply()
     totalSum()
   }
+  // const isStock = (id: string | undefined) => {
+  //   const product = cart.find(product => product.id === id)
+  //   return product ? product.stock > 0 : false
+  // }
+    console.log(cart[0].stock)
 
+  
   return (
     <div>
       {cart.length === 0 ? (
@@ -33,10 +39,11 @@ export const CartPage = () => {
                 <span className="w-full max-w-[200px] text-center">Total</span>
               </p>
             </div>
+
+
             {cart.map(product => (
-              <>
                 <div
-                  key={product.slug}
+                  key={product.id}
                   className="grid grid-cols-2 border-t border-gray-200 py-6"
                 >
                   <div className="flex items-center flex-row gap-6 w-full mx-auto">
@@ -68,6 +75,7 @@ export const CartPage = () => {
                         <p className="px-6 text-2xl">{product.quantity}</p>
                         <Decrement id={product?.id} />
                       </div>
+                      <p>Out of stock</p>
                     </div>
                     <h6 className=" pl-10 font-nunito text-xl font-bold text-left text-grey_800_color">
                       {`$  ${product.subtotal ?? product.price}`}
@@ -77,7 +85,7 @@ export const CartPage = () => {
                     </button>
                   </div>
                 </div>
-              </>
+              
             ))}
             <div className="bg-gray-50 rounded-xl p-6 w-full mb-8 max-lg:max-w-xl max-lg:mx-auto bg-bg_color">
               <div className="flex items-center justify-end w-full py-6border-b border-grey_900_color ">
