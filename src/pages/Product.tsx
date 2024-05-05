@@ -32,7 +32,7 @@ export const ProductPage = () => {
     }
     fetchProducts()
   }, [slug])
-
+  
   return (
     <>
       <section className="py-12">
@@ -112,7 +112,7 @@ export const ProductPage = () => {
                     onClick={event => {
                       event.preventDefault()
                       if (productInCart ){
-                        return
+                        increment(product?.id)
                       }
                       if (!isClicked) {
                         cart.push(product as Product)
