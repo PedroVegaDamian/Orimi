@@ -94,19 +94,21 @@ export const ProductPage = () => {
                 </h1>
                 <p className="text-pretty">{product?.description}</p>
               </div>
-
               <div>
                 <div className="flex flex-col items-center gap-4">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+              {!isClicked ?(""):( 
+
+                  <div className="flex items-center mt-3">
                     <Decrement id={product?.id} />
                     <p className="px-6 text-2xl">
                       {cart[index]?.quantity || 0}
                     </p>
                     <Increment id={product?.id} />
-                  </div>
+                  </div>)}
+                 
                   <a
                     href="#"
-                    className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
+                    className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
                       isClicked ? 'cursor-not-allowed bg-primary_500_color' : ''
                     }`}
                     onClick={event => {
