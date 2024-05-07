@@ -70,15 +70,15 @@ export const LoginPage = () => {
                     Submit
                   </button>
                   <a
-                    className="block font-nunito text-base font-bold leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
+                    className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
                     onClick={() => navigate('/reset-password')}
                   >
                     Forgot password?
                   </a>
-                  <p className="font-nunito text-base font-normal leading-19 text-center">
+                  <p className="font-nunito text-base font-normal  leading-19 text-center">
                     Don’t have an account yet?{' '}
                     <a
-                      className="font-nunito text-base font-bold leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
+                      className="font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
                       onClick={() => navigate('/register')}
                     >
                       Create account
