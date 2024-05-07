@@ -38,7 +38,7 @@ export const useLogin = () => {
     }
     // VALIDATE PASSWORD
     if (!passwordRegex.test(password)) {
-      setErrorPassword('Password incorrect')
+      setError('The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.Please try again.')
       return
     }
     const result = await signIn(auth, email, password)
