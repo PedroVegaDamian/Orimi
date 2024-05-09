@@ -9,8 +9,8 @@ export const RegisterPage: React.FC = () => {
         <div className="bg-white_color">
         <Title>Create an account</Title>
         <form onSubmit={handleRegister} >
-            <div className='flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-303 gap-x-80 gap-y-20'>
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className='flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-[303px] gap-x-[80px] gap-y-[20px]'>
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor="firstName">First name<span className="text-red_color">*</span></Label>
                 <Input
                     id="firstName"
@@ -23,7 +23,7 @@ export const RegisterPage: React.FC = () => {
                 <ErrorMessage message={firstNameError} />
             </div>
 
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor="lastName">Last name<span className="text-red_color">*</span></Label>
                 <Input
                     id="lastName"
@@ -36,7 +36,7 @@ export const RegisterPage: React.FC = () => {
                 <ErrorMessage message={lastNameError} />
             </div>
 
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
                 <Input
                     id="phone"
@@ -49,7 +49,7 @@ export const RegisterPage: React.FC = () => {
                 <ErrorMessage message={phoneError} />
             </div>
 
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor='email'>Email address<span className="text-red_color">*</span></Label>
                 <Input
                     id="email"
@@ -62,7 +62,7 @@ export const RegisterPage: React.FC = () => {
                 <ErrorMessage message={emailError} />
             </div>
 
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor='password'>Password<span className="text-red_color">*</span></Label>
                 <Input
                     id="password"
@@ -75,7 +75,7 @@ export const RegisterPage: React.FC = () => {
                 <ErrorMessage message={passwordError} />
             </div>
 
-            <div className="flex flex-col flex-nowrap justify-center content-center max-w-450">
+            <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                 <Label htmlFor="confirmPassword">Confirm Password<span className="text-red_color">*</span></Label>
                 <Input
                     id="confirmPassword"
@@ -94,7 +94,7 @@ export const RegisterPage: React.FC = () => {
             </div>
         </form>
 
-        <Link href='/login'>Sign in</Link>
+        <Link href='/Login'>Sign in</Link>
 
         </div>
 
