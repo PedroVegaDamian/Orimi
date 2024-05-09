@@ -4,10 +4,11 @@ import { UserData } from '@/models/user';
 import { registerUser } from '@/services/register';
 import { emailRegex, passwordRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
-
+import { userAuth } from '@/hooks/getUserData';
 
 export function useRegister() {
     const [userData, setUserData] = useState<UserData>({
+        id: '',
         firstName: '',
         lastName: '',
         phone: '',
@@ -37,7 +38,7 @@ export function useRegister() {
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const newErrors = {};
-        let isValid = true; // Suponemos que el formulario es válido inicialmente
+        let isValid = true; 
 
         setEmailError('');
         setFirstNameError('');
@@ -87,17 +88,26 @@ export function useRegister() {
         if (!isValid) {
             return; // No continúa con el registro si el formulario es inválido
         }
+        
+        //Nombre y apellido
+        const [firstName, lastName] = typeof userData.fullName === 'string' ? userData.fullName.split(' ') : ['', ''];
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            firstName,
+            lastName,
+        }));
     
         // Intenta registrar solo si todas las validaciones son correctas
         try {
             await registerUser(userData);
-            navigate('/'); // Navega a la página de perfil
+            userAuth.getState().changeUser(userData);
+            navigate('/profile');  // Navega a la página de perfil
         } catch (error) {
             // console.error("Registration error:", error);
             if (error instanceof Error) {
-                setEmailError(error.message); // Asume que el mensaje de error ya es adecuado para mostrar
+                setEmailError(error.message); 
             } else {
-                setEmailError("An unexpected error occurred."); // Para cualquier otro tipo de error
+                setEmailError("An unexpected error occurred."); 
             }
         }
     };
