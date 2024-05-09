@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLogin } from '@/hooks/useLogin'
 import IconFacebook from '@/assets/icons/icon_facebook.svg'
 import IconGoogle from '@/assets/icons/icon_google.svg'
@@ -69,20 +69,20 @@ export const LoginPage = () => {
                   >
                     Submit
                   </button>
-                  <a
+                  <Link
+                    to="/reset-password"
                     className="block font-nunito text-base font-bold leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
-                    onClick={() => navigate('/reset-password')}
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                   <p className="font-nunito text-base font-normal leading-19 text-center">
                     Don’t have an account yet?{' '}
-                    <a
+                    <Link
+                      to="/register"
                       className="font-nunito text-base font-bold leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
-                      onClick={() => navigate('/register')}
                     >
                       Create account
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>
