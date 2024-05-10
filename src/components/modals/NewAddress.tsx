@@ -7,7 +7,7 @@ import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { addAddressToFirebase } from '@/services/addAddresses';
 import { Address } from '@/models/user';
 
-export const NewAddressModal = ({ isOpen, close, userId }: ModalBaseProps & { userId: string }) => {
+export const NewAddressModal = ({ isOpen, close, user }: ModalBaseProps & { user: Address }) => {
     const [newAddress, setNewAddress] = useState<Address>({
         id: '',
         company: '',
@@ -69,9 +69,8 @@ export const NewAddressModal = ({ isOpen, close, userId }: ModalBaseProps & { us
         if (validate()) {
             setIsSubmitting(true);
             try {
-                newAddress.id = `id-${Date.now()}`;  // Assume ID is generated here for simplicity
-                const result = await addAddressToFirebase(userId, newAddress);
-                console.log('New address data:', result);
+                newAddress.id = `id-${Date.now()}`;  // Supone que el ID se genera aquí para simplificar
+                await addAddressToFirebase(user.id, newAddress);
                 close();
             } catch (error) {
                 console.error('Failed to add new address:', error);
@@ -133,6 +132,18 @@ export const NewAddressModal = ({ isOpen, close, userId }: ModalBaseProps & { us
                         onChange={handleChange}
                     />
                     <ErrorMessage message={errors.zip} />
+                </div>
+                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                    <Label htmlFor='country'>State<span className="text-red_color">*</span></Label>
+                    <Input
+                        id="state"
+                        type="text"
+                        placeholder="state"
+                        name="state"
+                        value={newAddress.state}
+                        onChange={handleChange}
+                    />
+                    <ErrorMessage message={errors.state} />
                 </div>
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                     <Label htmlFor='country'>Country<span className="text-red_color">*</span></Label>
