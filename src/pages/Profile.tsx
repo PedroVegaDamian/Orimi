@@ -47,6 +47,7 @@ export const ProfilePage = () => {
     const [selectedAddress] = useState<Address | null>(null);
     
     const handleModalClose = () => {
+        setEditAddressModalOpen(false);
         setIsModalOpen(false);
         fetchUser().then(freshData => {
             if (freshData) {
@@ -258,10 +259,9 @@ export const ProfilePage = () => {
                                 </button>
                                 {newAddressModalOpen && (
                                     <NewAddressModal 
-                                        isOpen={isModalOpen}
-                                        addAddress={handleAddNewAddress}
-                                        close={close}
-                                        userId={userId}
+                                        isOpen={newAddressModalOpen}
+                                        close={() => handleModalClose()}
+                                        user={userData}
                                     />
                                 )}
                             </div>
