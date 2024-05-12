@@ -106,7 +106,7 @@ export const ProductPage = () => {
                     <Increment id={product?.id} />
                   </div>)}
                  
-                  <a
+                  <button
                     href="#"
                     className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
                       isClicked ? 'cursor-not-allowed bg-primary_500_color' : ''
@@ -127,7 +127,7 @@ export const ProductPage = () => {
                     }}
                   >
                     Add to cart
-                  </a>
+                  </button>
                   <Toaster position="top-center" reverseOrder={false} />
                 </div>
               </div>
