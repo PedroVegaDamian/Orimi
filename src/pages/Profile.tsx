@@ -20,18 +20,31 @@ import NewAddressModal from '@/components/modals/NewAddress';
 
 
 import { sendResetPasswordEmail } from '@/services/passwordReset';
+import { fetchAddressesFromFirebase } from '@/services/fetchAddresses'; 
 
 export const ProfilePage = () => {
     const navigate = useNavigate();
+    const emptyAddress: Address = {
+        id: '',
+        company: '',  // Si es opcional, puede omitirse o establecerse como undefined
+        street: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        notes: '',
+        isDefault: false,
+        invoice: false
+    };
     const [userData, setUserData] = useState<UserData>({
-        id: '', // Suponiendo que se cargará o creará más adelante
+        id: '', 
         firstName: '',
         lastName: '',
         phone: '',
         email: '',
         password: '',
         confirmPassword: '',
-        addresses: [] // Inicializa como arreglo vacío si aún no hay direcciones
+        addresses: [emptyAddress]
     });
         const { isAuthenticated, signOut, isRehydrating, fetchUser } = useStore(state => ({
         isAuthenticated: state.isAuthenticated,
@@ -75,6 +88,21 @@ export const ProfilePage = () => {
             });
         }
     }, [isRehydrating, fetchUser]);
+
+
+    // Función para cargar las direcciones del usuario
+    useEffect(() => {
+        if (userData.id) { 
+            fetchAddressesFromFirebase(userData.id)
+                .then(addresses => {
+                    console.log("Addresses fetched:", addresses);  
+                    setUserData(currentData => ({ ...currentData, addresses })); 
+                })
+                .catch(error => {
+                    console.error('Error fetching addresses:', error);
+                });
+        }
+    }, [userData.id]); 
     
 
     // Bloqueo y desbloqueo del scroll //TODO: cuando abro el de direcciones se bloque al cerrarlo
@@ -123,13 +151,13 @@ export const ProfilePage = () => {
         setEditAddressModalOpen(false); // Cerrar el modal tras la actualización
     };
     
-    const handleAddNewAddress = (newAddress: Address) => {
-        if (!userData || !Array.isArray(userData.addresses)) {
-            console.error("No se pueden manejar las direcciones, ya que userData o userData.addresses no están definidos correctamente.");
-            return;
-        }
+    // const handleAddNewAddress = (newAddress: Address) => {
+    //     if (!userData || !Array.isArray(userData.addresses)) {
+    //         console.error("No se pueden manejar las direcciones, ya que userData o userData.addresses no están definidos correctamente.");
+    //         return;
+    //     }
     
-        const newAddresses = [...userData.addresses, newAddress];
+        //const newAddresses = [...userData.addresses, newAddress];
     
         // máximo de 3 direcciones
         // if (newAddresses.length > 3) {
@@ -138,10 +166,10 @@ export const ProfilePage = () => {
         // }
     
         // Actualizar el estado local
-        setUserData({...userData, addresses: newAddresses});
+        //setUserData({...userData, addresses: newAddresses});
     
         //setNewAddressModalOpen(false); // Cerrar el modal tras añadir la dirección
-    };
+//    };
 
     
 
@@ -229,7 +257,16 @@ export const ProfilePage = () => {
                                                     checked={selectedAddress?.id === address.id}
                                                     onChange={() => setSelectedAddress(address)}
                                                 /> */}
-                                                <p>{address.street}, {address.city}, {address.zip}</p>
+                                                <p>
+                                                    {address.company} - 
+                                                    {address.street}, 
+                                                    {address.city}, 
+                                                    {address.state},
+                                                    {address.zip},
+                                                    {address.country},
+                                                    {address.notes},
+                                                    {address.isDefault}
+                                                </p>
                                             </div>
                                         ))
                                         //</div>{selectedAddress && <p>Default shipping address: {selectedAddress.street}, {selectedAddress.city}</p>}
