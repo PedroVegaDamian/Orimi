@@ -21,14 +21,15 @@ export const ProductPage = () => {
   //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
 
-  const productInCart = cart.find(product => product.id === product?.id)
-
+  const productInCart = cart.find(items => items.id === product?.id)
+//  console.log(productInCart)
 
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
+      // setIsClicked(false)
     }
     fetchProducts()
   }, [slug])
@@ -114,6 +115,7 @@ export const ProductPage = () => {
                       event.preventDefault()
                       if (productInCart ){
                         increment(product?.id)
+                        console.log(isClicked)
                       }
                       if (!isClicked) {
                         cart.push(product as Product)
