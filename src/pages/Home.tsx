@@ -8,15 +8,15 @@ export const HomePage = () => {
         <img
           src={HeaderImage}
           alt="header"
-          className="h-50 w-full overflow-hidden"
+          className="h-28 w-full overflow-hidden"
         />
       </div>
 
-      <div className="m-20">
-        <h1 className="font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
+      <div className="m-8">
+        <h1 className="mt-5 mb-5 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
           Best Sellers
         </h1>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] w-full">
           <ProductItem />
         </div>
       </div>
