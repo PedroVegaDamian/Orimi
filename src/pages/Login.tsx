@@ -36,9 +36,9 @@ export const LoginPage = () => {
                     placeholder="name@company.com"
                     onChange={e => setEmail(e.target.value)}
                   ></input>
-                  <a className="text-red_color text-sm font-medium">
+                  <span className="text-red_color text-sm font-medium">
                     {errorEmail ? <p>{errorEmail}</p> : null}
-                  </a>
+                  </span>
                 </div>
                 <div>
                   <label className="block font-nunito text-sm font-semibold leading-19 text-left text-black_color mb-2">
@@ -52,13 +52,13 @@ export const LoginPage = () => {
                     className="border border-solid border-grey_color text-gray-900 rounded-lg focus:ring-red-500 focus:border-grey_800_color block w-full p-2.5"
                     onChange={e => setPassword(e.target.value)}
                   ></input>
-                  <a className="text-red_color text-sm font-medium">
+                  <span className="text-red_color text-sm font-medium">
                     {errorPassword ? <p>{errorPassword}</p> : null}
-                  </a>
+                  </span>
                   <div className="flex justify-center">
-                    <a className="text-red_color text-sm font-medium pt-5">
+                    <span className="text-red_color text-sm font-medium pt-5">
                       {error ? <p>{error}</p> : null}
-                    </a>
+                    </span>
                   </div>
                 </div>
 
@@ -70,16 +70,16 @@ export const LoginPage = () => {
                     Submit
                   </button>
                   <Link
-                    to="/reset-password"
-                    className="block font-nunito text-base font-bold leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
+                   className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
+                   to='/reset-password'
                   >
                     Forgot password?
                   </Link>
                   <p className="font-nunito text-base font-normal leading-19 text-center">
                     Don’t have an account yet?{' '}
                     <Link
-                      to="/register"
-                      className="font-nunito text-base font-bold leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
+                      className="font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
+                      to='/register'
                     >
                       Create account
                     </Link>
@@ -106,9 +106,9 @@ export const LoginPage = () => {
               <path d="M0 10L250 10" stroke="#D9D9D9" />
             </svg>
           </div>
-          <a className="block mt-5 font-nunito text-base font-bold leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500">
+          <span className="block mt-5 font-nunito text-base font-bold leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500">
             Or login using
-          </a>
+          </span>
           <div className="flex justify-center items-center mt-5 space-x-20 mb-20">
             <button
               type="submit"
