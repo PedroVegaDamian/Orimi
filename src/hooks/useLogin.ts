@@ -3,15 +3,18 @@ import { signIn } from '@/services/login'
 import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '@/firebase'
+import { getUserById } from '@/services/user'
+import { useUserStore } from '@/store/userStore'
 
 export const useLogin = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('test1@gmail.com')
+  const [password, setPassword] = useState('Test123')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
+  const setUser = useUserStore(state => state.setUser)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -42,7 +45,9 @@ export const useLogin = () => {
       return
     }
     const result = await signIn(auth, email, password)
-    if (result?.success) {
+    if (result.success) {
+      const user = await getUserById(result.user?.uid as string)
+      setUser(user)
       navigate('/')
     } else {
       setError('Invalid email or password. Please try again.')
