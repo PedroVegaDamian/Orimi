@@ -14,7 +14,7 @@ export const CartPage = () => {
     totalSum()
   }
   return (
-    <div>
+    <div className='bg-white_color'>
       {cart.length === 0 ? (
         <EmptyCart />
       ) : (
