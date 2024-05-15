@@ -8,7 +8,7 @@ import { useCartStore } from '@/store/cartStore'
 import { Decrement } from '@/components/Decrement'
 import { Increment } from '@/components/Increment'
 
-export const ProductPage = () => {
+ const ProductPage = () => {
   //UseParams
   const { slug } = useParams<{ slug: string }>()
   //useState
@@ -22,14 +22,13 @@ export const ProductPage = () => {
   const index = cart.findIndex(product => product.slug === slug)
 
   const productInCart = cart.find(items => items.id === product?.id)
-//  console.log(productInCart)
+
 
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
-      // setIsClicked(false)
     }
     fetchProducts()
   }, [slug])
@@ -139,3 +138,4 @@ export const ProductPage = () => {
     </>
   )
 }
+export default ProductPage

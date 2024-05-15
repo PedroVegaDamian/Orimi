@@ -1,6 +1,9 @@
 import HeaderImage from '@/assets/portada.png'
-import { ProductItem } from '@/components/ProductsList'
+import { Loading } from '@/components/Loading'
+// import { ProductItem } from '@/components/ProductsList'
+import { Suspense, lazy } from 'react'
 
+const ProductItem = lazy(() => import('@/components/ProductsList'))
 export const HomePage = () => {
   return (
     <div className="bg-bg_color">
@@ -16,9 +19,11 @@ export const HomePage = () => {
         <h1 className="font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
           Best Sellers
         </h1>
+        <Suspense fallback={<Loading/>}>
         <div className="grid grid-cols-4 gap-4">
           <ProductItem />
         </div>
+        </Suspense>
       </div>
     </div>
   )
