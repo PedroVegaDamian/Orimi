@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}', './src/**/*.css'],
   theme: {
     extend: {
       fontFamily: {
@@ -9,6 +9,27 @@ export default {
         roboto: ['Roboto', 'sans-serif'],
         sen: ['Sen', 'sans-serif'],
         inter: ['Inter', 'sans-serif']
+      },
+      fontWeight: {
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700'
+      },
+      fontSize: {
+        '12': '12px',
+        '14': '14px',
+        '16': '16px',
+        '22': '22px'
+      },
+      maxHeight: {
+        '303': '303px'
+      },
+      borderWidth: {
+        '1': '1px'
+      },
+      borderRadius: {
+        '10': '10px'
       }
     },
     colors: {

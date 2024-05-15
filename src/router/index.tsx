@@ -6,8 +6,11 @@ import { CartPage } from '@/pages/Cart'
 import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
+import { ProductPage } from '@/pages/Product'
+import { ProfilePage } from '@/pages/Profile'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
+import { RegisterPage } from '@/pages/Register'
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +26,10 @@ export const router = createBrowserRouter([
         element: <ProductsPage />
       },
       {
+        path: 'product/:slug',
+        element: <ProductPage />
+      },
+      {
         path: 'about',
         element: <AboutPage />
       },
@@ -35,12 +42,20 @@ export const router = createBrowserRouter([
         element: <LoginPage />
       },
       {
+        path: 'profile',
+        element: <ProfilePage />
+      },
+      {
         path: 'favorites',
         element: <FavoritesPage />
       },
       {
         path: 'cart',
         element: <CartPage />
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />
       }
     ]
   },

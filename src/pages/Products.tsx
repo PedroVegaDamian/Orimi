@@ -1,3 +1,7 @@
 export const ProductsPage = () => {
-  return <div>ProductsPage</div>
+  return (
+    <div>
+      <h1>ProductsPage</h1>
+    </div>
+  )
 }
