@@ -6,6 +6,31 @@ import IconUser from '@/assets/icons/icon_user.svg'
 import IconHeart from '@/assets/icons/icon_heart.svg'
 import IconSearch from '@/assets/icons/icon_search.svg'
 import IconFlagSpain from '@/assets/icons/icon_flag_spain.svg'
+import { useUserStore } from '@/store/userStore'
+
+export const RenderLinkUser = () => {
+  const user = useUserStore(state => state.user)
+  const isLoading = useUserStore(state => state.isLoading)
+
+  if (isLoading) return null
+
+  if (user) {
+    return (
+      <Link
+        to="/profile"
+        className="block bg-primary_color py-3 px-4 rounded-xl max-w-40 truncate"
+      >
+        Hola {user.firstName} {user.lastName}
+      </Link>
+    )
+  }
+
+  return (
+    <Link to="/login">
+      <img src={IconUser} alt="User Icon" />
+    </Link>
+  )
+}
 
 export const Navbar = () => {
   return (
@@ -14,7 +39,7 @@ export const Navbar = () => {
         <img src={Logo} alt="Oromi Logo" />
       </Link>
 
-      <nav className="flex gap-[46px]">
+      <nav className="flex gap-[46px] items-center">
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
         <Link to="/about">About</Link>
@@ -22,13 +47,12 @@ export const Navbar = () => {
 
         <img className="cursor-pointer" src={IconSearch} alt="Search Icon" />
 
-        <Link className="inline-flex" to="/login">
-          <img src={IconUser} alt="User Icon" />
-        </Link>
-        <Link className="inline-flex" to="/favorites">
+        <RenderLinkUser />
+
+        <Link to="/favorites">
           <img src={IconHeart} alt="Heart Icon" />
         </Link>
-        <Link className="inline-flex" to="/cart">
+        <Link to="/cart">
           <img src={IconBag} alt="Bag Icon" />
         </Link>
 
