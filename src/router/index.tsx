@@ -11,6 +11,8 @@ import { ProfilePage } from '@/pages/Profile'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
+import { ProtectedRoute } from './ProtectedRoute'
+import { getCurrentUser } from '@/services/user'
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +45,12 @@ export const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <ProfilePage />
+        loader: async () => await getCurrentUser(),
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        )
       },
       {
         path: 'favorites',
