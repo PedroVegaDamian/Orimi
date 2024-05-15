@@ -1,4 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 
 import { DefaultLayout } from '@/layouts/DefaulLayout'
 import { HomePage } from '@/pages/Home'
@@ -6,11 +7,13 @@ import { CartPage } from '@/pages/Cart'
 import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
-import { ProductPage } from '@/pages/Product'
+// import { ProductPage } from '@/pages/Product'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
 import { Loading } from '@/components/Loading'
+
+const ProductPage = lazy(() => import('@/pages/Product'))
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +30,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'product/:slug',
-        element: <ProductPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ProductPage />
+          </Suspense>
+        )
       },
       {
         path: 'about',

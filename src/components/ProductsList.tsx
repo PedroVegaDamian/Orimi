@@ -4,7 +4,7 @@ import { Product } from '@/models'
 import { Link } from 'react-router-dom'
 
 
-export const ProductItem = () => {
+ const ProductItem = () => {
   const [products, setProducts] = useState<Product[]>([])
  
   useEffect(() => {
@@ -44,3 +44,5 @@ export const ProductItem = () => {
     </>
   )
 }
+
+export default ProductItem
