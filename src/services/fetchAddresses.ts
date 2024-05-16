@@ -1,12 +1,11 @@
 import { db } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { Address } from '@/models/user';  // Asegúrate de importar la definición de Address
+import { collection, getDocs } from 'firebase/firestore';
+import { Address } from '@/models/user';  
 
 export const fetchAddressesFromFirebase = async (userId: string) => {
     try {
-        const addressesRef = collection(db, 'addresses');
-        const q = query(addressesRef, where('userId', '==', userId));
-        const snapshot = await getDocs(q);
+        const addressesRef = collection(db, 'users', userId, 'addresses');
+        const snapshot = await getDocs(addressesRef);
 
         if (snapshot.empty) {
             console.log('No matching documents.');
@@ -14,10 +13,10 @@ export const fetchAddressesFromFirebase = async (userId: string) => {
         }
 
         return snapshot.docs.map(doc => {
-            const data = doc.data() as Address;  // Asegurando que los datos se traten como tipo Address
+            const data = doc.data() as Address;  
             return {
                 ...data,
-                id: doc.id  // Asegurando que el id del documento sobrescriba cualquier id en data si existiera
+                id: doc.id  
             };
         });
     } catch (error) {

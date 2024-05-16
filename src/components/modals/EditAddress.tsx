@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import ModalBase from './ModalBase';
-import { ModalBaseProps } from '@/components/modals/ModalBase';
+// import { ModalBaseProps } from '@/components/modals/ModalBase';
 import { Address } from '@/models/user';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { addressRegex } from '@/utils/validationsRegex';
 
-export const EditAddressModal = ({ isOpen, address, updateAddress, close }: ModalBaseProps & { address: Address, updateAddress: (address: Address) => void }) => {
+interface EditAddressModalProps {
+    isOpen: boolean;
+    address: Address;
+    updateAddress: (addressId: string, address: Address) => void; // Actualiza aquí
+    close: () => void;
+}
+
+const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, updateAddress, close }) => {
     const [editedAddress, setEditedAddress] = useState<Address>(address);
     const [errors, setErrors] = useState({
         company: '',
@@ -60,7 +67,7 @@ export const EditAddressModal = ({ isOpen, address, updateAddress, close }: Moda
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validate()) {
-            updateAddress(editedAddress);
+            updateAddress(editedAddress.id, editedAddress);
             close();
         }
     };

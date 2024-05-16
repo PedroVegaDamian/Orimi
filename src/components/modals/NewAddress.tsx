@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ModalBase from './ModalBase';
 import { ModalBaseProps } from '@/components/modals/ModalBase';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
 import { addressRegex } from '@/utils/validationsRegex';
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
-import { addAddressToFirebase } from '@/services/addAddresses';
+// import { addAddressToFirebase } from '@/services/addAddresses';
 import { Address } from '@/models/user';
+import { db } from '@/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
-export const NewAddressModal = ({ isOpen, close, user }: ModalBaseProps & { user: Address }) => {
-    const [newAddress, setNewAddress] = useState<Address>({
+interface NewAddressModalProps extends ModalBaseProps {
+    existingAddresses: Address[];
+    updateAddress: (addressId: string, address: Partial<Address>) => void;
+    defaultAddress: Address | null;
+    handleNewAddress: (address: Partial<Address>) => void;
+}
+
+const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, defaultAddress, handleNewAddress }) => { // Eliminar userId de aquí también
+    const [newAddress, setNewAddress] = useState<Partial<Address>>({
         id: '',
         company: '',
         street: '',
@@ -30,36 +39,41 @@ export const NewAddressModal = ({ isOpen, close, user }: ModalBaseProps & { user
         state: '',
         notes: '',
     });
-    
+
+    useEffect(() => {
+        if (defaultAddress) {
+            setNewAddress(defaultAddress);
+        }
+    }, [defaultAddress]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewAddress({ ...newAddress, [e.target.name]: e.target.value });
     };
 
-    //Validaciones
     const validate = () => {
         let isValid = true;
         const newErrors = { ...errors };
-    
+
         if (!newAddress.street || !addressRegex.street.test(newAddress.street)) {
             newErrors.street = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
+
         if (!newAddress.city || !addressRegex.city.test(newAddress.city)) {
             newErrors.city = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
+
         if (!newAddress.zip || !addressRegex.zip.test(newAddress.zip)) {
             newErrors.zip = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
+
         if (!newAddress.country || !addressRegex.country.test(newAddress.country)) {
             newErrors.country = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
+
         setErrors(newErrors);
         return isValid;
     };
@@ -69,8 +83,34 @@ export const NewAddressModal = ({ isOpen, close, user }: ModalBaseProps & { user
         if (validate()) {
             setIsSubmitting(true);
             try {
-                newAddress.id = `id-${Date.now()}`;  // Supone que el ID se genera aquí para simplificar
-                await addAddressToFirebase(user.id, newAddress);
+                if (newAddress.isDefault) {
+                    const updatedAddresses = existingAddresses.map(addr => ({
+                        ...addr,
+                        isDefault: false,
+                    }));
+                    for (const addr of updatedAddresses) {
+                        const addressRef = doc(db, 'addresses', addr.id);
+                        const docSnap = await getDoc(addressRef);
+
+                        if (docSnap.exists()) {
+                            await updateAddress(addr.id, {
+                                id: addr.id,
+                                company: addr.company,
+                                street: addr.street,
+                                city: addr.city,
+                                state: addr.state,
+                                zip: addr.zip,
+                                country: addr.country,
+                                notes: addr.notes,
+                                isDefault: addr.isDefault,
+                                invoice: addr.invoice,
+                            });
+                        } else {
+                            console.error(`No document to update: ${addr.id}`);
+                        }
+                    }
+                }
+                await handleNewAddress(newAddress);
                 close();
             } catch (error) {
                 console.error('Failed to add new address:', error);
@@ -79,11 +119,11 @@ export const NewAddressModal = ({ isOpen, close, user }: ModalBaseProps & { user
             }
         }
     };
-
+    
+    
     return (
         <ModalBase isOpen={isOpen} close={close}>
             <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg pr-[40px]'>
-
                 <Title>Add new address</Title>
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                     <Label htmlFor='company'>Company</Label>

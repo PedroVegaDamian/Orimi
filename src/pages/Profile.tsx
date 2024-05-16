@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import { UserData, Address } from '@/models/user';
+import { db } from '@/firebase';
+import { doc, getDoc, getDocs, collection, runTransaction } from "firebase/firestore";
 
 import IconUser from '@/assets/icons/icon_user_black.svg';
 import IconArrow from '@/assets/icons/icon_arrow_right_black.svg';
@@ -11,22 +13,42 @@ import IconPencil from '@/assets/icons/icon_pencil_black.svg';
 import IconEyeBlack from '@/assets/icons/icon_eye_black.svg';
 import IconPlusLineBlack from '@/assets/icons/icon_plus_line_black.svg';
 import IconOff from '@/assets/icons/icon_off_black.svg';
+import IconTrash from '@/assets/icons/icon_papelera_black.svg'
 
 import { Button, Title } from '@/components/ui';
 
 import EditUserModals from '@/components/modals/EditUser';
 import EditAddressModal from '@/components/modals/EditAddress';
 import NewAddressModal from '@/components/modals/NewAddress';
+import DeleteAddressModal from '@/components/modals/DeleteAddress';
 
 
 import { sendResetPasswordEmail } from '@/services/passwordReset';
-import { fetchAddressesFromFirebase } from '@/services/fetchAddresses'; 
+import { fetchAddressesFromFirebase } from '@/services/fetchAddresses';
+import { addAddressToFirebase } from '@/services/addAddresses'; 
+// import { deleteAddress } from '@/services/deleteAddress';
+// import { updateAddress } from '@/services/updateAddress';
 
 export const ProfilePage = () => {
+    // const { setEditModalOpen, setDeleteModalOpen, setSelectedAddressId, deleteAddress, updateAddress } = useStore();
+    const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setEditModalOpen, setDeleteModalOpen, setSelectedAddressId, defaultAddress, setDefaultAddress } = useStore(state => ({
+        isAuthenticated: state.isAuthenticated,
+        signOut: state.signOut,
+        isRehydrating: state.isRehydrating,
+        fetchUser: state.fetchUser,
+        user: state.user,
+        updateAddress: state.updateAddress,
+        deleteAddress: state.deleteAddress,
+        setEditModalOpen: state.setEditModalOpen,
+        setDeleteModalOpen: state.setDeleteModalOpen,
+        setSelectedAddressId: state.setSelectedAddressId,
+        defaultAddress: state.defaultAddress,
+        setDefaultAddress: state.setDefaultAddress,
+    }));
     const navigate = useNavigate();
     const emptyAddress: Address = {
         id: '',
-        company: '',  // Si es opcional, puede omitirse o establecerse como undefined
+        company: '',  
         street: '',
         city: '',
         state: '',
@@ -46,22 +68,18 @@ export const ProfilePage = () => {
         confirmPassword: '',
         addresses: [emptyAddress]
     });
-        const { isAuthenticated, signOut, isRehydrating, fetchUser } = useStore(state => ({
-        isAuthenticated: state.isAuthenticated,
-        signOut: state.signOut,
-        isRehydrating: state.isRehydrating,
-        fetchUser: state.fetchUser,
-        user: state.user 
-    }));
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
     const [editAddressModalOpen, setEditAddressModalOpen] = useState(false);
+    const [deleteAddressModalOpen, setDeleteAddressModalOpen] = useState(false);
     const [newAddressModalOpen, setNewAddressModalOpen] = useState(false);
-    const [selectedAddress] = useState<Address | null>(null);
     
     const handleModalClose = () => {
-        setEditAddressModalOpen(false);
         setIsModalOpen(false);
+        setNewAddressModalOpen(false);
+        setDeleteAddressModalOpen(false);
+        setEditAddressModalOpen(false);
         fetchUser().then(freshData => {
             if (freshData) {
                 setUserData(freshData);
@@ -72,14 +90,15 @@ export const ProfilePage = () => {
             });
     };
 
-    
-
     // Cargar los datos del usuario
     useEffect(() => {
         if (isRehydrating) {
             fetchUser().then((fetchedUser) => {
                 if (fetchedUser) {
                     setUserData(fetchedUser);
+                    // Establecer la dirección por defecto
+                    const defaultAddress = fetchedUser.addresses.find(address => address.isDefault);
+                    setDefaultAddress(defaultAddress || null);
                 } else {
                     console.log("No user data fetched");
                 }
@@ -87,28 +106,31 @@ export const ProfilePage = () => {
                 console.error("Failed to fetch user:", error);
             });
         }
-    }, [isRehydrating, fetchUser]);
-
+    }, [isRehydrating, fetchUser, setDefaultAddress]);
 
     // Función para cargar las direcciones del usuario
     useEffect(() => {
-        if (userData.id) { 
+        if (userData.id) {
             fetchAddressesFromFirebase(userData.id)
                 .then(addresses => {
-                    console.log("Addresses fetched:", addresses);  
-                    setUserData(currentData => ({ ...currentData, addresses })); 
+                    console.log("Addresses fetched:", addresses);
+                    setUserData(currentData => ({ ...currentData, addresses }));
+                    const defaultAddress = addresses.find(address => address.isDefault);
+                    if (defaultAddress) {
+                        setSelectedAddress(defaultAddress);
+                        setDefaultAddress(defaultAddress); // Asegurarse de establecer la dirección por defecto
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching addresses:', error);
                 });
         }
-    }, [userData.id]); 
-    
+    }, [userData.id, setDefaultAddress]);
 
-    // Bloqueo y desbloqueo del scroll //TODO: cuando abro el de direcciones se bloque al cerrarlo
+   // Bloqueo y desbloqueo del scroll 
     useEffect(() => {
-        const originalStyle = document.body.style.overflow; 
-        if (isModalOpen || editAddressModalOpen || newAddressModalOpen) {
+        const originalStyle = document.body.style.overflow;
+        if (isModalOpen || editAddressModalOpen || newAddressModalOpen || deleteAddressModalOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = originalStyle;
@@ -116,8 +138,9 @@ export const ProfilePage = () => {
         return () => {
             document.body.style.overflow = originalStyle;
         };
-    }, [isModalOpen, editAddressModalOpen, newAddressModalOpen]);
+    }, [isModalOpen, editAddressModalOpen, newAddressModalOpen, deleteAddressModalOpen]);
 
+    // Enviando correo de restablecer contraseña
     const handleResetPassword = useCallback(async () => {
         if (userData && userData.email) {
             try {
@@ -131,48 +154,119 @@ export const ProfilePage = () => {
         }
     }, [userData]);
 
-    //Direcciones
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const handleAddressClick = (address: Address) => {
-    //     setSelectedAddress(address);
-    //     setEditAddressModalOpen(true);
-    // };
+    const handleEditAddress = useCallback((addressId: string, address: Partial<Address>) => {
+        const completeAddress: Address = {
+            id: addressId,
+            company: address.company || '',
+            street: address.street || '',
+            city: address.city || '',
+            state: address.state || '',
+            zip: address.zip || '',
+            country: address.country || '',
+            notes: address.notes || '',
+            isDefault: address.isDefault || false,
+            invoice: address.invoice || false,
+        };
+        updateAddress(addressId, completeAddress);
+        setEditAddressModalOpen(false);
+    }, [updateAddress, setEditAddressModalOpen]);
+    
+    const handleNewAddress = useCallback(async (address: Partial<Address>) => {
+        if (address.isDefault) {
+            const updatedAddresses = userData.addresses.map(addr => ({
+                ...addr,
+                isDefault: false,
+            }));
+            for (const addr of updatedAddresses) {
+                const addressRef = doc(db, 'addresses', addr.id);
+                const docSnap = await getDoc(addressRef);
+    
+                if (docSnap.exists()) {
+                    await updateAddress(addr.id, {
+                        ...addr,
+                        isDefault: addr.isDefault,
+                    });
+                } else {
+                    console.error(`No document to update: ${addr.id}`);
+                }
+            }
+        }
+        const completeAddress: Address = {
+            ...address,
+            id: `id-${Date.now()}`, 
+            company: address.company || '',
+            street: address.street || '',
+            city: address.city || '',
+            state: address.state || '',
+            zip: address.zip || '',
+            country: address.country || '',
+            notes: address.notes || '',
+            isDefault: address.isDefault || false,
+            invoice: address.invoice || false,
+        };
+        await addAddressToFirebase(userData.id, completeAddress); 
+        fetchUser().then(freshData => {
+            if (freshData) {
+                setUserData(freshData);
+                console.log("Datos refrescados desde Firebase:", freshData);
+            }
+        }).catch(error => {
+            console.error("Error fetching updated data from Firebase:", error);
+        });
+    }, [userData.addresses, userData.id, updateAddress, fetchUser]);
 
-    const handleUpdateAddress = (updatedAddress: Address) => {
-        if (!userData) return;
-        
-        const updatedAddresses = userData.addresses.map(addr =>
-            addr.id === updatedAddress.id ? updatedAddress : addr
-        );
+    const handleDeleteAddress = useCallback((addressId: string) => {
+        deleteAddress(addressId);
+        setDeleteAddressModalOpen(false);
+    }, [deleteAddress, setDeleteAddressModalOpen]);
+
+    const handleSetDefaultAddress = async (addressId: string) => {
+        try {
+            const selectedAddressRef = doc(db, 'addresses', addressId);
+            const selectedDocSnapshot = await getDoc(selectedAddressRef);
     
-        // Actualizar el estado local
-        setUserData({...userData, addresses: updatedAddresses});
+            if (!selectedDocSnapshot.exists()) {
+                console.error(`No document to update: ${addressId}`);
+                return;
+            }
     
-        setEditAddressModalOpen(false); // Cerrar el modal tras la actualización
+            await runTransaction(db, async (transaction) => {
+                // Actualiza la dirección seleccionada para establecerla como predeterminada
+                transaction.update(selectedAddressRef, { isDefault: true });
+    
+                // Obtén todas las direcciones del usuario
+                const allAddressesQuerySnapshot = await getDocs(collection(db, 'addresses'));
+                
+                // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
+                allAddressesQuerySnapshot.forEach((doc) => {
+                    if (doc.id !== addressId && doc.data().isDefault) {
+                        transaction.update(doc.ref, { isDefault: false });
+                    }
+                });
+            });
+    
+            // Actualiza el estado local
+            const updatedAddresses = userData.addresses.map((address) =>
+                address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
+            );
+    
+            setUserData((prevState) => ({
+                ...prevState,
+                addresses: updatedAddresses,
+            }));
+    
+            setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
+    
+        } catch (error) {
+            console.error("Error updating document: ", error);
+        }
     };
     
-    // const handleAddNewAddress = (newAddress: Address) => {
-    //     if (!userData || !Array.isArray(userData.addresses)) {
-    //         console.error("No se pueden manejar las direcciones, ya que userData o userData.addresses no están definidos correctamente.");
-    //         return;
-    //     }
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const addressId = event.target.value;
+        handleSetDefaultAddress(addressId);
+    };
     
-        //const newAddresses = [...userData.addresses, newAddress];
-    
-        // máximo de 3 direcciones
-        // if (newAddresses.length > 3) {
-        //     console.error("No se pueden añadir más de 3 direcciones");
-        //     return;
-        // }
-    
-        // Actualizar el estado local
-        //setUserData({...userData, addresses: newAddresses});
-    
-        //setNewAddressModalOpen(false); // Cerrar el modal tras añadir la dirección
-//    };
-
-    
-
 
     //Carga de datos del usuario
     if (isRehydrating || !userData) {
@@ -250,13 +344,13 @@ export const ProfilePage = () => {
                             <div>
                                 {userData && userData.addresses && userData.addresses.length > 0 ? (
                                     userData.addresses.map((address) => (
-                                            <div key={address.id}>
-                                                {/* <input
-                                                    type="radio"
-                                                    name="defaultAddress"
-                                                    checked={selectedAddress?.id === address.id}
-                                                    onChange={() => setSelectedAddress(address)}
-                                                /> */}
+                                        <div key={address.id}>
+                                            <input
+                                                type="radio"
+                                                name="defaultAddress"
+                                                value={address.id}
+                                                onChange={onChange}
+                                            />
                                                 <p>
                                                     {address.company} - 
                                                     {address.street}, 
@@ -267,38 +361,59 @@ export const ProfilePage = () => {
                                                     {address.notes},
                                                     {address.isDefault}
                                                 </p>
+                                                {address.isDefault && <p>Default shipping</p>}
+                                                <button onClick={() => {
+                                                    setSelectedAddressId(address.id);
+                                                    setEditModalOpen(true);
+                                                }}>
+                                                    <img src={IconPencil} alt="pencil Icon" className="mr-[10px]" /> 
+                                                    <span>Edit</span>
+                                                </button>
+                                                <button onClick={() => {
+                                                    setSelectedAddressId(address.id);
+                                                    setDeleteModalOpen(true);
+                                                }}> 
+                                                    <img src={IconTrash} alt="trash Icon" className="mr-[10px]" /> 
+                                                    <span>Delete</span>
+                                                </button>
+                                                {/* Renderiza los modales de editar y borrar */}
+                                                {editAddressModalOpen && selectedAddress && (
+                                                    <EditAddressModal
+                                                        isOpen={editAddressModalOpen}
+                                                        address={selectedAddress}
+                                                        updateAddress={handleEditAddress}  
+                                                        close={() => setEditAddressModalOpen(false)}
+                                                    />
+                                                )}
+                                                {deleteAddressModalOpen && selectedAddress && (
+                                                    <DeleteAddressModal
+                                                        isOpen={deleteAddressModalOpen}
+                                                        addressId={selectedAddress.id}
+                                                        onDeleteAddress={handleDeleteAddress}
+                                                        close={() => setDeleteAddressModalOpen(false)}
+                                                    />
+                                                )}
                                             </div>
                                         ))
-                                        //</div>{selectedAddress && <p>Default shipping address: {selectedAddress.street}, {selectedAddress.city}</p>}
-                                    // </form>
                                 ) : (
                                     <p>You do not have any addresses yet. Add one.</p>
                                 )}
                             </div>
                             <div>
-                                //TODO:Editar direccion
-                                <button onClick={() => setEditAddressModalOpen(true)} className="flex justify-end items-center">
-                                    <img src={IconPencil} alt="Pencil Icon" className="mr-[10px]" />
-                                    <span>Edit</span>
-                                </button>
-                                {editAddressModalOpen && selectedAddress && (
-                                    <EditAddressModal
-                                        isOpen={editAddressModalOpen}
-                                        address={selectedAddress}
-                                        updateAddress={handleUpdateAddress}
-                                        close={() => setEditAddressModalOpen(false)}
-                                    />
-                                )}
-                                //TODO:Añadir nueva direccion
+                            {userData.addresses.length < 3 && (
                                 <button onClick={() => setNewAddressModalOpen(true)} className="flex justify-end items-center">
                                     <img src={IconPlusLineBlack} alt="Plus Icon" className="mr-[10px]" />
                                     <span>Add new address</span>
                                 </button>
+                            )}
                                 {newAddressModalOpen && (
-                                    <NewAddressModal 
+                                    <NewAddressModal  
                                         isOpen={newAddressModalOpen}
                                         close={() => handleModalClose()}
-                                        user={userData}
+                                        existingAddresses={userData.addresses}
+                                        updateAddress={handleEditAddress}
+                                        defaultAddress={defaultAddress}
+                                        handleNewAddress={handleNewAddress}
                                     />
                                 )}
                             </div>
