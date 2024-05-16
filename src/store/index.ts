@@ -1,20 +1,32 @@
 import { create } from 'zustand';
 import { persist, PersistStorage } from 'zustand/middleware';
-import { UserData } from '@/models/user';
-import { getCurrentUser } from '@/services/login';
+import { UserData, Address } from '@/models/user';
+import { getCurrentUser } from '@/services/getUsers';
 import { signOut as firebaseSignOut } from '@/services/signOut';
 import { NavigateFunction } from 'react-router-dom';
-//import { fetchAddressesFromFirebase, addAddressToFirebase } from '@/firebase/index';
+import { updateAddress as updateAddressService } from '@/services/updateAddress';
+import { deleteAddress as deleteAddressService } from '@/services/deleteAddress';
+
 
 interface StoreState {
   user: UserData | null;
   isAuthenticated: boolean;
   isRehydrating: boolean;
+  selectedAddressId: string | null;
+  editModalOpen: boolean;
+  deleteModalOpen: boolean;
+  defaultAddress: Address | null;
   setUser: (user: UserData) => void;
   clearUser: () => void;
   finishRehydration: () => void;
   signOut: (navigate: NavigateFunction) => Promise<void>;
   fetchUser: () => Promise<UserData | null>;
+  setSelectedAddressId: (id: string | null) => void;
+  setEditModalOpen: (open: boolean) => void;
+  setDeleteModalOpen: (open: boolean) => void;
+  setDefaultAddress: (address: Address | null) => void;
+  updateAddress: (addressId: string, addressData: Omit<Address, 'id'>) => Promise<void>;
+  deleteAddress: (addressId: string) => Promise<void>;
 }
 
 interface StorageValue {
@@ -26,7 +38,6 @@ const storage: PersistStorage<StoreState> = {
     const item = localStorage.getItem(key);
     return item ? { state: JSON.parse(item) as StoreState } : null;
   },
-
   setItem: async (key: string, value: StorageValue) => {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
@@ -37,31 +48,18 @@ const storage: PersistStorage<StoreState> = {
   }
 };
 
+
 const useStore = create<StoreState>()(persist((set, get) => ({
   user: null,
   isAuthenticated: false,
   isRehydrating: true,
+  selectedAddressId: null,
+  editModalOpen: false,
+  deleteModalOpen: false,
+  defaultAddress: null,
   setUser: (user: UserData) => set({ user, isAuthenticated: !!user }),
   clearUser: () => set({ user: null, isAuthenticated: false }),
   finishRehydration: () => set({ isRehydrating: false }),
-  // addresses: [],
-  //   isModalOpen: false,
-  //   setModalOpen: isOpen => set({ isModalOpen: isOpen }),
-  //   fetchUserAddresses: async () => {
-  //       const userId = get().user?.id;
-  //       if (userId) {
-  //           const addresses = await fetchAddressesFromFirebase(userId);
-  //           set({ addresses });
-  //       }
-  //   },
-  //   addAddressToUser: async (address) => {
-  //       const userId = get().user?.id;
-  //       if (userId) {
-  //           const newAddress = await addAddressToFirebase(userId, address);
-  //           set(state => ({ addresses: [...state.addresses, newAddress] }));
-  //           set({ isModalOpen: false });
-  //       }
-  //   },
   signOut: async (navigate: NavigateFunction) => {
     await firebaseSignOut(navigate);
     get().clearUser();
@@ -74,7 +72,6 @@ const useStore = create<StoreState>()(persist((set, get) => ({
         set({ user, isAuthenticated: true, isRehydrating: false });
         return user;
       } else {
-        // Si getCurrentUser no lanza un error, pero no retorna un usuario
         set({ isRehydrating: false });
         return null;
       }
@@ -83,8 +80,39 @@ const useStore = create<StoreState>()(persist((set, get) => ({
       set({ isRehydrating: false });
       return null;
     }
-  }
-  
+  },
+  setSelectedAddressId: (id: string | null) => set({ selectedAddressId: id }),
+  setEditModalOpen: (open: boolean) => set({ editModalOpen: open }),
+  setDeleteModalOpen: (open: boolean) => set({ deleteModalOpen: open }),
+  setDefaultAddress: (address: Address | null) => set({ defaultAddress: address }),
+  updateAddress: async (addressId: string, addressData: Omit<Address, 'id'>) => {
+    if (!addressId || typeof addressId !== 'string' || !addressData || typeof addressData !== 'object') {
+      console.error('Invalid types for addressId or addressData');
+      return;
+    }
+    await updateAddressService(addressId, addressData);
+    const currentAddresses = get().user?.addresses ?? [];
+    const updatedAddresses = currentAddresses.map(addr =>
+      addr.id === addressId ? { ...addr, ...addressData } : addr
+    );
+    set((state: StoreState) => ({
+      ...state,
+      user: { ...state.user!, addresses: updatedAddresses }
+    }));
+  },
+  deleteAddress: async (addressId: string) => {
+    if (!addressId || typeof addressId !== 'string') {
+      console.error('Invalid type for addressId');
+      return;
+    }
+    await deleteAddressService(addressId);
+    const currentAddresses = get().user?.addresses ?? [];
+    const remainingAddresses = currentAddresses.filter(addr => addr.id !== addressId);
+    set((state: StoreState) => ({
+      ...state,
+      user: { ...state.user!, addresses: remainingAddresses }
+    }));
+  },
 }), {
   name: 'user-store',
   storage: storage

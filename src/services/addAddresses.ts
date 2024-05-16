@@ -1,8 +1,16 @@
 import { db } from '@/firebase';
-import { doc, collection, addDoc } from 'firebase/firestore';
+import { doc, collection, addDoc, getDocs } from 'firebase/firestore';
 import { Address } from '@/models/user';
 
 const addAddressToFirebase = async (userId: string, address: Address) => {
+    const addressesRef = collection(db, 'addresses', userId, 'userAddresses');
+    const snapshot = await getDocs(addressesRef)
+
+    if (snapshot.size >= 3) {
+        console.error('No more than 3 addresses allowed');
+        return;
+    }
+
     try {
         // Referencia al documento del usuario
         const userDocRef = doc(db, 'users', userId);

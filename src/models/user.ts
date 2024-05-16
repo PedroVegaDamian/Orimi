@@ -28,7 +28,7 @@ export interface Address {
     state: string;
     zip: string;
     country: string;
-    notes: string;
+    notes?: string;
     isDefault: boolean;
     invoice: boolean;
 }
