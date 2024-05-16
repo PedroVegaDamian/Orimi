@@ -10,6 +10,7 @@ import { ProductPage } from '@/pages/Product'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
+import { CheckoutPage } from '@/pages/Checkout'
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegisterPage />
+      },
+      {
+        path: 'checkout',
+        element: <CheckoutPage />
       }
     ]
   },
