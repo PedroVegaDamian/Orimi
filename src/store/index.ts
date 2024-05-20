@@ -5,8 +5,7 @@ import { getCurrentUser } from '@/services/getUsers';
 import { signOut as firebaseSignOut } from '@/services/signOut';
 import { NavigateFunction } from 'react-router-dom';
 import { updateAddress as updateAddressService } from '@/services/updateAddress';
-import { deleteAddress as deleteAddressService } from '@/services/deleteAddress';
-
+import { deleteAddressService } from '@/services/deleteAddress';
 
 interface StoreState {
   user: UserData | null;
@@ -26,7 +25,7 @@ interface StoreState {
   setDeleteModalOpen: (open: boolean) => void;
   setDefaultAddress: (address: Address | null) => void;
   updateAddress: (addressId: string, addressData: Omit<Address, 'id'>) => Promise<void>;
-  deleteAddress: (addressId: string) => Promise<void>;
+  deleteAddress: (userId: string, addressId: string) => Promise<void>;
 }
 
 interface StorageValue {
@@ -47,7 +46,6 @@ const storage: PersistStorage<StoreState> = {
     localStorage.removeItem(key);
   }
 };
-
 
 const useStore = create<StoreState>()(persist((set, get) => ({
   user: null,
@@ -90,22 +88,26 @@ const useStore = create<StoreState>()(persist((set, get) => ({
       console.error('Invalid types for addressId or addressData');
       return;
     }
-    await updateAddressService(addressId, addressData);
+
     const currentAddresses = get().user?.addresses ?? [];
-    const updatedAddresses = currentAddresses.map(addr =>
-      addr.id === addressId ? { ...addr, ...addressData } : addr
-    );
+    const updatedAddresses = currentAddresses.map(addr => ({
+      ...addr,
+      isDefault: addr.id === addressId ? addressData.isDefault : false
+    }));
+
     set((state: StoreState) => ({
       ...state,
       user: { ...state.user!, addresses: updatedAddresses }
     }));
+
+    await updateAddressService(addressId, addressData);
   },
-  deleteAddress: async (addressId: string) => {
-    if (!addressId || typeof addressId !== 'string') {
-      console.error('Invalid type for addressId');
+  deleteAddress: async (userId: string, addressId: string) => {
+    if (!userId || typeof userId !== 'string' || !addressId || typeof addressId !== 'string') {
+      console.error('Invalid types for userId or addressId');
       return;
     }
-    await deleteAddressService(addressId);
+    await deleteAddressService(userId, addressId);
     const currentAddresses = get().user?.addresses ?? [];
     const remainingAddresses = currentAddresses.filter(addr => addr.id !== addressId);
     set((state: StoreState) => ({

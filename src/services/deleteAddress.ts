@@ -1,4 +1,6 @@
 import { Address } from "@/models/user";
+import { db } from '@/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
 
 export const apiDeleteAddress = (addressId: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -16,16 +18,15 @@ export interface UserData {
     addresses: Address[];
 }
 
-export const deleteAddress = (
-    addressId: string, 
-    setUserData: (updateFn: (prevUserData: UserData) => UserData) => void
-) => {
-    apiDeleteAddress(addressId).then(() => {
-        setUserData(prevUserData => ({
-            ...prevUserData,
-            addresses: prevUserData.addresses.filter(addr => addr.id !== addressId)
-        }));
-    }).catch(error => {
+const deleteAddressService = async (userId: string, addressId: string) => {
+    const addressRef = doc(db, 'users', userId, 'addresses', addressId);
+    try {
+        await deleteDoc(addressRef);
+        console.log(`Address with ID: ${addressId} deleted successfully`);
+    } catch (error) {
         console.error('Error deleting address:', error);
-    });
+        throw error;
+    }
 };
+
+export { deleteAddressService };
