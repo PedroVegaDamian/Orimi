@@ -31,7 +31,7 @@ import { addAddressToFirebase } from '@/services/addAddresses';
 
 export const ProfilePage = () => {
     // const { setEditModalOpen, setDeleteModalOpen, setSelectedAddressId, deleteAddress, updateAddress } = useStore();
-    const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setEditModalOpen, setDeleteModalOpen, setSelectedAddressId, defaultAddress, setDefaultAddress } = useStore(state => ({
+    const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setSelectedAddressId, defaultAddress, setDefaultAddress } = useStore(state => ({
         isAuthenticated: state.isAuthenticated,
         signOut: state.signOut,
         isRehydrating: state.isRehydrating,
@@ -39,8 +39,6 @@ export const ProfilePage = () => {
         user: state.user,
         updateAddress: state.updateAddress,
         deleteAddress: state.deleteAddress,
-        setEditModalOpen: state.setEditModalOpen,
-        setDeleteModalOpen: state.setDeleteModalOpen,
         setSelectedAddressId: state.setSelectedAddressId,
         defaultAddress: state.defaultAddress,
         setDefaultAddress: state.setDefaultAddress,
@@ -173,92 +171,97 @@ export const ProfilePage = () => {
     
     const handleNewAddress = useCallback(async (address: Partial<Address>) => {
         if (address.isDefault) {
-            const updatedAddresses = userData.addresses.map(addr => ({
+          const updatedAddresses = userData.addresses.map(addr => ({
+            ...addr,
+            isDefault: false,
+          }));
+          for (const addr of updatedAddresses) {
+            const addressRef = doc(db, 'users', userData.id, 'addresses', addr.id);
+            const docSnap = await getDoc(addressRef);
+      
+            if (docSnap.exists()) {
+              await updateAddress(addr.id, {
                 ...addr,
-                isDefault: false,
-            }));
-            for (const addr of updatedAddresses) {
-                const addressRef = doc(db, 'addresses', addr.id);
-                const docSnap = await getDoc(addressRef);
-    
-                if (docSnap.exists()) {
-                    await updateAddress(addr.id, {
-                        ...addr,
-                        isDefault: addr.isDefault,
-                    });
-                } else {
-                    console.error(`No document to update: ${addr.id}`);
-                }
+                isDefault: addr.isDefault,
+              }); // Aquí se pasan solo 2 argumentos
+            } else {
+              console.error(`No document to update: ${addr.id}`);
             }
+          }
         }
         const completeAddress: Address = {
-            ...address,
-            id: `id-${Date.now()}`, 
-            company: address.company || '',
-            street: address.street || '',
-            city: address.city || '',
-            state: address.state || '',
-            zip: address.zip || '',
-            country: address.country || '',
-            notes: address.notes || '',
-            isDefault: address.isDefault || false,
-            invoice: address.invoice || false,
+          ...address,
+          id: `id-${Date.now()}`, 
+          company: address.company || '',
+          street: address.street || '',
+          city: address.city || '',
+          state: address.state || '',
+          zip: address.zip || '',
+          country: address.country || '',
+          notes: address.notes || '',
+          isDefault: address.isDefault || false,
+          invoice: address.invoice || false,
         };
         await addAddressToFirebase(userData.id, completeAddress); 
         fetchUser().then(freshData => {
-            if (freshData) {
-                setUserData(freshData);
-                console.log("Datos refrescados desde Firebase:", freshData);
-            }
+          if (freshData) {
+            setUserData(freshData);
+            console.log("Datos refrescados desde Firebase:", freshData);
+          }
         }).catch(error => {
-            console.error("Error fetching updated data from Firebase:", error);
+          console.error("Error fetching updated data from Firebase:", error);
         });
     }, [userData.addresses, userData.id, updateAddress, fetchUser]);
 
     const handleDeleteAddress = useCallback((addressId: string) => {
-        deleteAddress(addressId);
-        setDeleteAddressModalOpen(false);
-    }, [deleteAddress, setDeleteAddressModalOpen]);
+        if (userData && userData.id) {
+            deleteAddress(userData.id, addressId);
+            setDeleteAddressModalOpen(false);
+        } else {
+            console.error('User ID is not available');
+        }
+    }, [userData, deleteAddress, setDeleteAddressModalOpen]);
 
     const handleSetDefaultAddress = async (addressId: string) => {
         try {
-            const selectedAddressRef = doc(db, 'addresses', addressId);
-            const selectedDocSnapshot = await getDoc(selectedAddressRef);
-    
-            if (!selectedDocSnapshot.exists()) {
-                console.error(`No document to update: ${addressId}`);
-                return;
-            }
-    
-            await runTransaction(db, async (transaction) => {
-                // Actualiza la dirección seleccionada para establecerla como predeterminada
-                transaction.update(selectedAddressRef, { isDefault: true });
-    
-                // Obtén todas las direcciones del usuario
-                const allAddressesQuerySnapshot = await getDocs(collection(db, 'addresses'));
-                
-                // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
-                allAddressesQuerySnapshot.forEach((doc) => {
-                    if (doc.id !== addressId && doc.data().isDefault) {
-                        transaction.update(doc.ref, { isDefault: false });
-                    }
-                });
+          const userDocRef = doc(db, 'users', userData.id); // Asegúrate de tener el ID del usuario correcto
+          const selectedAddressRef = doc(userDocRef, 'addresses', addressId);
+          const selectedDocSnapshot = await getDoc(selectedAddressRef);
+      
+          if (!selectedDocSnapshot.exists()) {
+            console.error(`No document to update: ${addressId}`);
+            return;
+          }
+      
+          await runTransaction(db, async (transaction) => {
+            // Actualiza la dirección seleccionada para establecerla como predeterminada
+            transaction.update(selectedAddressRef, { isDefault: true });
+      
+            // Obtén todas las direcciones del usuario
+            const addressesSnapshot = await getDocs(collection(userDocRef, 'addresses'));
+      
+            // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
+            addressesSnapshot.forEach((doc) => {
+              if (doc.id !== addressId && doc.data().isDefault) {
+                transaction.update(doc.ref, { isDefault: false });
+              }
             });
-    
-            // Actualiza el estado local
-            const updatedAddresses = userData.addresses.map((address) =>
-                address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
-            );
-    
-            setUserData((prevState) => ({
-                ...prevState,
-                addresses: updatedAddresses,
-            }));
-    
-            setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
-    
+          });
+      
+          // Actualiza el estado local
+          const updatedAddresses = userData.addresses.map((address) =>
+            address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
+          );
+      
+          setUserData((prevState) => ({
+            ...prevState,
+            addresses: updatedAddresses,
+          }));
+      
+          setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
+      
         } catch (error) {
-            console.error("Error updating document: ", error);
+          console.error("Error updating document: ", error);
         }
     };
     
@@ -266,7 +269,7 @@ export const ProfilePage = () => {
         const addressId = event.target.value;
         handleSetDefaultAddress(addressId);
     };
-    
+
 
     //Carga de datos del usuario
     if (isRehydrating || !userData) {
@@ -349,6 +352,7 @@ export const ProfilePage = () => {
                                                 type="radio"
                                                 name="defaultAddress"
                                                 value={address.id}
+                                                checked={address.isDefault}
                                                 onChange={onChange}
                                             />
                                                 <p>
@@ -359,20 +363,21 @@ export const ProfilePage = () => {
                                                     {address.zip},
                                                     {address.country},
                                                     {address.notes},
-                                                    {address.isDefault}
                                                 </p>
                                                 {address.isDefault && <p>Default shipping</p>}
                                                 <button onClick={() => {
                                                     setSelectedAddressId(address.id);
-                                                    setEditModalOpen(true);
+                                                    setSelectedAddress(address);
+                                                    setEditAddressModalOpen(true);
                                                 }}>
                                                     <img src={IconPencil} alt="pencil Icon" className="mr-[10px]" /> 
                                                     <span>Edit</span>
                                                 </button>
                                                 <button onClick={() => {
                                                     setSelectedAddressId(address.id);
-                                                    setDeleteModalOpen(true);
-                                                }}> 
+                                                    setSelectedAddress(address);
+                                                    setDeleteAddressModalOpen(true);
+                                                }}>  
                                                     <img src={IconTrash} alt="trash Icon" className="mr-[10px]" /> 
                                                     <span>Delete</span>
                                                 </button>
