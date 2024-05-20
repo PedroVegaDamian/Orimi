@@ -4,7 +4,7 @@ import { ModalBaseProps } from '@/components/modals/ModalBase';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
 import { addressRegex } from '@/utils/validationsRegex';
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
-// import { addAddressToFirebase } from '@/services/addAddresses';
+
 import { Address } from '@/models/user';
 import { db } from '@/firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -16,7 +16,7 @@ interface NewAddressModalProps extends ModalBaseProps {
     handleNewAddress: (address: Partial<Address>) => void;
 }
 
-const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, defaultAddress, handleNewAddress }) => { // Eliminar userId de aquí también
+const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, defaultAddress, handleNewAddress }) => {
     const [newAddress, setNewAddress] = useState<Partial<Address>>({
         id: '',
         company: '',

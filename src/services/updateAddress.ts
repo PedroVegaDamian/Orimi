@@ -1,20 +1,14 @@
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 import { Address } from '@/models/user';
 
-export const updateAddress = async (addressId: string, address: Omit<Address, 'id'>) => {
+const updateAddress = async (userId: string, addressId: string, addressData: Partial<Address>) => {
+    const addressRef = doc(db, 'users', userId, 'addresses', addressId);
     try {
-        const addressRef = doc(db, 'addresses', addressId);
-        const docSnap = await getDoc(addressRef);
-        
-        if (!docSnap.exists()) {
-            console.error(`No document to update: ${addressRef.path}`);
-            return;  // Salir de la función si el documento no existe
-        }
-
-        await updateDoc(addressRef, address);
+        await updateDoc(addressRef, addressData);
+        console.log('Address updated successfully');
     } catch (error) {
-        console.error(`Error updating address with id ${addressId}:`, error);
+        console.error(`No document to update: ${addressRef.path}`, error);
         throw error;
     }
 };
@@ -42,3 +36,6 @@ export const apiUpdateAddress = async (addressId: string, addressData: Address):
         throw error; 
     }
 };
+
+
+export { updateAddress };

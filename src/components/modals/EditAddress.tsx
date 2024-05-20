@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModalBase from './ModalBase';
-// import { ModalBaseProps } from '@/components/modals/ModalBase';
+
 import { Address } from '@/models/user';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
@@ -9,7 +9,7 @@ import { addressRegex } from '@/utils/validationsRegex';
 interface EditAddressModalProps {
     isOpen: boolean;
     address: Address;
-    updateAddress: (addressId: string, address: Address) => void; // Actualiza aquí
+    updateAddress: (addressId: string, address: Address) => void; 
     close: () => void;
 }
 
@@ -137,7 +137,6 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                         value={editedAddress.country}
                         onChange={handleChange}
                     />
-                    //TODO: validaciones de errores de la dirección
                     <ErrorMessage message={errors.country} />
                 </div>
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">

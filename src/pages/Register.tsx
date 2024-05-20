@@ -90,7 +90,7 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div className="text-center">
-                <Button type="submit"> Create account</Button>
+                <Button type="submit" extraClass='mt-[97px]'> Create account</Button>
             </div>
         </form>
 

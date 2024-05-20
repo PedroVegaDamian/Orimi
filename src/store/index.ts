@@ -89,6 +89,12 @@ const useStore = create<StoreState>()(persist((set, get) => ({
       return;
     }
 
+    const userId = get().user?.id;
+    if (!userId) {
+      console.error('User ID is not available');
+      return;
+    }
+
     const currentAddresses = get().user?.addresses ?? [];
     const updatedAddresses = currentAddresses.map(addr => ({
       ...addr,
@@ -100,7 +106,7 @@ const useStore = create<StoreState>()(persist((set, get) => ({
       user: { ...state.user!, addresses: updatedAddresses }
     }));
 
-    await updateAddressService(addressId, addressData);
+    await updateAddressService(userId, addressId, addressData);
   },
   deleteAddress: async (userId: string, addressId: string) => {
     if (!userId || typeof userId !== 'string' || !addressId || typeof addressId !== 'string') {
