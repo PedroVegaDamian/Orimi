@@ -10,7 +10,6 @@ export const CustomErrorCodes = {
   INVALID_ADDRESS: 'auth/invalid-address',
 };
 
-// Si también tienes mensajes de error, asegúrate de que sean exportados si los necesitas
 export const errorMessages = {
   [AuthErrorCodes.INVALID_PASSWORD]: 'Incorrect password, please try again.',
   [AuthErrorCodes.USER_DELETED]: 'User not found, please try again.',

@@ -48,11 +48,8 @@ export const updateProfileServices = () => {
 
         //TODO: Poner el loader
         try {
-            // Actualización del perfil en Auth
             await updateProfile(user, { displayName: `${firstName} ${lastName}` });
-            // Actualización del email en Auth
             await updateEmail(user, email);
-            // Actualización del perfil en Firestore
             const userRef = doc(db, "users", user.uid);
             await updateDoc(userRef, { 
                 firstName: firstName, 

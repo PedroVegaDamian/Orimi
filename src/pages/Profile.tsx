@@ -21,16 +21,14 @@ import EditUserModals from '@/components/modals/EditUser';
 import EditAddressModal from '@/components/modals/EditAddress';
 import NewAddressModal from '@/components/modals/NewAddress';
 import DeleteAddressModal from '@/components/modals/DeleteAddress';
+import DeleteAccountModal from '@/components/modals/DeleteUser';
 
 
 import { sendResetPasswordEmail } from '@/services/passwordReset';
 import { fetchAddressesFromFirebase } from '@/services/fetchAddresses';
 import { addAddressToFirebase } from '@/services/addAddresses'; 
-// import { deleteAddress } from '@/services/deleteAddress';
-// import { updateAddress } from '@/services/updateAddress';
 
 export const ProfilePage = () => {
-    // const { setEditModalOpen, setDeleteModalOpen, setSelectedAddressId, deleteAddress, updateAddress } = useStore();
     const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setSelectedAddressId, defaultAddress, setDefaultAddress } = useStore(state => ({
         isAuthenticated: state.isAuthenticated,
         signOut: state.signOut,
@@ -72,6 +70,9 @@ export const ProfilePage = () => {
     const [editAddressModalOpen, setEditAddressModalOpen] = useState(false);
     const [deleteAddressModalOpen, setDeleteAddressModalOpen] = useState(false);
     const [newAddressModalOpen, setNewAddressModalOpen] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
     
     const handleModalClose = () => {
         setIsModalOpen(false);
@@ -94,7 +95,6 @@ export const ProfilePage = () => {
             fetchUser().then((fetchedUser) => {
                 if (fetchedUser) {
                     setUserData(fetchedUser);
-                    // Establecer la dirección por defecto
                     const defaultAddress = fetchedUser.addresses.find(address => address.isDefault);
                     setDefaultAddress(defaultAddress || null);
                 } else {
@@ -108,7 +108,7 @@ export const ProfilePage = () => {
 
     // Función para cargar las direcciones del usuario
     useEffect(() => {
-        if (userData.id) {
+        if (userData.id && !isLoading) {
             fetchAddressesFromFirebase(userData.id)
                 .then(addresses => {
                     console.log("Addresses fetched:", addresses);
@@ -116,14 +116,14 @@ export const ProfilePage = () => {
                     const defaultAddress = addresses.find(address => address.isDefault);
                     if (defaultAddress) {
                         setSelectedAddress(defaultAddress);
-                        setDefaultAddress(defaultAddress); // Asegurarse de establecer la dirección por defecto
+                        setDefaultAddress(defaultAddress);
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching addresses:', error);
                 });
         }
-    }, [userData.id, setDefaultAddress]);
+    }, [userData.id, setDefaultAddress, isLoading]);
 
    // Bloqueo y desbloqueo del scroll 
     useEffect(() => {
@@ -152,7 +152,7 @@ export const ProfilePage = () => {
         }
     }, [userData]);
 
-    const handleEditAddress = useCallback((addressId: string, address: Partial<Address>) => {
+    const handleEditAddress = useCallback(async (addressId: string, address: Partial<Address>) => {
         const completeAddress: Address = {
             id: addressId,
             company: address.company || '',
@@ -165,103 +165,135 @@ export const ProfilePage = () => {
             isDefault: address.isDefault || false,
             invoice: address.invoice || false,
         };
-        updateAddress(addressId, completeAddress);
-        setEditAddressModalOpen(false);
-    }, [updateAddress, setEditAddressModalOpen]);
+        setIsLoading(true);
+        try {
+            await updateAddress(addressId, completeAddress); 
+            fetchUser().then(freshData => {
+                if (freshData) {
+                    setUserData(freshData);
+                    console.log("Datos refrescados desde Firebase:", freshData);
+                }
+            }).catch(error => {
+                console.error("Error fetching updated data from Firebase:", error);
+            }).finally(() => {
+                setIsLoading(false);
+            });
+            setEditAddressModalOpen(false);
+        } catch (error) {
+            console.error("Error updating address: ", error);
+            setIsLoading(false);
+        }
+    }, [updateAddress, fetchUser]);
     
     const handleNewAddress = useCallback(async (address: Partial<Address>) => {
+        setIsLoading(true);
         if (address.isDefault) {
-          const updatedAddresses = userData.addresses.map(addr => ({
-            ...addr,
-            isDefault: false,
-          }));
-          for (const addr of updatedAddresses) {
-            const addressRef = doc(db, 'users', userData.id, 'addresses', addr.id);
-            const docSnap = await getDoc(addressRef);
-      
-            if (docSnap.exists()) {
-              await updateAddress(addr.id, {
+            const updatedAddresses = userData.addresses.map(addr => ({
                 ...addr,
-                isDefault: addr.isDefault,
-              }); // Aquí se pasan solo 2 argumentos
-            } else {
-              console.error(`No document to update: ${addr.id}`);
+                isDefault: false,
+            }));
+            for (const addr of updatedAddresses) {
+                const addressRef = doc(db, 'users', userData.id, 'addresses', addr.id);
+                const docSnap = await getDoc(addressRef);
+    
+                if (docSnap.exists()) {
+                    await updateAddress(addr.id, {
+                        ...addr,
+                        isDefault: addr.isDefault,
+                    });
+                } else {
+                    console.error(`No document to update: ${addr.id}`);
+                }
             }
-          }
         }
         const completeAddress: Address = {
-          ...address,
-          id: `id-${Date.now()}`, 
-          company: address.company || '',
-          street: address.street || '',
-          city: address.city || '',
-          state: address.state || '',
-          zip: address.zip || '',
-          country: address.country || '',
-          notes: address.notes || '',
-          isDefault: address.isDefault || false,
-          invoice: address.invoice || false,
+            ...address,
+            id: `id-${Date.now()}`,
+            company: address.company || '',
+            street: address.street || '',
+            city: address.city || '',
+            state: address.state || '',
+            zip: address.zip || '',
+            country: address.country || '',
+            notes: address.notes || '',
+            isDefault: address.isDefault || false,
+            invoice: address.invoice || false,
         };
-        await addAddressToFirebase(userData.id, completeAddress); 
+        await addAddressToFirebase(userData.id, completeAddress);
         fetchUser().then(freshData => {
-          if (freshData) {
-            setUserData(freshData);
-            console.log("Datos refrescados desde Firebase:", freshData);
-          }
+            if (freshData) {
+                setUserData(freshData);
+                console.log("Datos refrescados desde Firebase:", freshData);
+            }
         }).catch(error => {
-          console.error("Error fetching updated data from Firebase:", error);
+            console.error("Error fetching updated data from Firebase:", error);
+        }).finally(() => {
+            setIsLoading(false);
         });
+        setNewAddressModalOpen(false);
     }, [userData.addresses, userData.id, updateAddress, fetchUser]);
-
-    const handleDeleteAddress = useCallback((addressId: string) => {
+    
+    const handleDeleteAddress = useCallback(async (addressId: string) => {
+        setIsLoading(true);
         if (userData && userData.id) {
-            deleteAddress(userData.id, addressId);
+            await deleteAddress(userData.id, addressId);
+            fetchUser().then(freshData => {
+                if (freshData) {
+                    setUserData(freshData);
+                    console.log("Datos refrescados desde Firebase:", freshData);
+                }
+            }).catch(error => {
+                console.error("Error fetching updated data from Firebase:", error);
+            }).finally(() => {
+                setIsLoading(false);
+            });
             setDeleteAddressModalOpen(false);
         } else {
             console.error('User ID is not available');
+            setIsLoading(false);
         }
-    }, [userData, deleteAddress, setDeleteAddressModalOpen]);
-
+    }, [userData, deleteAddress, fetchUser]);    
+    
     const handleSetDefaultAddress = async (addressId: string) => {
         try {
-          const userDocRef = doc(db, 'users', userData.id); // Asegúrate de tener el ID del usuario correcto
-          const selectedAddressRef = doc(userDocRef, 'addresses', addressId);
-          const selectedDocSnapshot = await getDoc(selectedAddressRef);
-      
-          if (!selectedDocSnapshot.exists()) {
-            console.error(`No document to update: ${addressId}`);
-            return;
-          }
-      
-          await runTransaction(db, async (transaction) => {
-            // Actualiza la dirección seleccionada para establecerla como predeterminada
-            transaction.update(selectedAddressRef, { isDefault: true });
-      
-            // Obtén todas las direcciones del usuario
-            const addressesSnapshot = await getDocs(collection(userDocRef, 'addresses'));
-      
-            // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
-            addressesSnapshot.forEach((doc) => {
-              if (doc.id !== addressId && doc.data().isDefault) {
-                transaction.update(doc.ref, { isDefault: false });
-              }
+            const userDocRef = doc(db, 'users', userData.id);
+            const selectedAddressRef = doc(userDocRef, 'addresses', addressId);
+            const selectedDocSnapshot = await getDoc(selectedAddressRef);
+
+            if (!selectedDocSnapshot.exists()) {
+                console.error(`No document to update: ${addressId}`);
+                return;
+            }
+        
+            await runTransaction(db, async (transaction) => {
+                // Actualiza la dirección seleccionada para establecerla como predeterminada
+                transaction.update(selectedAddressRef, { isDefault: true });
+        
+                // Obtén todas las direcciones del usuario
+                const addressesSnapshot = await getDocs(collection(userDocRef, 'addresses'));
+        
+                // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
+                addressesSnapshot.forEach((doc) => {
+                if (doc.id !== addressId && doc.data().isDefault) {
+                    transaction.update(doc.ref, { isDefault: false });
+                }
             });
-          });
-      
+        });
+    
           // Actualiza el estado local
-          const updatedAddresses = userData.addresses.map((address) =>
-            address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
-          );
-      
-          setUserData((prevState) => ({
-            ...prevState,
-            addresses: updatedAddresses,
-          }));
-      
-          setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
-      
-        } catch (error) {
-          console.error("Error updating document: ", error);
+            const updatedAddresses = userData.addresses.map((address) =>
+                address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
+            );
+        
+            setUserData((prevState) => ({
+                ...prevState,
+                addresses: updatedAddresses,
+            }));
+        
+            setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
+        
+            } catch (error) {
+            console.error("Error updating document: ", error);
         }
     };
     
@@ -269,8 +301,7 @@ export const ProfilePage = () => {
         const addressId = event.target.value;
         handleSetDefaultAddress(addressId);
     };
-
-
+    
     //Carga de datos del usuario
     if (isRehydrating || !userData) {
         return <p>Loading user data...</p>;
@@ -301,6 +332,10 @@ export const ProfilePage = () => {
                     </ul>
                 </div>
                 <main className="bg-white_color h-[740px] ml-[40px] mr-[40px] w-full">
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <>
                     <section>
                         <Title textAlignment="left" className="ml-[96px]">Contact information</Title>
                         <hr className='border-grey_color w-[90%] mx-auto'/>
@@ -313,7 +348,6 @@ export const ProfilePage = () => {
                                         <p>Phone: {userData .phone}</p>
                                     </>
                                     ) : (
-                                    // Si el usuario no está disponible, mostrar un mensaje de carga
                                         <p>'Loading user...'</p>
                                 )}
                             </div>
@@ -429,7 +463,7 @@ export const ProfilePage = () => {
                         <Title textAlignment="left" className="ml-[96px]">My Orders</Title>
                         <hr className='border-grey_color w-[90%] mx-auto'/>
                         <div className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-nowrap justify-between itemen-stretch direcction-row ">
-                            <div>//TODO: no tengo los datos del carrito
+                            <div>//TODO: poner los datos del carrito
                                 <p>Order: numero-pedido</p>
                                 <p>Date: fecha</p>
                             </div>
@@ -442,14 +476,25 @@ export const ProfilePage = () => {
                         </div>
                         <hr className='border-grey_color w-[90%] mx-auto'/>
                     </section>
+                    </>
+                )}
                 </main>
             </div>
-            <div className='flex flex-col align-center justify-center items-center ml-[30px] max-w-[315px] h-[100px]'>
-                <Button onClick={() => signOut(navigate)} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'><img src={IconOff} alt="Plus Icon" className="mr-[28px]" />Sign off</Button>
-                //TODO: boton para borrar cuenta
-                {/* <Button onClick = {() => deleteAccountModals(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'><img src={IconTrash} alt="Plus Icon" className="mr-[28px]" />Delete account</Button> */}
-                {/* <deleteAccountModals isOpen={isdeleteAccountModals} close={() => setdeleteAccountModals(false)} /> */}
-
+            <div className='flex flex-col flex-nowrap content-start justify-end items-start align-center ml-[30px] max-w-[315px] h-[100px]'>
+                <Button onClick={() => signOut(navigate)} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
+                    <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
+                    Sign off
+                </Button>
+                <Button onClick={() => setDeleteAccountModalOpen(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'>
+                    <img src={IconTrash} alt="trash Icon" className="mr-[28px]" />
+                    Delete account
+                </Button> 
+                {deleteAccountModalOpen && (
+                    <DeleteAccountModal
+                        isOpen={deleteAccountModalOpen}
+                        close={() => setDeleteAccountModalOpen(false)}
+                    />
+                )}
             </div>
         </div>
     );

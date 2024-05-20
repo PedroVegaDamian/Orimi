@@ -5,7 +5,6 @@ import { setDoc, doc } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import { messageErrorCode } from '@/utils/errorCodeMessages';
 import { UserData } from '@/models/user';
-//import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export const registerUser = async (userData: UserData) => {
     const { email, password, firstName, lastName, phone } = userData;

@@ -17,7 +17,6 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
         emailError: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    //const setUser = useStore(state => state.setUser);
 
     useEffect(() => {
         if (isOpen && userDataFromProps) {
@@ -64,8 +63,8 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
         try {
             const result = await updateProfileServices().updateUserInfo(userData);
             if (result.success) {
-                useStore.getState().setUser(userData); // Actualiza el usuario en el estado global
-                close(); // Cierra el modal
+                useStore.getState().setUser(userData); 
+                close(); 
             } else {
                 console.error("Failed to update user details", result.message);
             }

@@ -11,7 +11,7 @@ export const getUserData = async (userId: string) => {
         if (userDocSnap.exists()) {
             return userDocSnap.data();
         } else {
-            return null; // El usuario no fue encontrado en la base de datos
+            return null;
         }
     } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
@@ -22,13 +22,13 @@ export const getUserData = async (userId: string) => {
 export const getCurrentUser = (): Promise<UserData | null> => {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            unsubscribe(); // Detener la escucha una vez obtenemos el estado del usuario
+            unsubscribe();
             if (user) {
             const userDocRef = doc(db, 'users', user.uid);
             const docSnapshot = await getDoc(userDocRef);
             if (docSnapshot.exists()) {
                 const userData = docSnapshot.data();
-                console.log('Datos recuperados de Firestore:', userData); // Esto mostrará todos los datos recuperados
+                console.log('Datos recuperados de Firestore:', userData); 
                 resolve({
                 email: user.email || '',
                 id: user.uid,
@@ -48,7 +48,7 @@ export const getCurrentUser = (): Promise<UserData | null> => {
             resolve(null);
             }
         }, (error) => {
-            unsubscribe();  // Asegurarse de desubscribirse en caso de error
+            unsubscribe();  
             console.error('Error al escuchar el estado de autenticación:', error);
             reject(error);
         });

@@ -14,7 +14,8 @@ export function useRegister() {
         phone: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        addresses: [],
     });
     const [firstNameError, setFirstNameError] = useState<string>('');
     const [lastNameError, setLastNameError] = useState<string>('');
@@ -30,7 +31,6 @@ export function useRegister() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        // console.log("Input changed:", name, value);
         setUserData((prev:UserData) => ({ ...prev, [name]: value }));
         setErrors(prev => ({ ...prev, [name]: '' }));
     };
@@ -86,7 +86,7 @@ export function useRegister() {
         setErrors(newErrors);
     
         if (!isValid) {
-            return; // No continúa con el registro si el formulario es inválido
+            return; 
         }
         
         //Nombre y apellido
@@ -97,13 +97,11 @@ export function useRegister() {
             lastName,
         }));
     
-        // Intenta registrar solo si todas las validaciones son correctas
         try {
             await registerUser(userData);
             userAuth.getState().changeUser(userData);
-            navigate('/profile');  // Navega a la página de perfil
+            navigate('/profile');  
         } catch (error) {
-            // console.error("Registration error:", error);
             if (error instanceof Error) {
                 setEmailError(error.message); 
             } else {
