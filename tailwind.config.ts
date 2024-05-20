@@ -22,6 +22,9 @@ export default {
         '16': '16px',
         '22': '22px'
       },
+      maxHeight: {
+        '303': '303px'
+      },
       borderWidth: {
         '1': '1px'
       },
