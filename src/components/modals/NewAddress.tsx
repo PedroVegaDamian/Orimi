@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ModalBase from './ModalBase';
 import { ModalBaseProps } from '@/components/modals/ModalBase';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
@@ -12,12 +12,11 @@ import { doc, getDoc } from 'firebase/firestore';
 interface NewAddressModalProps extends ModalBaseProps {
     existingAddresses: Address[];
     updateAddress: (addressId: string, address: Partial<Address>) => void;
-    defaultAddress: Address | null;
     handleNewAddress: (address: Partial<Address>) => void;
 }
 
-const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, defaultAddress, handleNewAddress }) => {
-    const [newAddress, setNewAddress] = useState<Partial<Address>>({
+const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, handleNewAddress }) => {
+    const initialAddressState = useMemo(() => ({
         id: '',
         company: '',
         street: '',
@@ -28,7 +27,9 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
         notes: '',
         isDefault: false,
         invoice: false,
-    });
+    }), []);
+
+    const [newAddress, setNewAddress] = useState<Partial<Address>>(initialAddressState);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({
         company: '',
@@ -41,10 +42,19 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
     });
 
     useEffect(() => {
-        if (defaultAddress) {
-            setNewAddress(defaultAddress);
+        if (isOpen) {
+            setNewAddress(initialAddressState);
+            setErrors({
+                company: '',
+                street: '',
+                city: '',
+                zip: '',
+                country: '',
+                state: '',
+                notes: '',
+            });
         }
-    }, [defaultAddress]);
+    }, [isOpen, initialAddressState]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewAddress({ ...newAddress, [e.target.name]: e.target.value });
@@ -119,8 +129,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
             }
         }
     };
-    
-    
+
     return (
         <ModalBase isOpen={isOpen} close={close}>
             <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg pr-[40px]'>
@@ -198,7 +207,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                     <ErrorMessage message={errors.country} />
                 </div>
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='notes'>Observaciones de envío</Label>
+                    <Label htmlFor='notes'>Shipping Remarks</Label>
                     <Input
                         id="notes"
                         type="text"
@@ -217,7 +226,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         id="defaultAddressCheck"
                     />
                     <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Usar como mi dirección de envío predeterminada. 
+                        Use as my default shipping address. 
                     </label>
                     </div>
                     <div className="form-check">
@@ -229,10 +238,9 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         id="invoiceAddressCheck"
                     />
                     <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Usar como mi dirección de facturación predeterminada.
+                        Use as my default billing address.
                     </label>
                 </div>
-                //TODO: disable si se pincha una vez
                 <Button type="submit" disabled={isSubmitting}>Save</Button>
                 <Button type="button" onClick={close}>Cancel</Button>
             </form>
