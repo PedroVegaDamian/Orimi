@@ -29,7 +29,7 @@ import { fetchAddressesFromFirebase } from '@/services/fetchAddresses';
 import { addAddressToFirebase } from '@/services/addAddresses'; 
 
 export const ProfilePage = () => {
-    const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setSelectedAddressId, defaultAddress, setDefaultAddress } = useStore(state => ({
+    const { isAuthenticated, signOut, isRehydrating, fetchUser, updateAddress, deleteAddress, setSelectedAddressId, setDefaultAddress } = useStore(state => ({
         isAuthenticated: state.isAuthenticated,
         signOut: state.signOut,
         isRehydrating: state.isRehydrating,
@@ -38,9 +38,8 @@ export const ProfilePage = () => {
         updateAddress: state.updateAddress,
         deleteAddress: state.deleteAddress,
         setSelectedAddressId: state.setSelectedAddressId,
-        defaultAddress: state.defaultAddress,
         setDefaultAddress: state.setDefaultAddress,
-    }));
+    }));    
     const navigate = useNavigate();
     const emptyAddress: Address = {
         id: '',
@@ -68,6 +67,7 @@ export const ProfilePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
     const [editAddressModalOpen, setEditAddressModalOpen] = useState(false);
+    const [isFetchingAddresses, setIsFetchingAddresses] = useState(false);
     const [deleteAddressModalOpen, setDeleteAddressModalOpen] = useState(false);
     const [newAddressModalOpen, setNewAddressModalOpen] = useState(false);
 
@@ -79,16 +79,23 @@ export const ProfilePage = () => {
         setNewAddressModalOpen(false);
         setDeleteAddressModalOpen(false);
         setEditAddressModalOpen(false);
-        fetchUser().then(freshData => {
-            if (freshData) {
-                setUserData(freshData);
-                console.log("Datos refrescados desde Firebase:", freshData);
-            }
-            }).catch(error => {
-            console.error("Error fetching updated data from Firebase:", error);
-            });
+        setIsFetchingAddresses(true);
+        fetchAddressesFromFirebase(userData.id)
+            .then(addresses => {
+                console.log("Addresses fetched:", addresses);
+                setUserData(currentData => ({ ...currentData, addresses }));
+                const defaultAddress = addresses.find(address => address.isDefault);
+                if (defaultAddress) {
+                    setSelectedAddress(defaultAddress);
+                    setDefaultAddress(defaultAddress);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching addresses:', error);
+            })
+            .finally(() => setIsFetchingAddresses(false));
     };
-
+    
     // Cargar los datos del usuario
     useEffect(() => {
         if (isRehydrating) {
@@ -109,6 +116,7 @@ export const ProfilePage = () => {
     // Función para cargar las direcciones del usuario
     useEffect(() => {
         if (userData.id && !isLoading) {
+            setIsFetchingAddresses(true);
             fetchAddressesFromFirebase(userData.id)
                 .then(addresses => {
                     console.log("Addresses fetched:", addresses);
@@ -121,9 +129,10 @@ export const ProfilePage = () => {
                 })
                 .catch(error => {
                     console.error('Error fetching addresses:', error);
-                });
+                })
+                .finally(() => setIsFetchingAddresses(false)); 
         }
-    }, [userData.id, setDefaultAddress, isLoading]);
+    }, [userData.id, setDefaultAddress, isLoading]);  
 
    // Bloqueo y desbloqueo del scroll 
     useEffect(() => {
@@ -162,7 +171,7 @@ export const ProfilePage = () => {
             zip: address.zip || '',
             country: address.country || '',
             notes: address.notes || '',
-            isDefault: address.isDefault || false,
+            isDefault: address.isDefault ?? false,
             invoice: address.invoice || false,
         };
         setIsLoading(true);
@@ -187,7 +196,9 @@ export const ProfilePage = () => {
     
     const handleNewAddress = useCallback(async (address: Partial<Address>) => {
         setIsLoading(true);
-        if (address.isDefault) {
+    
+        const isDefault = userData.addresses.length === 0 || (address.isDefault ?? false);
+        if (isDefault) {
             const updatedAddresses = userData.addresses.map(addr => ({
                 ...addr,
                 isDefault: false,
@@ -206,6 +217,7 @@ export const ProfilePage = () => {
                 }
             }
         }
+    
         const completeAddress: Address = {
             ...address,
             id: `id-${Date.now()}`,
@@ -216,9 +228,10 @@ export const ProfilePage = () => {
             zip: address.zip || '',
             country: address.country || '',
             notes: address.notes || '',
-            isDefault: address.isDefault || false,
+            isDefault,
             invoice: address.invoice || false,
         };
+    
         await addAddressToFirebase(userData.id, completeAddress);
         fetchUser().then(freshData => {
             if (freshData) {
@@ -237,8 +250,18 @@ export const ProfilePage = () => {
         setIsLoading(true);
         if (userData && userData.id) {
             await deleteAddress(userData.id, addressId);
-            fetchUser().then(freshData => {
+            fetchUser().then(async (freshData) => {
                 if (freshData) {
+                    
+                    if (freshData.addresses.length === 1 || !freshData.addresses.some(addr => addr.isDefault)) {
+                        const remainingAddress = freshData.addresses[0];
+                        if (remainingAddress) {
+                            await updateAddress(remainingAddress.id, { 
+                                ...remainingAddress,
+                                isDefault: true,
+                            });
+                        }
+                    }
                     setUserData(freshData);
                     console.log("Datos refrescados desde Firebase:", freshData);
                 }
@@ -252,7 +275,7 @@ export const ProfilePage = () => {
             console.error('User ID is not available');
             setIsLoading(false);
         }
-    }, [userData, deleteAddress, fetchUser]);    
+    }, [userData, deleteAddress, fetchUser, updateAddress]);
     
     const handleSetDefaultAddress = async (addressId: string) => {
         try {
@@ -266,21 +289,17 @@ export const ProfilePage = () => {
             }
         
             await runTransaction(db, async (transaction) => {
-                // Actualiza la dirección seleccionada para establecerla como predeterminada
                 transaction.update(selectedAddressRef, { isDefault: true });
-        
-                // Obtén todas las direcciones del usuario
                 const addressesSnapshot = await getDocs(collection(userDocRef, 'addresses'));
-        
-                // Actualiza las otras direcciones para asegurarse de que solo una sea predeterminada
+                
                 addressesSnapshot.forEach((doc) => {
-                if (doc.id !== addressId && doc.data().isDefault) {
-                    transaction.update(doc.ref, { isDefault: false });
-                }
+                    if (doc.id !== addressId && doc.data().isDefault) {
+                        transaction.update(doc.ref, { isDefault: false });
+                    }
+                });
             });
-        });
     
-          // Actualiza el estado local
+            // Actualiza el estado local
             const updatedAddresses = userData.addresses.map((address) =>
                 address.id === addressId ? { ...address, isDefault: true } : { ...address, isDefault: false }
             );
@@ -292,7 +311,7 @@ export const ProfilePage = () => {
         
             setDefaultAddress(updatedAddresses.find((address) => address.id === addressId) || null);
         
-            } catch (error) {
+        } catch (error) {
             console.error("Error updating document: ", error);
         }
     };
@@ -313,7 +332,7 @@ export const ProfilePage = () => {
             <div className="flex w-full h-full">
                 <div className="bg-white_color ml-[30px] max-w-[315px] h-[245px] p-[40px] flex flex-col justify-center items-start w-full">
                     <ul className='w-full space-y-[40px]'>
-                        //TODO: cuando se haga click en el li que te lleve al titulo adecuado
+                        {/* //TODO: cuando se haga click abra una pagina para: Info, direcciones, pedidos */}
                         <li className='flex items-center w-full'>
                             <img src={IconUser} alt="User Icon" />
                             <span className="ml-[20px]">My Data</span>
@@ -379,7 +398,9 @@ export const ProfilePage = () => {
                         <hr className='border-grey_color w-[90%] mx-auto'/>
                         <div className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-nowrap justify-between itemen-stretch direcction-row ">
                             <div>
-                                {userData && userData.addresses && userData.addresses.length > 0 ? (
+                                {isFetchingAddresses ? (
+                                    <p>Loading addresses...</p>
+                                ) : userData && userData.addresses && userData.addresses.length > 0 ? (
                                     userData.addresses.map((address) => (
                                         <div key={address.id}>
                                             <input
@@ -389,69 +410,68 @@ export const ProfilePage = () => {
                                                 checked={address.isDefault}
                                                 onChange={onChange}
                                             />
-                                                <p>
-                                                    {address.company} - 
-                                                    {address.street}, 
-                                                    {address.city}, 
-                                                    {address.state},
-                                                    {address.zip},
-                                                    {address.country},
-                                                    {address.notes},
-                                                </p>
-                                                {address.isDefault && <p>Default shipping</p>}
-                                                <button onClick={() => {
-                                                    setSelectedAddressId(address.id);
-                                                    setSelectedAddress(address);
-                                                    setEditAddressModalOpen(true);
-                                                }}>
-                                                    <img src={IconPencil} alt="pencil Icon" className="mr-[10px]" /> 
-                                                    <span>Edit</span>
-                                                </button>
-                                                <button onClick={() => {
-                                                    setSelectedAddressId(address.id);
-                                                    setSelectedAddress(address);
-                                                    setDeleteAddressModalOpen(true);
-                                                }}>  
-                                                    <img src={IconTrash} alt="trash Icon" className="mr-[10px]" /> 
-                                                    <span>Delete</span>
-                                                </button>
-                                                {/* Renderiza los modales de editar y borrar */}
-                                                {editAddressModalOpen && selectedAddress && (
-                                                    <EditAddressModal
-                                                        isOpen={editAddressModalOpen}
-                                                        address={selectedAddress}
-                                                        updateAddress={handleEditAddress}  
-                                                        close={() => setEditAddressModalOpen(false)}
-                                                    />
-                                                )}
-                                                {deleteAddressModalOpen && selectedAddress && (
-                                                    <DeleteAddressModal
-                                                        isOpen={deleteAddressModalOpen}
-                                                        addressId={selectedAddress.id}
-                                                        onDeleteAddress={handleDeleteAddress}
-                                                        close={() => setDeleteAddressModalOpen(false)}
-                                                    />
-                                                )}
-                                            </div>
-                                        ))
+                                            <p>
+                                                {address.company} - 
+                                                {address.street}, 
+                                                {address.city}, 
+                                                {address.state},
+                                                {address.zip},
+                                                {address.country},
+                                                {address.notes},
+                                            </p>
+                                            {address.isDefault && <p>Default shipping</p>}
+                                            <button onClick={() => {
+                                                setSelectedAddressId(address.id);
+                                                setSelectedAddress(address);
+                                                setEditAddressModalOpen(true);
+                                            }}>
+                                                <img src={IconPencil} alt="pencil Icon" className="mr-[10px]" /> 
+                                                <span>Edit</span>
+                                            </button>
+                                            <button onClick={() => {
+                                                setSelectedAddressId(address.id);
+                                                setSelectedAddress(address);
+                                                setDeleteAddressModalOpen(true);
+                                            }}>  
+                                                <img src={IconTrash} alt="trash Icon" className="mr-[10px]" /> 
+                                                <span>Delete</span>
+                                            </button>
+                                            {/* Renderiza los modales de editar y borrar */}
+                                            {editAddressModalOpen && selectedAddress && (
+                                                <EditAddressModal
+                                                    isOpen={editAddressModalOpen}
+                                                    address={selectedAddress}
+                                                    updateAddress={handleEditAddress}  
+                                                    close={() => setEditAddressModalOpen(false)}
+                                                />
+                                            )}
+                                            {deleteAddressModalOpen && selectedAddress && (
+                                                <DeleteAddressModal
+                                                    isOpen={deleteAddressModalOpen}
+                                                    addressId={selectedAddress.id}
+                                                    onDeleteAddress={handleDeleteAddress}
+                                                    close={() => setDeleteAddressModalOpen(false)}
+                                                />
+                                            )}
+                                        </div>
+                                    ))
                                 ) : (
                                     <p>You do not have any addresses yet. Add one.</p>
                                 )}
                             </div>
                             <div>
-                            {userData.addresses.length < 3 && (
-                                <button onClick={() => setNewAddressModalOpen(true)} className="flex justify-end items-center">
-                                    <img src={IconPlusLineBlack} alt="Plus Icon" className="mr-[10px]" />
-                                    <span>Add new address</span>
-                                </button>
-                            )}
+                                {userData.addresses.length < 3 && (
+                                    <button onClick={() => setNewAddressModalOpen(true)} className="flex justify-end items-center">
+                                        <img src={IconPlusLineBlack} alt="Plus Icon" className="mr-[10px]" />
+                                        <span>Add new address</span>
+                                    </button>
+                                )}
                                 {newAddressModalOpen && (
                                     <NewAddressModal  
                                         isOpen={newAddressModalOpen}
                                         close={() => handleModalClose()}
                                         existingAddresses={userData.addresses}
                                         updateAddress={handleEditAddress}
-                                        defaultAddress={defaultAddress}
                                         handleNewAddress={handleNewAddress}
                                     />
                                 )}
@@ -463,7 +483,7 @@ export const ProfilePage = () => {
                         <Title textAlignment="left" className="ml-[96px]">My Orders</Title>
                         <hr className='border-grey_color w-[90%] mx-auto'/>
                         <div className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-nowrap justify-between itemen-stretch direcction-row ">
-                            <div>//TODO: poner los datos del carrito
+                             <div>{/*//TODO: poner los datos del carrito */}
                                 <p>Order: numero-pedido</p>
                                 <p>Date: fecha</p>
                             </div>
