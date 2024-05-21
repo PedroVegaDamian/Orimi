@@ -7,8 +7,9 @@ import { updateProfileServices } from '@/services/updateProfile';
 import { useStore } from '@/store';
 import { emailRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
+import { countryPrefixes } from '@/utils/prefijos';
 
-export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
+const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
     const [userData, setUserData] = useState<UserData>(userDataFromProps);
     const [errors, setErrors] = useState({
         firstNameError: '',
@@ -16,11 +17,13 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
         phoneError: '',
         emailError: ''
     });
+    const [prefix, setPrefix] = useState(userData.phonePrefix || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (isOpen && userDataFromProps) {
             setUserData(userDataFromProps);
+            setPrefix(userDataFromProps.phonePrefix || '');
         }
     }, [isOpen, userDataFromProps]);
 
@@ -28,6 +31,10 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
         const { name, value } = event.target;
         setUserData(prev => ({ ...prev, [name]: value }));
         setErrors(prev => ({ ...prev, [`${name}Error`]: '' }));
+    };
+
+    const handlePrefixChangeInternal = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPrefix(event.target.value);
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,42 +46,49 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
             phoneError: '',
             emailError: ''
         };
-    
+
+        let isValid = true;
+
         // Validaciones
         if (!nameRegex.test(userData.firstName)) {
             newErrors.firstNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
+            isValid = false;
         }
         if (!nameRegex.test(userData.lastName)) {
             newErrors.lastNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
+            isValid = false;
         }
         if (!emailRegex.test(userData.email)) {
             newErrors.emailError = messageErrorCode(CustomErrorCodes.INVALID_EMAIL) || '';
+            isValid = false;
         }
-        if (!phoneRegex.test(userData.phone)) {
+        const fullPhoneNumber = `${prefix}${userData.phone}`;
+        if (!phoneRegex.test(fullPhoneNumber)) {
             newErrors.phoneError = messageErrorCode(CustomErrorCodes.INVALID_PHONE_NUMBER) || '';
+            isValid = false;
         }
-    
+
         setErrors(newErrors);
-        if (Object.values(newErrors).some(error => error !== '')) {
-            setIsSubmitting(false); 
+        if (!isValid) {
+            setIsSubmitting(false);
             return;
         }
-    
+
+        const updatedUserData = { ...userData, phonePrefix: prefix };
+
         try {
-            const result = await updateProfileServices().updateUserInfo(userData);
+            const result = await updateProfileServices().updateUserInfo(updatedUserData);
             if (result.success) {
-                useStore.getState().setUser(userData); 
-                close(); 
+                useStore.getState().setUser(updatedUserData);
+                close();
             } else {
                 console.error("Failed to update user details", result.message);
             }
         } catch (error) {
             console.error('Update failed:', error);
         }
-        setIsSubmitting(false); 
+        setIsSubmitting(false);
     };
-    
-    
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
@@ -91,7 +105,6 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
                         onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.firstNameError} />
-
                 </div>
 
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -105,19 +118,33 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
                         onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.lastNameError} />
-
                 </div>
 
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                     <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
-                    <Input
-                        id="phone"
-                        type="text"
-                        placeholder="Phone"
-                        name="phone"
-                        value={userData.phone}
-                        onChange={handleInputChange}
-                    />
+                    <div className='flex flex-row'>
+                        <select 
+                            id="prefix" 
+                            name="prefix" 
+                            onChange={handlePrefixChangeInternal}
+                            className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+                            value={prefix}
+                        >
+                            {countryPrefixes.map((country) => (
+                            <option key={country.code} value={country.prefix}>
+                                {country.name} ({country.prefix})
+                            </option>
+                            ))}
+                        </select>
+                        <Input
+                            id="phone"
+                            type="text"
+                            placeholder="Phone"
+                            name="phone"
+                            value={userData.phone}
+                            onChange={handleInputChange}
+                        />
+                    </div>
                     <ErrorMessage message={errors.phoneError} />
                 </div>
 
@@ -132,7 +159,7 @@ export const EditUserModals = ({ isOpen, close, user: userDataFromProps }: Modal
                         onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.emailError} />
-                </div>{/*//TODO: disable si se pincha una vez */}
+                </div>
                 <Button type="submit" disabled={isSubmitting}>Save</Button>
                 <Button type="button" onClick={() => close()}>Cancel</Button>
             </form>

@@ -7,12 +7,15 @@ import { AboutPage } from '@/pages/About'
 import { LoginPage } from '@/pages/Login'
 import { ContactPage } from '@/pages/Contact'
 import { ProductPage } from '@/pages/Product'
-import { ProfilePage } from '@/pages/Profile'
 import { ProductsPage } from '@/pages/Products'
 import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
 import { ProtectedRoute } from './ProtectedRoute'
 import { getCurrentUser } from '@/services/user'
+import OrdesPage  from '@/pages/Orders'
+import ContactInfoPage from '@/pages/ContactInfo'
+import AddressListPage from '@/pages/AddressList'
+import ProfilePage from '@/pages/Profile'
 
 export const router = createBrowserRouter([
   {
@@ -53,19 +56,24 @@ export const router = createBrowserRouter([
         )
       },
       {
+        path: 'orders',
+        element: <OrdesPage />
+      },
+      {
+        path: 'contactInfo',
+        element: <ContactInfoPage />
+      },
+      {
+        path: 'addressList',
+        element: <AddressListPage />
+      },
+      {
         path: 'favorites',
         element: <FavoritesPage />
       },
       {
         path: 'cart',
         element: <CartPage />
-      },
-      {
-        path: 'profile',
-        element: <ProfilePage />, 
-        children: [
-          { path: '', element: <ProfilePage /> },
-        ]
       },
       {
         path: 'register',
