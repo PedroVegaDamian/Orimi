@@ -5,6 +5,7 @@ import { registerUser } from '@/services/register';
 import { emailRegex, passwordRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { userAuth } from '@/hooks/getUserData';
+import { countryPrefixes } from '@/utils/prefijos';
 
 export function useRegister() {
     const [userData, setUserData] = useState<UserData>({
@@ -19,6 +20,7 @@ export function useRegister() {
     });
     const [firstNameError, setFirstNameError] = useState<string>('');
     const [lastNameError, setLastNameError] = useState<string>('');
+    const [prefix, setPrefix] = useState(countryPrefixes[0].prefix);
     const [phoneError, setPhoneError] = useState<string>('');
     const [emailError, setEmailError] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
@@ -33,6 +35,10 @@ export function useRegister() {
         const { name, value } = e.target;
         setUserData((prev:UserData) => ({ ...prev, [name]: value }));
         setErrors(prev => ({ ...prev, [name]: '' }));
+    };
+
+    const handlePrefixChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setPrefix(e.target.value);
     };
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,9 +64,10 @@ export function useRegister() {
             setLastNameError(errorMessages[CustomErrorCodes.INVALID_NAME]);
             isValid = false;
         }
-    
+
         // Validación del teléfono
-        if (!phoneRegex.test(userData.phone)) {
+        const fullPhoneNumber = `${prefix}${userData.phone}`;
+        if (!phoneRegex.test(fullPhoneNumber)) {
             setPhoneError(errorMessages[CustomErrorCodes.INVALID_PHONE_NUMBER]);
             isValid = false;
         }
@@ -95,10 +102,11 @@ export function useRegister() {
             ...prevUserData,
             firstName,
             lastName,
+            phone: fullPhoneNumber,
         }));
     
         try {
-            await registerUser(userData);
+            await registerUser({ ...userData, phone: fullPhoneNumber });
             userAuth.getState().changeUser(userData);
             navigate('/profile');  
         } catch (error) {
@@ -123,6 +131,7 @@ export function useRegister() {
         passwordError,
         confirmPasswordError,
         handleInputChange,
+        handlePrefixChange,
         handleRegister,
         errors 
     };

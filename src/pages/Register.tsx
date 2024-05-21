@@ -2,18 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useRegister } from '@/hooks/useRegister'
 import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui'
+import { countryPrefixes } from '@/utils/prefijos'
 
 export const RegisterPage: React.FC = () => {
   const {
     userData,
-    handleInputChange,
-    handleRegister,
     firstNameError,
     lastNameError,
     phoneError,
     emailError,
     passwordError,
-    confirmPasswordError
+    confirmPasswordError,
+    handleInputChange,
+    handlePrefixChange,
+    handleRegister    
   } = useRegister()
 
   return (
@@ -55,14 +57,28 @@ export const RegisterPage: React.FC = () => {
             <Label htmlFor="phone">
               Phone<span className="text-red_color">*</span>
             </Label>
-            <Input
-              id="phone"
-              type="text"
-              placeholder="Phone"
-              name="phone"
-              value={userData.phone}
-              onChange={handleInputChange}
-            />
+            <div className='flex flex-row'>
+              <select 
+                id="prefix" 
+                name="prefix" 
+                onChange={handlePrefixChange}
+                className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+              >
+                {countryPrefixes.map((country) => (
+                  <option key={country.code} value={country.prefix}>
+                    {country.name} ({country.prefix})
+                  </option>
+                ))}
+              </select>
+              <Input
+                id="phone"
+                type="text"
+                placeholder="Phone"
+                name="phone"
+                value={userData.phone}
+                onChange={handleInputChange}
+              />
+            </div>
             <ErrorMessage message={phoneError} />
           </div>
 
@@ -93,6 +109,9 @@ export const RegisterPage: React.FC = () => {
               value={userData.password}
               onChange={handleInputChange}
             />
+            <small className='text-grey_500_color'>
+              The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.
+            </small>
             <ErrorMessage message={passwordError} />
           </div>
 
@@ -112,7 +131,7 @@ export const RegisterPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-center">
+        <div className="text-center mt-[97px]">
           <Button type="submit"> Create account</Button>
         </div>
       </form>
