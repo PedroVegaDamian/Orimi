@@ -14,7 +14,7 @@ interface ErrorMessages {
 
 export const updateProfileServices = () => {
     const updateUserInfo = async (userData: UserData) => {
-        const { firstName, lastName, email, phone } = userData;
+        const { firstName, lastName, email, phone, phonePrefix } = userData;
         const errors: ErrorMessages = {};
 
         let isValid = true;
@@ -31,7 +31,8 @@ export const updateProfileServices = () => {
             errors.emailError = messageErrorCode(CustomErrorCodes.INVALID_EMAIL);
             isValid = false;
         }
-        if (!phoneRegex.test(phone)) {
+        const fullPhoneNumber = `${phonePrefix}${phone}`;
+        if (!phoneRegex.test(fullPhoneNumber)) {
             errors.phoneError = messageErrorCode(CustomErrorCodes.INVALID_PHONE_NUMBER);
             isValid = false;
         }
@@ -55,9 +56,10 @@ export const updateProfileServices = () => {
                 firstName: firstName, 
                 lastName: lastName,
                 email: email, 
-                phone: phone
+                phone: phone,
+                phonePrefix: phonePrefix
             });
-            console.log("Usuario actualizado correctamente:", firstName, lastName, email, phone);
+            console.log("Usuario actualizado correctamente:", firstName, lastName, email, phonePrefix, phone);
             return { success: true };
         } catch (error) {
             console.error("Error al actualizar el usuario:", error);

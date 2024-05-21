@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ModalBase from './ModalBase';
-
 import { Address } from '@/models/user';
 import { Input, Label, Title, Button, ErrorMessage } from "../ui";
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
@@ -9,11 +8,12 @@ import { addressRegex } from '@/utils/validationsRegex';
 interface EditAddressModalProps {
     isOpen: boolean;
     address: Address;
-    updateAddress: (addressId: string, address: Address) => void; 
+    updateAddress: (addressId: string, address: Address) => void;
     close: () => void;
+    addresses: Address[];  
 }
 
-const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, updateAddress, close }) => {
+const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, updateAddress, addresses, close }) => {
     const [editedAddress, setEditedAddress] = useState<Address>(address);
     const [errors, setErrors] = useState({
         company: '',
@@ -36,26 +36,31 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
         });
     };
 
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, checked } = e.target;
+        setEditedAddress(prev => ({ ...prev, [name]: checked }));
+    };    
+
     const validate = () => {
         let isValid = true;
         const newErrors = { ...errors };
 
-        if (!addressRegex.street.test(address.street)) {
+        if (!addressRegex.street.test(editedAddress.street)) {
             newErrors.street = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
-        if (!addressRegex.city.test(address.city)) {
+
+        if (!addressRegex.city.test(editedAddress.city)) {
             newErrors.city = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
-        if (!addressRegex.zip.test(address.zip)) {
+
+        if (!addressRegex.zip.test(editedAddress.zip)) {
             newErrors.zip = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
-    
-        if (!addressRegex.country.test(address.country)) {
+
+        if (!addressRegex.country.test(editedAddress.country)) {
             newErrors.country = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
             isValid = false;
         }
@@ -67,10 +72,17 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validate()) {
+            if (editedAddress.isDefault) {
+                addresses.forEach(addr => {
+                    if (addr.id !== editedAddress.id && addr.isDefault) {
+                        updateAddress(addr.id, { ...addr, isDefault: false });
+                    }
+                });
+            }
             updateAddress(editedAddress.id, editedAddress);
             close();
         }
-    };
+    };    
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
@@ -140,7 +152,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                     <ErrorMessage message={errors.country} />
                 </div>
                 <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='notes'>Observaciones de envío</Label>
+                    <Label htmlFor='notes'>Shipping Remarks</Label>
                     <Input
                         id="notes"
                         type="text"
@@ -154,24 +166,26 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                     <input 
                         className="form-check-input" 
                         type="checkbox" 
+                        name="isDefault"
                         checked={editedAddress.isDefault} 
-                        onChange={() => setEditedAddress({...editedAddress, isDefault: !editedAddress.isDefault})}
+                        onChange={handleCheckboxChange}
                         id="defaultAddressCheck"
                     />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Usar como mi dirección de envío predeterminada. 
+                    <label className="form-check-label" htmlFor="defaultAddressCheck">
+                        Use as my default shipping address.
                     </label>
-                    </div>
-                    <div className="form-check">
+                </div>
+                <div className="form-check">
                     <input 
                         className="form-check-input" 
                         type="checkbox" 
+                        name="invoice"
                         checked={editedAddress.invoice}
-                        onChange={() => setEditedAddress({...editedAddress, invoice: !editedAddress.invoice})}
+                        onChange={handleChange}
                         id="invoiceAddressCheck"
                     />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Usar como mi dirección de facturación predeterminada.
+                    <label className="form-check-label" htmlFor="invoiceAddressCheck">
+                        Use as my default billing address.
                     </label>
                 </div>
 

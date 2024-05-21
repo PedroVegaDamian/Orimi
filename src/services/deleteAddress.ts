@@ -1,4 +1,3 @@
-import { Address } from "@/models/user";
 import { db } from '@/firebase';
 import { doc, deleteDoc } from 'firebase/firestore';
 
@@ -13,10 +12,6 @@ export const apiDeleteAddress = (addressId: string): Promise<void> => {
         }, 1000);
     });
 };
-
-export interface UserData {
-    addresses: Address[];
-}
 
 const deleteAddressService = async (userId: string, addressId: string) => {
     const addressRef = doc(db, 'users', userId, 'addresses', addressId);

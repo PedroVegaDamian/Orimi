@@ -1,8 +1,8 @@
 export interface UserData {
   id: string;
-  [key: string]: string | number | Address[];
   firstName: string;
   lastName: string;
+  phonePrefix?: string;
   phone: string;
   email: string;
   password: string;
@@ -14,11 +14,11 @@ export interface PublicUserData {
   id: string;
   firstName: string;
   lastName: string;
+  phonePrefix?: string;
   phone: string;
   email: string;
   addresses: Address[];
 }
-
 
 export interface Address {
   id: string;
@@ -35,5 +35,5 @@ export interface Address {
 
 export type UserPrimaryData = Pick<
   UserData,
-  'firstName' | 'lastName' | 'phone' | 'email'
+  'firstName' | 'lastName' | 'phonePrefix' | 'phone' | 'email'
 >

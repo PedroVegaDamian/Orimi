@@ -1,15 +1,26 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth, db } from '@/firebase'
-import { UserData } from '@/models/user'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from '@/firebase';
+import { UserData } from '@/models/user';
 
-export const getUserData = async (userId: string) => {
+export const getUserData = async (userId: string): Promise<UserData | null> => {
     try {
         const userDocRef = doc(db, 'users', userId);
         const userDocSnap = await getDoc(userDocRef);
-        
+
         if (userDocSnap.exists()) {
-            return userDocSnap.data();
+            const userData = userDocSnap.data() as UserData;
+            return {
+                id: userId,
+                firstName: userData.firstName || '',
+                lastName: userData.lastName || '',
+                phonePrefix: userData.phonePrefix || '',
+                phone: userData.phone || '',
+                email: userData.email || '',
+                password: '',
+                confirmPassword: '',
+                addresses: userData.addresses || []
+            };
         } else {
             return null;
         }
@@ -24,33 +35,34 @@ export const getCurrentUser = (): Promise<UserData | null> => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             unsubscribe();
             if (user) {
-            const userDocRef = doc(db, 'users', user.uid);
-            const docSnapshot = await getDoc(userDocRef);
-            if (docSnapshot.exists()) {
-                const userData = docSnapshot.data();
-                console.log('Datos recuperados de Firestore:', userData); 
-                resolve({
-                email: user.email || '',
-                id: user.uid,
-                firstName: userData.firstName || '',
-                lastName: userData.lastName || '',
-                phone: userData.phone || '',
-                password: '',  
-                confirmPassword: '',
-                addresses: userData.addresses || [], 
-                });
+                const userDocRef = doc(db, 'users', user.uid);
+                const docSnapshot = await getDoc(userDocRef);
+                if (docSnapshot.exists()) {
+                    const userData = docSnapshot.data() as UserData;
+                    console.log('Datos recuperados de Firestore:', userData);
+                    resolve({
+                        id: user.uid,
+                        firstName: userData.firstName || '',
+                        lastName: userData.lastName || '',
+                        phonePrefix: userData.phonePrefix || '',
+                        phone: userData.phone || '',
+                        email: user.email || '',
+                        password: '',
+                        confirmPassword: '',
+                        addresses: userData.addresses || []
+                    });
+                } else {
+                    console.log('No se encontraron detalles adicionales en Firestore');
+                    resolve(null);
+                }
             } else {
-                console.log('No se encontraron detalles adicionales en Firestore');
+                console.log('No hay usuario autenticado');
                 resolve(null);
             }
-            } else {
-            console.log('No hay usuario autenticado');
-            resolve(null);
-            }
         }, (error) => {
-            unsubscribe();  
+            unsubscribe();
             console.error('Error al escuchar el estado de autenticación:', error);
             reject(error);
         });
-        });
-    };
+    });
+};
