@@ -1,7 +1,7 @@
 import { Title } from '@/components/ui';
 import IconEyeBlack from '@/assets/icons/icon_eye_black.svg';
 
-const OrdesPage = () => {
+const OrdersPage = () => {
     return (
         <section>
             <Title>My Orders</Title>
@@ -22,4 +22,4 @@ const OrdesPage = () => {
     );
 };
 
-export default OrdesPage;
+export default OrdersPage;

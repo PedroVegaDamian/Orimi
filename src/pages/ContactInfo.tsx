@@ -7,12 +7,14 @@ import { sendResetPasswordEmail } from '@/services/passwordReset';
 import IconPencil from '@/assets/icons/icon_pencil_black.svg';
 import { UserData } from '@/models/user';
 
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
+
 const ContactInfoPage = () => {
     const { user } = useStore(state => ({
         user: state.user as UserData | null,
     }));
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+    useBodyScrollLock(isModalOpen);
 
     const handleResetPassword = useCallback(async () => {
         if (user && user.email) {

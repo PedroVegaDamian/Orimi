@@ -14,6 +14,8 @@ import IconPencil from '@/assets/icons/icon_pencil_black.svg';
 import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 import IconPlusLineBlack from '@/assets/icons/icon_plus_line_black.svg';
 
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
+
 const AddressListPage = () => {
     const { user, fetchUser, setDefaultAddress, setSelectedAddressId } = useStore(state => ({
         user: state.user,
@@ -28,6 +30,9 @@ const AddressListPage = () => {
     const [deleteAddressModalOpen, setDeleteAddressModalOpen] = useState(false);
     const [newAddressModalOpen, setNewAddressModalOpen] = useState(false);
     const [isFetchingAddresses, setIsFetchingAddresses] = useState(true);
+
+    const isModalOpen = editAddressModalOpen || deleteAddressModalOpen || newAddressModalOpen;
+    useBodyScrollLock(isModalOpen);
 
     useEffect(() => {
         if (user && user.id) {
@@ -182,13 +187,14 @@ const AddressListPage = () => {
                         <p>Loading addresses...</p>
                     ) : addresses.length > 0 ? (
                         addresses.map(address => (
-                            <div key={address.id}>
+                            <div key={address.id} className={address.isDefault ? 'border-primary_800_color border-2 border-radius-[10px]' : ''}>
                                 <input
                                     type="radio"
                                     name="defaultAddress"
                                     value={address.id}
                                     checked={address.isDefault}
                                     onChange={onChange}
+                                    className={address.isDefault ? 'text-primary_800_color ring-primary_800_color focus:ring-primary_800_color' : ''}
                                 />
                                 <p>
                                     {address.company && `${address.company}, `}
