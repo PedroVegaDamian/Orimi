@@ -5,7 +5,7 @@ import { Button, Title, Input, Label, ErrorMessage } from '@/components/ui';
 import { UserData } from '@/models/user';
 import { updateProfileServices } from '@/services/updateProfile';
 import { useStore } from '@/store';
-import { emailRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
+import { nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefijos';
 
@@ -15,7 +15,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
         firstNameError: '',
         lastNameError: '',
         phoneError: '',
-        emailError: ''
+        // emailError: ''
     });
     const [prefix, setPrefix] = useState(userData.phonePrefix || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +44,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             firstNameError: '',
             lastNameError: '',
             phoneError: '',
-            emailError: ''
+            // emailError: ''
         };
 
         let isValid = true;
@@ -58,10 +58,10 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             newErrors.lastNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
             isValid = false;
         }
-        if (!emailRegex.test(userData.email)) {
-            newErrors.emailError = messageErrorCode(CustomErrorCodes.INVALID_EMAIL) || '';
-            isValid = false;
-        }
+        // if (!emailRegex.test(userData.email)) {
+        //     newErrors.emailError = messageErrorCode(CustomErrorCodes.INVALID_EMAIL) || '';
+        //     isValid = false;
+        // }
         const fullPhoneNumber = `${prefix}${userData.phone}`;
         if (!phoneRegex.test(fullPhoneNumber)) {
             newErrors.phoneError = messageErrorCode(CustomErrorCodes.INVALID_PHONE_NUMBER) || '';
@@ -148,7 +148,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                     <ErrorMessage message={errors.phoneError} />
                 </div>
 
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                {/* <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                     <Label htmlFor='email'>Email address<span className="text-red_color">*</span></Label>
                     <Input
                         id="email"
@@ -159,7 +159,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                         onChange={handleInputChange}
                     />
                     <ErrorMessage message={errors.emailError} />
-                </div>
+                </div> */}
                 <Button type="submit" disabled={isSubmitting}>Save</Button>
                 <Button type="button" onClick={() => close()}>Cancel</Button>
             </form>

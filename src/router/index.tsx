@@ -12,7 +12,7 @@ import { FavoritesPage } from '@/pages/Favorites'
 import { RegisterPage } from '@/pages/Register'
 import { ProtectedRoute } from './ProtectedRoute'
 import { getCurrentUser } from '@/services/user'
-import OrdesPage  from '@/pages/Orders'
+import OrdersPage  from '@/pages/Orders'
 import ContactInfoPage from '@/pages/ContactInfo'
 import AddressListPage from '@/pages/AddressList'
 import ProfilePage from '@/pages/Profile'
@@ -53,19 +53,25 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
-        )
-      },
-      {
-        path: 'orders',
-        element: <OrdesPage />
-      },
-      {
-        path: 'contactInfo',
-        element: <ContactInfoPage />
-      },
-      {
-        path: 'addressList',
-        element: <AddressListPage />
+        ),
+        children:[
+          {
+            path: 'myData',
+            element: <ContactInfoPage />
+          },
+          {
+            path: 'addresses',
+            element: <AddressListPage />
+          },
+          {
+            path: 'orders',
+            element: <OrdersPage />
+          },
+          {
+            index: true,
+            element: <Navigate to="myData" />
+          }
+        ]
       },
       {
         path: 'favorites',
