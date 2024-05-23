@@ -29,7 +29,6 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
         throw new Error('Error al obtener los datos del usuario');
     }
 }
-
 export const getCurrentUser = (): Promise<UserData | null> => {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {

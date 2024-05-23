@@ -1,6 +1,7 @@
 import { useStore } from '@/store';
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useUserStore } from '@/store/userStore';
 
 import IconUser from '@/assets/icons/icon_user_black.svg';
 import IconUserColor from '@/assets/icons/icon_user.svg';
@@ -27,6 +28,7 @@ const ProfilePage = () => {
         user: state.user,
         fetchUser: state.fetchUser,
     }));    
+    const setUser = useUserStore(state => state.setUser);
     const navigate = useNavigate();
     const location = useLocation();
     const [selectedSection, setSelectedSection] = useState('myData');
@@ -84,7 +86,7 @@ const ProfilePage = () => {
                 </main>
             </div>
             <div className='flex flex-col flex-nowrap content-start justify-end items-start align-center ml-[30px] max-w-[315px] h-[100px]'>
-                <Button onClick={() => signOut(navigate)} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
+                <Button onClick={() => { setUser(null); signOut(navigate)}} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
                     <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
                     Sign off
                 </Button>

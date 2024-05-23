@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useRegister } from '@/hooks/useRegister'
 import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui'
-import { countryPrefixes } from '@/utils/prefijos'
+import { countryPrefixes } from '@/utils/prefixes'
 
 export const RegisterPage: React.FC = () => {
   const {

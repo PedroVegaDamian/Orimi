@@ -63,30 +63,50 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
     const validate = () => {
         let isValid = true;
         const newErrors = { ...errors };
-
-        if (!newAddress.street || !addressRegex.street.test(newAddress.street)) {
-            newErrors.street = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
+    
+        if (!newAddress.street) {
+            newErrors.street = messageErrorCode(CustomErrorCodes.REQUIRED_FIELD);
+            isValid = false;
+        } else if (!addressRegex.street.test(newAddress.street)) {
+            newErrors.street = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS);
             isValid = false;
         }
-
-        if (!newAddress.city || !addressRegex.city.test(newAddress.city)) {
-            newErrors.city = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
+    
+        if (!newAddress.city) {
+            newErrors.city = messageErrorCode(CustomErrorCodes.REQUIRED_FIELD);
+            isValid = false;
+        } else if (!addressRegex.city.test(newAddress.city)) {
+            newErrors.city = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS);
             isValid = false;
         }
-
-        if (!newAddress.zip || !addressRegex.zip.test(newAddress.zip)) {
-            newErrors.zip = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
+    
+        if (!newAddress.zip) {
+            newErrors.zip = messageErrorCode(CustomErrorCodes.REQUIRED_FIELD);
+            isValid = false;
+        } else if (!addressRegex.zip.test(newAddress.zip)) {
+            newErrors.zip = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS);
             isValid = false;
         }
-
-        if (!newAddress.country || !addressRegex.country.test(newAddress.country)) {
-            newErrors.country = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS) || '';
+    
+        if (!newAddress.country) {
+            newErrors.country = messageErrorCode(CustomErrorCodes.REQUIRED_FIELD);
+            isValid = false;
+        } else if (!addressRegex.country.test(newAddress.country)) {
+            newErrors.country = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS);
             isValid = false;
         }
-
+    
+        if (!newAddress.state) {
+            newErrors.state = messageErrorCode(CustomErrorCodes.REQUIRED_FIELD);
+            isValid = false;
+        } else if (!addressRegex.state.test(newAddress.state)) {
+            newErrors.state = messageErrorCode(CustomErrorCodes.INVALID_ADDRESS);
+            isValid = false;
+        }
+    
         setErrors(newErrors);
         return isValid;
-    };
+    }; 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

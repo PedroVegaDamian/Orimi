@@ -7,23 +7,22 @@ import { updateProfileServices } from '@/services/updateProfile';
 import { useStore } from '@/store';
 import { nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
-import { countryPrefixes } from '@/utils/prefijos';
+import { countryPrefixes } from '@/utils/prefixes';
 
 const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
-    const [userData, setUserData] = useState<UserData>(userDataFromProps);
+    const [userData, setUserData] = useState<UserData>({ ...userDataFromProps });
     const [errors, setErrors] = useState({
         firstNameError: '',
         lastNameError: '',
         phoneError: '',
-        // emailError: ''
     });
-    const [prefix, setPrefix] = useState(userData.phonePrefix || '');
+    const [prefix, setPrefix] = useState(userDataFromProps.phonePrefix || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (isOpen && userDataFromProps) {
-            setUserData(userDataFromProps);
-            setPrefix(userDataFromProps.phonePrefix || '');
+            setUserData({ ...userDataFromProps });
+            setPrefix(userDataFromProps.phonePrefix || countryPrefixes[0].prefix);
         }
     }, [isOpen, userDataFromProps]);
 
@@ -34,7 +33,10 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
     };
 
     const handlePrefixChangeInternal = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setPrefix(event.target.value);
+        const newPrefix = event.target.value;
+        setPrefix(newPrefix);
+        setUserData(prev => ({ ...prev, phonePrefix: newPrefix }));
+        setErrors(prev => ({ ...prev, phoneError: '' }));
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +46,6 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             firstNameError: '',
             lastNameError: '',
             phoneError: '',
-            // emailError: ''
         };
 
         let isValid = true;
@@ -58,12 +59,9 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             newErrors.lastNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
             isValid = false;
         }
-        // if (!emailRegex.test(userData.email)) {
-        //     newErrors.emailError = messageErrorCode(CustomErrorCodes.INVALID_EMAIL) || '';
-        //     isValid = false;
-        // }
-        const fullPhoneNumber = `${prefix}${userData.phone}`;
-        if (!phoneRegex.test(fullPhoneNumber)) {
+
+        // Validar el número de teléfono completo
+        if (!phoneRegex.test(`${prefix}${userData.phone}`)) {
             newErrors.phoneError = messageErrorCode(CustomErrorCodes.INVALID_PHONE_NUMBER) || '';
             isValid = false;
         }
@@ -74,7 +72,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             return;
         }
 
-        const updatedUserData = { ...userData, phonePrefix: prefix };
+        const updatedUserData = { ...userData, phonePrefix: prefix, phone: userData.phone };
 
         try {
             const result = await updateProfileServices().updateUserInfo(updatedUserData);
@@ -131,9 +129,9 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                             value={prefix}
                         >
                             {countryPrefixes.map((country) => (
-                            <option key={country.code} value={country.prefix}>
-                                {country.name} ({country.prefix})
-                            </option>
+                                <option key={country.code} value={country.prefix}>
+                                    {country.name} ({country.prefix})
+                                </option>
                             ))}
                         </select>
                         <Input
@@ -148,18 +146,6 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                     <ErrorMessage message={errors.phoneError} />
                 </div>
 
-                {/* <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='email'>Email address<span className="text-red_color">*</span></Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        value={userData.email}
-                        onChange={handleInputChange}
-                    />
-                    <ErrorMessage message={errors.emailError} />
-                </div> */}
                 <Button type="submit" disabled={isSubmitting}>Save</Button>
                 <Button type="button" onClick={() => close()}>Cancel</Button>
             </form>
