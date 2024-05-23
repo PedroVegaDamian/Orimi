@@ -7,7 +7,7 @@ import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 
 import { Address } from '@/models/user';
 import { db } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 interface NewAddressModalProps extends ModalBaseProps {
     existingAddresses: Address[];
@@ -15,7 +15,7 @@ interface NewAddressModalProps extends ModalBaseProps {
     handleNewAddress: (address: Partial<Address>) => void;
 }
 
-const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, updateAddress, handleNewAddress }) => {
+const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existingAddresses, handleNewAddress }) => {
     const initialAddressState = useMemo(() => ({
         id: '',
         company: '',
@@ -41,9 +41,11 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
         notes: '',
     });
 
+    const isFirstAddress = useMemo(() => existingAddresses.length === 0, [existingAddresses]);
+
     useEffect(() => {
         if (isOpen) {
-            setNewAddress(initialAddressState);
+            setNewAddress({ ...initialAddressState, isDefault: isFirstAddress });
             setErrors({
                 company: '',
                 street: '',
@@ -54,7 +56,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                 notes: '',
             });
         }
-    }, [isOpen, initialAddressState]);
+    }, [isOpen, initialAddressState, isFirstAddress]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewAddress({ ...newAddress, [e.target.name]: e.target.value });
@@ -106,14 +108,14 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
     
         setErrors(newErrors);
         return isValid;
-    }; 
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validate()) {
             setIsSubmitting(true);
             try {
-                if (newAddress.isDefault) {
+                if (newAddress.isDefault && !isFirstAddress) {
                     const updatedAddresses = existingAddresses.map(addr => ({
                         ...addr,
                         isDefault: false,
@@ -123,17 +125,9 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         const docSnap = await getDoc(addressRef);
 
                         if (docSnap.exists()) {
-                            await updateAddress(addr.id, {
-                                id: addr.id,
-                                company: addr.company,
-                                street: addr.street,
-                                city: addr.city,
-                                state: addr.state,
-                                zip: addr.zip,
-                                country: addr.country,
-                                notes: addr.notes,
-                                isDefault: addr.isDefault,
-                                invoice: addr.invoice,
+                            await updateDoc(addressRef, {
+                                ...addr,
+                                isDefault: false,
                             });
                         } else {
                             console.error(`No document to update: ${addr.id}`);
@@ -237,30 +231,34 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         onChange={handleChange}
                     />
                 </div>
-                <div className="form-check">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        checked={newAddress.isDefault} 
-                        onChange={() => setNewAddress({...newAddress, isDefault: !newAddress.isDefault})}
-                        id="defaultAddressCheck"
-                    />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Use as my default shipping address. 
-                    </label>
-                    </div>
-                    <div className="form-check">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        checked={newAddress.invoice}
-                        onChange={() => setNewAddress({...newAddress, invoice: !newAddress.invoice})}
-                        id="invoiceAddressCheck"
-                    />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">
-                        Use as my default billing address.
-                    </label>
-                </div>
+                {!isFirstAddress && (
+                    <>
+                        <div className="form-check">
+                            <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                checked={newAddress.isDefault} 
+                                onChange={() => setNewAddress({...newAddress, isDefault: !newAddress.isDefault})}
+                                id="defaultAddressCheck"
+                            />
+                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                                Use as my default shipping address. 
+                            </label>
+                        </div>
+                        <div className="form-check">
+                            <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                checked={newAddress.invoice}
+                                onChange={() => setNewAddress({...newAddress, invoice: !newAddress.invoice})}
+                                id="invoiceAddressCheck"
+                            />
+                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                                Use as my default billing address.
+                            </label>
+                        </div>
+                    </>
+                )}
                 <Button type="submit" disabled={isSubmitting}>Save</Button>
                 <Button type="button" onClick={close}>Cancel</Button>
             </form>
