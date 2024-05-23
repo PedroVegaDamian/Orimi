@@ -41,7 +41,7 @@ const ContactInfoPage = () => {
                 <div>
                     <p>Name: {user.firstName} {user.lastName}</p>
                     <p>Email: {user.email}</p>
-                    <p>Phone: {user.phonePrefix} {user.phone}</p>
+                    <p>Phone: &#40;{user.phonePrefix}&#41;{user.phone}</p>
                 </div>
                 <div>
                     <button onClick={() => setIsModalOpen(true)} className="flex items-center">

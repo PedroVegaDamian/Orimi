@@ -8,6 +8,7 @@ export const CustomErrorCodes = {
   ERROR_DURING_REGISTRATION: 'auth/error-during-registration',
   ERROR_REGISTERING: 'auth/error-registering',
   INVALID_ADDRESS: 'auth/invalid-address',
+  REQUIRED_FIELD: 'auth/required-field',
 };
 
 export const errorMessages = {
@@ -26,6 +27,7 @@ export const errorMessages = {
   [CustomErrorCodes.ERROR_DURING_REGISTRATION]: 'Error during registration.',
   [CustomErrorCodes.ERROR_REGISTERING]: 'Unknown error occurred during registration.',
   [CustomErrorCodes.INVALID_ADDRESS]: 'Invalid format.',
+  [CustomErrorCodes.REQUIRED_FIELD]: 'Input requerido.',
 };
 
 export const messageErrorCode = (code: string, defaultMsg: string = 'An unexpected error occurred.') => {
