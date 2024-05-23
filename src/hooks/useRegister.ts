@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserData } from '@/models/user';
-import { auth } from '@/firebase'; // Importar autenticación de Firebase
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Importar el método de registro de Firebase
-import { setDoc, doc } from 'firebase/firestore'; // Importar Firestore
-import { db } from '@/firebase'; // Importar inicialización de Firebase
+import { auth, db } from '@/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth'; 
+import { setDoc, doc } from 'firebase/firestore'; 
 import { emailRegex, passwordRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefixes';

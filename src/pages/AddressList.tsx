@@ -99,8 +99,12 @@ const AddressListPage = () => {
         await deleteAddressService(user.id, addressId);
     
         const remainingAddresses = addresses.filter(addr => addr.id !== addressId);
-        if (remainingAddresses.length > 0 && !remainingAddresses.some(addr => addr.isDefault)) {
-            remainingAddresses[0].isDefault = true;
+        if (remainingAddresses.length > 0) {
+            if (!remainingAddresses.some(addr => addr.isDefault)) {
+                remainingAddresses[0].isDefault = true;
+                await updateAddress(user.id, remainingAddresses[0].id, remainingAddresses[0]);
+                setDefaultAddress(remainingAddresses[0]);
+            }
         }
     
         setAddresses(remainingAddresses);
@@ -114,7 +118,7 @@ const AddressListPage = () => {
         });
     
         setDeleteAddressModalOpen(false);
-    }, [fetchUser, user, addresses]);
+    }, [fetchUser, user, addresses, setDefaultAddress]);
 
     const handleNewAddress = useCallback(async (address: Partial<Address>) => {
         if (!user) return;
@@ -139,6 +143,14 @@ const AddressListPage = () => {
         };
 
         await addAddressToFirebase(user.id, newAddress);
+
+        if (address.isDefault) {
+            const promises = addresses.map(addr =>
+                addr.id !== newAddress.id ? updateAddress(user.id, addr.id, { ...addr, isDefault: false }) : Promise.resolve()
+            );
+            await Promise.all(promises);
+        }
+
         fetchUser().then(freshData => {
             if (freshData) {
                 setAddresses(freshData.addresses);
@@ -265,7 +277,6 @@ const AddressListPage = () => {
             <hr className='border-grey_color w-[90%] mx-auto'/>
         </section>
     );
-    
 };
 
 export default AddressListPage;
