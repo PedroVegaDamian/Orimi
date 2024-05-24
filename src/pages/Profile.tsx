@@ -3,7 +3,7 @@ import { useUserStore } from '@/store/userStore'
 import { signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const navigate = useNavigate()
   const setUser = useUserStore(state => state.setUser)
 
@@ -25,3 +25,5 @@ export const ProfilePage = () => {
     </div>
   )
 }
+
+export default ProfilePage

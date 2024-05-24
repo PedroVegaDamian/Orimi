@@ -5,7 +5,7 @@ import { EmptyCart } from '@/components/EmptyCart'
 import { Increment } from '@/components/Increment'
 import { Decrement } from '@/components/Decrement'
 
-export const CartPage = () => {
+ const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
 
   const handleRemove = (slug: string | undefined) => {
@@ -111,3 +111,5 @@ export const CartPage = () => {
     </div>
   )
 }
+
+export default CartPage
