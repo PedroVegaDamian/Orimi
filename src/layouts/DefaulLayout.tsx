@@ -4,7 +4,7 @@ import { Navbar } from '@/components/Navbar'
 import { useUserStore } from '@/store/userStore'
 import { getCurrentUser, getUserById } from '@/services/user'
 
-export const DefaultLayout = () => {
+const DefaultLayout = () => {
   const setUser = useUserStore(state => state.setUser)
   const setLoading = useUserStore(state => state.setLoading)
 
@@ -34,3 +34,5 @@ export const DefaultLayout = () => {
     </main>
   )
 }
+
+export default DefaultLayout

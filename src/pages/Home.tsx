@@ -4,7 +4,7 @@ import { Loading } from '@/components/Loading'
 import { Suspense, lazy } from 'react'
 
 const ProductItem = lazy(() => import('@/components/ProductsList'))
-export const HomePage = () => {
+ const HomePage = () => {
   return (
     <div className="bg-bg_color">
       <div className="">
@@ -28,3 +28,5 @@ export const HomePage = () => {
     </div>
   )
 }
+
+export default HomePage

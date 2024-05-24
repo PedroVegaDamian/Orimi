@@ -1,7 +1,5 @@
 import LogoLoading from '@/assets/loading.gif'
 
-
-//Replace the gif
 export const Loading = () => {
   return (
     <div className="flex justify-center items-center h-dvh pb-[149px]">
