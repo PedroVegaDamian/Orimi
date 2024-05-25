@@ -26,7 +26,7 @@ export const RenderLinkUser = () => {
   }
 
   return (
-    <Link to="/login">
+    <Link className="ml-32" to="/login">
       <img src={IconUser} alt="User Icon" />
     </Link>
   )
@@ -45,9 +45,9 @@ export const Navbar = () => {
         <Link to="/about">About</Link>
         <Link to="/contact">Contact</Link>
 
-        <img className="cursor-pointer" src={IconSearch} alt="Search Icon" />
-
         <RenderLinkUser />
+
+        <img className="cursor-pointer" src={IconSearch} alt="Search Icon" />
 
         <Link to="/favorites">
           <img src={IconHeart} alt="Heart Icon" />
