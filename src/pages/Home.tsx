@@ -4,7 +4,7 @@ import { Loading } from '@/components/Loading'
 import { Suspense, lazy } from 'react'
 
 const ProductItem = lazy(() => import('@/components/ProductsList'))
- const HomePage = () => {
+const HomePage = () => {
   return (
     <div className="bg-bg_color">
       <div className="">
@@ -19,10 +19,10 @@ const ProductItem = lazy(() => import('@/components/ProductsList'))
         <h1 className="mt-5 mb-5 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
           Best Sellers
         </h1>
-        <Suspense fallback={<Loading/>}>
-        <div className="grid grid-cols-4 gap-4">
-          <ProductItem />
-        </div>
+        <Suspense fallback={<Loading />}>
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] w-full">
+            <ProductItem />
+          </div>
         </Suspense>
       </div>
     </div>
