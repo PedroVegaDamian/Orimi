@@ -30,10 +30,7 @@ const ProductItem = () => {
                     effect="blur"
                     alt={product.name}
                     src={product.image1}  
-                    // height={2500}
-                    // width={250}
                     placeholderSrc={PlaceHolder} 
-            
                   />
                 </div>
           
