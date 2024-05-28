@@ -5,17 +5,20 @@ export interface Product {
   image2: string
   image3: string
   name: string
-  price: string
+  price: number
   slug: string
   stock: number
   quantity: number
+  subtotal: number
 }
 
 export interface CartState {
-  cart: Product[],
-  increment: (id: string|undefined) => void,
-  decrement: (id: string|undefined) => void,
-  addProduct: (product: Product) => void,
-  removeProduct: (slug: string| undefined) => void
-  
+  total: number
+  cart: Product[]
+  increment: (id: string | undefined) => void
+  decrement: (id: string | undefined) => void
+  removeProduct: (slug: string | undefined) => void
+  multiply: () => void
+  totalSum: () => void
+  isStock: (id: string | undefined) => void
 }
