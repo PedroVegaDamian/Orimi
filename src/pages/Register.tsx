@@ -9,6 +9,7 @@ export const RegisterPage: React.FC = () => {
     userData,
     firstNameError,
     lastNameError,
+    prefixError,
     phoneError,
     emailError,
     passwordError,
@@ -22,7 +23,7 @@ export const RegisterPage: React.FC = () => {
     <div className="bg-white_color">
       <Title>Create an account</Title>
       <form onSubmit={handleRegister}>
-        <div className="flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-[303px] gap-x-[80px] gap-y-[20px]">
+        <div className="flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-[330px] gap-x-[80px] gap-y-[20px]">
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
             <Label htmlFor="firstName">
               First name<span className="text-red_color">*</span>
@@ -35,7 +36,9 @@ export const RegisterPage: React.FC = () => {
               value={userData.firstName}
               onChange={handleInputChange}
             />
-            <ErrorMessage message={firstNameError} />
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={firstNameError} />
+            </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -50,7 +53,9 @@ export const RegisterPage: React.FC = () => {
               value={userData.lastName}
               onChange={handleInputChange}
             />
-            <ErrorMessage message={lastNameError} />
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={lastNameError} />
+            </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -63,7 +68,12 @@ export const RegisterPage: React.FC = () => {
                 name="prefix" 
                 onChange={handlePrefixChange}
                 className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+                value={userData.phonePrefix || ""}
+              
               >
+                <option value="" disabled>
+                  Select prefix
+                </option>
                 {countryPrefixes.map((country) => (
                   <option key={country.code} value={country.prefix}>
                     {country.name} ({country.prefix})
@@ -79,7 +89,10 @@ export const RegisterPage: React.FC = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <ErrorMessage message={phoneError} />
+            <div style={{ height: '20px', display: 'flex', gap: '41px' }}>
+              <ErrorMessage message={prefixError} />
+              <ErrorMessage message={phoneError} />
+            </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -94,7 +107,9 @@ export const RegisterPage: React.FC = () => {
               value={userData.email}
               onChange={handleInputChange}
             />
-            <ErrorMessage message={emailError} />
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={emailError} />
+            </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -112,7 +127,9 @@ export const RegisterPage: React.FC = () => {
             <small className='text-grey_500_color'>
               The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.
             </small>
-            <ErrorMessage message={passwordError} />
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={passwordError} />
+            </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
@@ -127,7 +144,9 @@ export const RegisterPage: React.FC = () => {
               value={userData.confirmPassword}
               onChange={handleInputChange}
             />
-            <ErrorMessage message={confirmPasswordError} />
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={confirmPasswordError} />
+            </div>
           </div>
         </div>
 

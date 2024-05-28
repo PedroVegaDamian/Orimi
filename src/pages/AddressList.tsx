@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useStore } from '@/store';
-import { Title } from '@/components/ui';
+import { Title, Radio } from '@/components/ui';
 import EditAddressModal from '@/components/modals/EditAddress';
 import NewAddressModal from '@/components/modals/NewAddress';
 import DeleteAddressModal from '@/components/modals/DeleteAddress';
@@ -199,24 +199,27 @@ const AddressListPage = () => {
                         <p>Loading addresses...</p>
                     ) : addresses.length > 0 ? (
                         addresses.map(address => (
-                            <div key={address.id} className={address.isDefault ? 'border-primary_800_color border-2 border-radius-[10px]' : ''}>
-                                <input
-                                    type="radio"
-                                    name="defaultAddress"
-                                    value={address.id}
-                                    checked={address.isDefault}
-                                    onChange={onChange}
-                                    className={address.isDefault ? 'text-primary_800_color ring-primary_800_color focus:ring-primary_800_color' : ''}
-                                />
-                                <p>
-                                    {address.company && `${address.company}, `}
-                                    {address.street}, 
-                                    {address.city}, 
-                                    {address.state},
-                                    {address.zip},
-                                    {address.country}
-                                    {address.notes && ` (${address.notes})`}
-                                </p>
+                            <div key={address.id} className={address.isDefault ? 'border-primary_800_color border-2 rounded-10' : ''}>
+                                <div className='flex'>
+                                    <Radio
+                                        id={`defaultAddress-${address.id}`}
+                                        name="defaultAddress"
+                                        value={address.id}
+                                        checked={address.isDefault}
+                                        onChange={onChange}
+                                        label=""
+                                        className={address.isDefault ? 'text-primary_800_color ring-primary_800_color focus:ring-primary_800_color' : ''}
+                                    />
+                                    <p>
+                                        {address.company && `${address.company}, `}
+                                        {address.street}, 
+                                        {address.city}, 
+                                        {address.state},
+                                        {address.zip},
+                                        {address.country}
+                                        {address.notes && ` (${address.notes})`}
+                                    </p>
+                                </div>
                                 {address.isDefault && <p>Default shipping</p>}
                                 <div className='flex m-6'>
                                     <button onClick={() => {

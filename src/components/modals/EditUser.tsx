@@ -6,7 +6,7 @@ import { UserData } from '@/models/user';
 import { updateProfileServices } from '@/services/updateProfile';
 import { useStore } from '@/store';
 import { nameRegex, phoneRegex } from '@/utils/validationsRegex';
-import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
+import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefixes';
 
 const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
@@ -50,19 +50,31 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
 
         let isValid = true;
 
-        // Validaciones
-        if (!nameRegex.test(userData.firstName)) {
-            newErrors.firstNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
+        // Validación del nombre
+        if (!userData.firstName) {
+            newErrors.firstNameError = errorMessages[CustomErrorCodes.REQUIRED_FIELD];
             isValid = false;
-        }
-        if (!nameRegex.test(userData.lastName)) {
-            newErrors.lastNameError = messageErrorCode(CustomErrorCodes.INVALID_NAME) || '';
+        } else if (!nameRegex.test(userData.firstName)) {
+            newErrors.firstNameError = errorMessages[CustomErrorCodes.INVALID_NAME];
             isValid = false;
         }
 
-        // Validar el número de teléfono completo
-        if (!phoneRegex.test(`${prefix}${userData.phone}`)) {
-            newErrors.phoneError = messageErrorCode(CustomErrorCodes.INVALID_PHONE_NUMBER) || '';
+        // Validación del apellido
+        if (!userData.lastName) {
+            newErrors.lastNameError = errorMessages[CustomErrorCodes.REQUIRED_FIELD];
+            isValid = false;
+        } else if (!nameRegex.test(userData.lastName)) {
+            newErrors.lastNameError = errorMessages[CustomErrorCodes.INVALID_NAME];
+            isValid = false;
+        }
+
+        // Validación del teléfono
+        const fullPhoneNumber = `${prefix}${userData.phone}`;
+        if (!userData.phone) {
+            newErrors.phoneError = errorMessages[CustomErrorCodes.REQUIRED_FIELD];
+            isValid = false;
+        } else if (!phoneRegex.test(fullPhoneNumber)) {
+            newErrors.phoneError = errorMessages[CustomErrorCodes.INVALID_PHONE_NUMBER];
             isValid = false;
         }
 
@@ -90,64 +102,71 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
-            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg pr-[40px]'>
-                <Title>Contact information</Title>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor="firstName">First name<span className="text-red_color">*</span></Label>
-                    <Input
-                        id="firstName"
-                        type="text"
-                        placeholder="First name"
-                        name="firstName"
-                        value={userData.firstName}
-                        onChange={handleInputChange}
-                    />
-                    <ErrorMessage message={errors.firstNameError} />
-                </div>
-
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor="lastName">Last name<span className="text-red_color">*</span></Label>
-                    <Input
-                        id="lastName"
-                        type="text"
-                        placeholder="Last name"
-                        name="lastName"
-                        value={userData.lastName}
-                        onChange={handleInputChange}
-                    />
-                    <ErrorMessage message={errors.lastNameError} />
-                </div>
-
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
-                    <div className='flex flex-row'>
-                        <select 
-                            id="prefix" 
-                            name="prefix" 
-                            onChange={handlePrefixChangeInternal}
-                            className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
-                            value={prefix}
-                        >
-                            {countryPrefixes.map((country) => (
-                                <option key={country.code} value={country.prefix}>
-                                    {country.name} ({country.prefix})
-                                </option>
-                            ))}
-                        </select>
+            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg'>
+                <Title>Edit Profile</Title>
+                <div className="flex flex-col items-center">
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] h-[90px]">
+                        <Label htmlFor="firstName">First name<span className="text-red_color">*</span></Label>
                         <Input
-                            id="phone"
+                            id="firstName"
                             type="text"
-                            placeholder="Phone"
-                            name="phone"
-                            value={userData.phone}
+                            placeholder="First name"
+                            name="firstName"
+                            value={userData.firstName}
                             onChange={handleInputChange}
                         />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.firstNameError} />
+                        </div>
                     </div>
-                    <ErrorMessage message={errors.phoneError} />
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] h-[90px]">
+                        <Label htmlFor="lastName">Last name<span className="text-red_color">*</span></Label>
+                        <Input
+                            id="lastName"
+                            type="text"
+                            placeholder="Last name"
+                            name="lastName"
+                            value={userData.lastName}
+                            onChange={handleInputChange}
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.lastNameError} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] h-[90px]">
+                        <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
+                        <div className='flex flex-row'>
+                            <select 
+                                id="prefix" 
+                                name="prefix" 
+                                onChange={handlePrefixChangeInternal}
+                                className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+                                value={prefix}
+                            >
+                                {countryPrefixes.map((country) => (
+                                    <option key={country.code} value={country.prefix}>
+                                        {country.name} ({country.prefix})
+                                    </option>
+                                ))}
+                            </select>
+                            <Input
+                                id="phone"
+                                type="text"
+                                placeholder="Phone"
+                                name="phone"
+                                value={userData.phone}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.phoneError} />
+                        </div>
+                    </div>
                 </div>
-
-                <Button type="submit" disabled={isSubmitting}>Save</Button>
-                <Button type="button" onClick={() => close()}>Cancel</Button>
+                <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
+                    <Button type="submit" disabled={isSubmitting}>Save</Button>
+                    <Button type="button" onClick={() => close()} className='bg-transparent'>Cancel</Button>
+                </div>
             </form>
         </ModalBase>
     );

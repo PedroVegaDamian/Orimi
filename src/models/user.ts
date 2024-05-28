@@ -35,5 +35,5 @@ export interface Address {
 
 export type UserPrimaryData = Pick<
   UserData,
-  'firstName' | 'lastName' | 'phonePrefix' | 'phone' | 'email'
+  'id' |'firstName' | 'lastName' | 'phonePrefix' | 'phone' | 'email'
 >

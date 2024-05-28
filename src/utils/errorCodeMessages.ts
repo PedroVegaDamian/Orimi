@@ -9,6 +9,7 @@ export const CustomErrorCodes = {
   ERROR_REGISTERING: 'auth/error-registering',
   INVALID_ADDRESS: 'auth/invalid-address',
   REQUIRED_FIELD: 'auth/required-field',
+  REQUIRED_PREFIX: 'auth/required-prefix',
 };
 
 export const errorMessages = {
@@ -21,6 +22,7 @@ export const errorMessages = {
   [AuthErrorCodes.INTERNAL_ERROR]: 'Oops.. there was an error during authentication. Please try again.',
 
   [CustomErrorCodes.INVALID_NAME]: 'Invalid format. Must contain only these letters, and have at most one space.',
+  [CustomErrorCodes.REQUIRED_PREFIX]: 'Prefix is required',
   [CustomErrorCodes.INVALID_PHONE_NUMBER]: 'Invalid phone number.',
   [CustomErrorCodes.INVALID_CONFIRM_PASSWORD]: 'Passwords do not match.',
   [CustomErrorCodes.FAIL_REGISTER_USER]: 'Failed to register user.',
