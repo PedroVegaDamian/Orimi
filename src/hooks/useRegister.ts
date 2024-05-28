@@ -7,27 +7,30 @@ import { setDoc, doc } from 'firebase/firestore';
 import { emailRegex, passwordRegex, nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefixes';
+import { useUserStore } from '@/store/userStore'; 
 
 export function useRegister() {
     const [userData, setUserData] = useState<UserData>({
         id: '',
         firstName: '',
         lastName: '',
-        phonePrefix: countryPrefixes[0].prefix,
+        phonePrefix: '',
         phone: '',
         email: '',
         password: '',
         confirmPassword: '',
-        addresses: [],
+        addresses: []
     });
     const [firstNameError, setFirstNameError] = useState<string>('');
     const [lastNameError, setLastNameError] = useState<string>('');
+    const [prefixError, setPrefixError] = useState<string>('');
     const [phoneError, setPhoneError] = useState<string>('');
     const [emailError, setEmailError] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
     const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [prefix, setPrefix] = useState(countryPrefixes[0].prefix);
+    const setUser = useUserStore(state => state.setUser); 
     
     const navigate = useNavigate();
 
@@ -49,10 +52,11 @@ export function useRegister() {
         const newErrors: { [key: string]: string } = {};
         let isValid = true;
 
-        setEmailError('');
         setFirstNameError('');
         setLastNameError('');
+        setPrefixError('');
         setPhoneError('');
+        setEmailError('');
         setPasswordError('');
         setConfirmPasswordError('');
 
@@ -75,6 +79,10 @@ export function useRegister() {
         }
 
         // Validación del teléfono
+        if (!userData.phonePrefix) {
+            newErrors.prefixError = errorMessages[CustomErrorCodes.REQUIRED_PREFIX];
+            isValid = false;
+        }
         const fullPhoneNumber = `${prefix}${userData.phone}`;
         if (!userData.phone) {
             newErrors.phoneError = errorMessages[CustomErrorCodes.REQUIRED_FIELD];
@@ -112,6 +120,13 @@ export function useRegister() {
         }
 
         setErrors(newErrors);
+        setFirstNameError(newErrors.firstNameError || '');
+        setLastNameError(newErrors.lastNameError || '');
+        setPrefixError(newErrors.prefixError || '');
+        setPhoneError(newErrors.phoneError || '');
+        setEmailError(newErrors.emailError || '');
+        setPasswordError(newErrors.passwordError || '');
+        setConfirmPasswordError(newErrors.confirmPasswordError || '');
 
         if (!isValid) {
             return;
@@ -123,15 +138,17 @@ export function useRegister() {
             const uid = userCredential.user.uid;
 
             // Guardar datos adicionales del usuario en Firestore
-            await setDoc(doc(db, 'users', uid), {
+            const userDoc = {
+                id: uid,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
                 phone: userData.phone,
-                phonePrefix: prefix, // Usar el prefijo actualizado
+                phonePrefix: prefix, 
                 email: userData.email,
-                addresses: userData.addresses,
-            });
+            };
+            await setDoc(doc(db, 'users', uid), userDoc);
             console.log('Usuario registrado con éxito y datos guardados en Firestore');
+            setUser(userDoc);
             navigate('/profile');
         } catch (error) {
             console.error('Error al registrar el usuario:', error);
@@ -148,6 +165,7 @@ export function useRegister() {
         setUserData,
         firstNameError,
         lastNameError,
+        prefixError,
         phoneError,
         emailError,
         passwordError,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalBase from './ModalBase';
 import { Address } from '@/models/user';
-import { Input, Label, Title, Button, ErrorMessage } from "../ui";
+import { Input, Label, Title, Button, ErrorMessage, Checkbox } from "@/components/ui";
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { addressRegex } from '@/utils/validationsRegex';
 
@@ -88,109 +88,112 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
         <ModalBase isOpen={isOpen} close={close}>
             <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg'>
                 <Title>Edit address</Title>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='company'>Company</Label>
-                    <Input
-                        id="company"
-                        type="text"
-                        placeholder="Company"
-                        name="company"
-                        value={editedAddress.company}
-                        onChange={handleChange}
-                    />
-                    <ErrorMessage message={errors.company} />
+                <div className="flex flex-row flex-wrap items-center justify-center content-center mx-auto max-h-[340px] gap-x-[50px] gap-y-[20px]">
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='company'>Company</Label>
+                        <Input
+                            id="company"
+                            type="text"
+                            placeholder="Company"
+                            name="company"
+                            value={editedAddress.company}
+                            onChange={handleChange}
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.company} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='street'>Street<span className="text-red_color">*</span></Label>
+                        <Input
+                            id="street"
+                            type="text"
+                            placeholder="Street"
+                            name="street"
+                            value={editedAddress.street}
+                            onChange={handleChange}
+                            required
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.street} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='city'>City<span className="text-red_color">*</span></Label>
+                        <Input
+                            id="city"
+                            type="text"
+                            placeholder="City"
+                            name="city"
+                            value={editedAddress.city}
+                            onChange={handleChange}
+                            required
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.city} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='zip'>Zip<span className="text-red_color">*</span></Label>
+                        <Input
+                            id="zip"
+                            type="text"
+                            placeholder="Zip"
+                            name="zip"
+                            value={editedAddress.zip}
+                            onChange={handleChange}
+                            required
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.zip} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='country'>Country<span className="text-red_color">*</span></Label>
+                        <Input
+                            id="country"
+                            type="text"
+                            placeholder="Country"
+                            name="country"
+                            value={editedAddress.country}
+                            onChange={handleChange}
+                        />
+                        <div style={{ height: '10px' }}>
+                            <ErrorMessage message={errors.country} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+                        <Label htmlFor='notes'>Shipping Remarks</Label>
+                        <Input
+                            id="notes"
+                            type="text"
+                            placeholder="Observations"
+                            name="notes"
+                            value={editedAddress.notes}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='street'>Street</Label>
-                    <Input
-                        id="street"
-                        type="text"
-                        placeholder="Street"
-                        name="street"
-                        value={editedAddress.street}
-                        onChange={handleChange}
-                        required
-                    />
-                    <ErrorMessage message={errors.street} />
-                </div>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='city'>City</Label>
-                    <Input
-                        id="city"
-                        type="text"
-                        placeholder="City"
-                        name="city"
-                        value={editedAddress.city}
-                        onChange={handleChange}
-                        required
-                    />
-                    <ErrorMessage message={errors.city} />
-                </div>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='zip'>Zip</Label>
-                    <Input
-                        id="zip"
-                        type="text"
-                        placeholder="Zip"
-                        name="zip"
-                        value={editedAddress.zip}
-                        onChange={handleChange}
-                        required
-                    />
-                    <ErrorMessage message={errors.zip} />
-                </div>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='country'>Country<span className="text-red_color">*</span></Label>
-                    <Input
-                        id="country"
-                        type="text"
-                        placeholder="Country"
-                        name="country"
-                        value={editedAddress.country}
-                        onChange={handleChange}
-                    />
-                    <ErrorMessage message={errors.country} />
-                </div>
-                <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-                    <Label htmlFor='notes'>Shipping Remarks</Label>
-                    <Input
-                        id="notes"
-                        type="text"
-                        placeholder="Observations"
-                        name="notes"
-                        value={editedAddress.notes}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="form-check">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        name="isDefault"
-                        checked={editedAddress.isDefault} 
-                        onChange={handleCheckboxChange}
+                <div className='flex items-center justify-center flex-col ml-5 flex-wrap'>
+                    <Checkbox
                         id="defaultAddressCheck"
+                        name="isDefault"
+                        checked={editedAddress.isDefault}
+                        onChange={handleCheckboxChange}
+                        label="Use as my default shipping address."
                     />
-                    <label className="form-check-label" htmlFor="defaultAddressCheck">
-                        Use as my default shipping address.
-                    </label>
-                </div>
-                <div className="form-check">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
+                    <Checkbox
+                        id="invoiceAddressCheck"
                         name="invoice"
                         checked={editedAddress.invoice}
-                        onChange={handleChange}
-                        id="invoiceAddressCheck"
+                        onChange={handleCheckboxChange}
+                        label="Use as my default billing address."
                     />
-                    <label className="form-check-label" htmlFor="invoiceAddressCheck">
-                        Use as my default billing address.
-                    </label>
                 </div>
-
-                <Button type="submit">Save Changes</Button>
-                <Button type="button" onClick={close}>Cancel</Button>
+                <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
+                    <Button type="submit">Save Changes</Button>
+                    <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                </div>
             </form>
         </ModalBase>
     );

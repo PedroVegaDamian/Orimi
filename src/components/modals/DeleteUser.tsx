@@ -10,18 +10,22 @@ import { Button, Input, Title } from '@/components/ui';
 
 import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 
+import { useUserStore } from '@/store/userStore'; 
+
 export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
     const user = useStore(state => state.user);
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const signOut = useStore(state => state.signOut);
+    const setUser = useUserStore(state => state.setUser); 
 
     const handleDeleteAccount = async () => {
         if (user) {
             setIsLoading(true);
             try {
                 await deleteAccount(password);
+                setUser(null); 
                 signOut(navigate);
             } catch (error) {
                 console.error("Error deleting account: ", error);
@@ -37,8 +41,8 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
     return (
         <ModalBase isOpen={isOpen} close={close}>
             <Title>Delete account</Title>
-            <div className="p-4">
-                <p>Do you want to delete your account?</p>
+            <div className="p-4 flex flex-col items-center">
+                <p className='mb-4'>Do you want to delete your account?</p>
                 <Input
                     type="password"
                     value={password}
@@ -46,11 +50,13 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
                     placeholder="Enter your password"
                     required
                 />
-                <Button onClick={handleDeleteAccount} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500' disabled={isLoading}>
-                    <img src={IconTrash} alt="Trash Icon" className="mr-[28px]" />
-                    {isLoading ? 'Deleting...' : 'Delete account'}
-                </Button>
-                <Button type="button" onClick={close}>Cancel</Button>
+                <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
+                    <Button onClick={handleDeleteAccount} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500' disabled={isLoading}>
+                        <img src={IconTrash} alt="Trash Icon" className="mr-[28px]" />
+                        {isLoading ? 'Deleting...' : 'Delete account'}
+                    </Button>
+                    <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                </div>
             </div>
         </ModalBase>
     );
