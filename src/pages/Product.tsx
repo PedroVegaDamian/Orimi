@@ -20,19 +20,24 @@ export const ProductPage = () => {
   const { cart, increment, multiply, totalSum } = useCartStore()
   //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
-
-  const productInCart = cart.find(items => items.id === product?.id)
-//  console.log(productInCart)
-
+  //Check if the product is in the cart
+  const [isInCart, setIsInCart] = useState(false)
+  const [productInCart, setProductInCart] = useState<Product | undefined>();
+ 
+  
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
-      // setIsClicked(false)
+
+      const productInCart = cart.find(items => items.id === product?.id)
+      setProductInCart(productInCart)
+      setIsInCart(productInCart ? true : false)
+     
     }
     fetchProducts()
-  }, [slug])
+  }, [slug, cart])
   
   return (
     <>
@@ -97,7 +102,7 @@ export const ProductPage = () => {
               </div>
               <div>
                 <div className="flex flex-col items-center gap-4">
-              {!isClicked ?(""):( 
+              {!isInCart || !isInCart?(""):( 
 
                   <div className="flex items-center mt-3">
                     <Decrement id={product?.id} />
@@ -109,19 +114,20 @@ export const ProductPage = () => {
                  
                   <button
                     className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked ? 'cursor-not-allowed bg-primary_500_color' : ''
+                      isClicked || isInCart ? 'cursor-not-allowed bg-primary_500_color' : ''
                     }`}
+                    disabled={isClicked || isInCart}
                     onClick={event => {
                       event.preventDefault()
                       if (productInCart ){
                         increment(product?.id)
-                        console.log(isClicked)
                       }
-                      if (!isClicked) {
+                     else if(!isClicked) {
                         cart.push(product as Product)
                         notify()
                         increment(product?.id)
                         setIsClicked(true)
+                        setIsInCart(true)
                         multiply()
                         totalSum()
                       }
