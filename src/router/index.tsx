@@ -15,6 +15,7 @@ const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
+const CheckoutPage = lazy(() => import('@/pages/Checkout'))
 import { ProtectedRoute } from './ProtectedRoute'
 import { getCurrentUser } from '@/services/user'
 
@@ -96,6 +97,17 @@ export const router = createBrowserRouter([
           <Suspense fallback={<Loading />}>
             <CartPage />
           </Suspense>
+        )
+      },
+      {
+        path: 'checkout',
+        loader: async () => await getCurrentUser(),
+        element: (
+          <ProtectedRoute>
+               <Suspense fallback={<Loading />}>
+            <CheckoutPage />
+          </Suspense>
+          </ProtectedRoute>
         )
       },
       {
