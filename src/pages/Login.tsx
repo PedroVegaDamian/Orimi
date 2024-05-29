@@ -3,7 +3,7 @@ import { useLogin } from '@/hooks/useLogin'
 import IconFacebook from '@/assets/icons/icon_facebook.svg'
 import IconGoogle from '@/assets/icons/icon_google.svg'
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const navigate = useNavigate()
 
   const {
@@ -132,3 +132,5 @@ export const LoginPage = () => {
     </>
   )
 }
+
+export default LoginPage

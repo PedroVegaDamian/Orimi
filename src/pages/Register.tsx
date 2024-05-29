@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useRegister } from '@/hooks/useRegister'
 import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui'
 
-export const RegisterPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const {
     userData,
     handleInputChange,
