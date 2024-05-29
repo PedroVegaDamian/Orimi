@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-import { DefaultLayout } from '@/layouts/DefaulLayout'
+import { DefaultLayout } from '@/layouts/DefaultLayout'
 import { HomePage } from '@/pages/Home'
 import { CartPage } from '@/pages/Cart'
 import { AboutPage } from '@/pages/About'
