@@ -89,7 +89,7 @@ export const AboutPage = () => {
           {name !== 'default' && (
             <>
               <SocialLinks linkedin={links.linkedin} /* nameLinkedin={links.nameLinkedin} */ github={links.github} /* nameGit={links.nameGit} */ website={links.website} /* nameWeb={links.nameWeb} */ />
-              <div className="flex justify-end mt-8">
+              <div className="flex justify-center mt-8">
                 <button
                   type="button"
                   className="bg-primary_color text-black_color rounded-10 font-nunito font-semibold text-16 w-[144px] h-[47.44px] drop-shadow-lg "

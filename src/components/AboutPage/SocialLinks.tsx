@@ -10,7 +10,7 @@ type SocialLinksProps = {
 
 
 const SocialLinks = ({ linkedin/* , nameLinkedin */, github, /* nameGit, */ website/* , nameWeb  */}: SocialLinksProps) => (
-    <section className=' my-5 text-right'>
+    <section className=' my-5 text-center'>
         {linkedin && (
             <a className="flex-1" href={linkedin} target="_blank" rel="noopener noreferrer">
                 <img className='inline' src="../src/assets/icons/icon_linkedin.svg" alt="LinkedIn" /> {/* {nameLinkedin} */}
