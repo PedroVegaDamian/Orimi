@@ -96,8 +96,10 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
-            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg'>
+            <div className='sticky top-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
                 <Title>Edit address</Title>
+            </div>
+            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg max-h-full overflow-y-auto'>
                 <div className="flex flex-row flex-wrap items-center justify-center content-center mx-auto max-h-[340px] gap-x-[50px] gap-y-[20px]">
                     <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                         <Label htmlFor='company'>Company</Label>
@@ -184,7 +186,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                         />
                     </div>
                 </div>
-                <div className='flex items-center justify-center flex-col ml-5 flex-wrap'>
+                <div className='flex items-center justify-center flex-col ml-5 mt-[100px] flex-wrap'>
                     <Checkbox
                         id="defaultAddressCheck"
                         name="isDefault"
@@ -200,11 +202,13 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                         label="Use as my default billing address."
                     />
                 </div>
-                <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
+            </form>
+            <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
+                <div className='flex justify-evenly gap-[20px]'>
                     <Button type="submit">Save Changes</Button>
                     <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
                 </div>
-            </form>
+            </div>
             <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
