@@ -8,7 +8,7 @@ import { useStore } from '@/store';
 import { nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefixes';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
     const [userData, setUserData] = useState<UserData>({ ...userDataFromProps });
@@ -175,7 +175,6 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                     <Button type="button" onClick={() => close()} className='bg-transparent'>Cancel</Button>
                 </div>
             </form>
-            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };

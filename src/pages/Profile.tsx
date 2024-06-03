@@ -17,6 +17,8 @@ import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 import { Button, Title } from '@/components/ui';
 import DeleteAccountModal from '@/components/modals/DeleteUser';
 
+import { Toaster } from 'react-hot-toast';
+
 export const ProfilePage = () => {
     const { signOut, isRehydrating, user, fetchUser } = useStore(state => ({
         signOut: state.signOut,
@@ -97,7 +99,7 @@ export const ProfilePage = () => {
                     <Outlet />
                 </main>
             </div>
-
+                <Toaster position="bottom-right" reverseOrder={false} />
         </div>
     );
 }

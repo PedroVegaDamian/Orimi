@@ -9,7 +9,7 @@ import { Address } from '@/models/user';
 import { db } from '@/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface NewAddressModalProps extends ModalBaseProps {
     existingAddresses: Address[];
@@ -152,10 +152,10 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
-            <div className='sticky top-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-full max-w-2xl'>
+            <div className='sticky top-0 left-0 right-0 bg-white_color z-1 p-4 mx-auto max-w-[500px]'>
                 <Title>Add new address</Title>
             </div>
-            <form onSubmit={handleSubmit} className='bg-white_color p-4 pt-[60px] rounded-lg max-h-full overflow-auto'>
+            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg max-h-full overflow-auto'>
                 <div className="flex flex-row flex-wrap items-start justify-center mx-auto gap-x-[50px] gap-y-[20px]">
                     <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                         <Label htmlFor='company'>Company</Label>
@@ -271,14 +271,13 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         />
                     </div>
                 )}
-            </form>
-            <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-full max-w-2xl'>
-                <div className='flex justify-evenly gap-[20px]'>
-                    <Button type="submit" disabled={isSubmitting}>Save</Button>
-                    <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-full max-w-2xl'>
+                    <div className='flex justify-evenly gap-[20px]'>
+                        <Button type="submit" disabled={isSubmitting}>Save</Button>
+                        <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                    </div>
                 </div>
-            </div>
-            <Toaster position="bottom-right" reverseOrder={false} />
+            </form>
         </ModalBase>
     );
 };

@@ -12,7 +12,7 @@ import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 
 import { useUserStore } from '@/store/userStore'; 
 
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
     const user = useStore(state => state.user);
@@ -67,7 +67,6 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
                     <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
                 </div>
             </div>
-            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };
