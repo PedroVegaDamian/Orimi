@@ -5,7 +5,7 @@ import { Input, Label, Title, Button, ErrorMessage, Checkbox } from "@/component
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { addressRegex } from '@/utils/validationsRegex';
 
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface EditAddressModalProps {
     isOpen: boolean;
@@ -96,7 +96,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
-            <div className='sticky top-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
+            <div className='sticky top-0 left-0 right-0 bg-white_color z-1 p-4 mx-auto max-w-[450px]'>
                 <Title>Edit address</Title>
             </div>
             <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg max-h-full overflow-y-auto'>
@@ -202,14 +202,13 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                         label="Use as my default billing address."
                     />
                 </div>
-            </form>
-            <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
-                <div className='flex justify-evenly gap-[20px]'>
-                    <Button type="submit">Save Changes</Button>
-                    <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
+                    <div className='flex justify-evenly gap-[20px]'>
+                        <Button type="submit">Save Changes</Button>
+                        <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                    </div>
                 </div>
-            </div>
-            <Toaster position="bottom-right" reverseOrder={false} />
+            </form>
         </ModalBase>
     );
 };
