@@ -2,21 +2,29 @@ import { getProduct } from '@/services/getProduct'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Product } from '@/models'
-import IconPlus from '@/assets/icons/icon_plus_color.svg'
-import IconMinus from '@/assets/icons/icon_minus_color.svg'
 import toast from 'react-hot-toast'
 import { Toaster } from 'react-hot-toast'
 import { useCartStore } from '@/store/cartStore'
+import { Decrement } from '@/components/Decrement'
+import { Increment } from '@/components/Increment'
+import { LazyLoadImage} from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
+import PlaceHolder from '@/assets/icons/placeholder-loading.svg'
 
-export const ProductPage = () => {
+const ProductPage = () => {
+  //UseParams
   const { slug } = useParams<{ slug: string }>()
+  //useState
   const [product, setProduct] = useState<Product | null>(null)
   const [image, setImage] = useState(product?.image1)
-  const notify = () => toast.success('Succesfully added to the cart.')
   const [isClicked, setIsClicked] = useState(false)
-  const { cart, increment, decrement } = useCartStore()
-
+  //Toast
+  const notify = () => toast.success('Succesfully added to the cart.')
+  const { cart, increment, multiply, totalSum } = useCartStore()
+  //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
+
+  const productInCart = cart.find(items => items.id === product?.id)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,7 +34,7 @@ export const ProductPage = () => {
     }
     fetchProducts()
   }, [slug])
-  console.log(cart)
+
   return (
     <>
       <section className="py-12">
@@ -35,23 +43,29 @@ export const ProductPage = () => {
             {/* imagenes */}
             <div className="col-span-3">
               <div className="flex items-center justify-center overflow-hiddenrounded-lg">
-                <img
-                  className="w-6/12 h-6/12 max-w-full object-cover overflow-hidden rounded-lg"
+                <LazyLoadImage
+                  className="max-w-full object-cover overflow-hidden rounded-lg"
                   src={image}
+                  effect="blur"
                   alt="item detail"
+                  placeholderSrc={PlaceHolder}
+                  wrapperProps={{
+                    className: 'block w-6/12 h-6/12'
+                  }}
                 />
               </div>
-
               <div className="flex flex-row justify-center pt-10 space-x-10">
                 <button
                   type="button"
                   className=" aspect-square mb-3 w-32 h-32 overflow-hidden rounded-lg text-center"
                   onClick={() => setImage(product?.image1)}
                 >
-                  <img
+                  <LazyLoadImage
                     className="h-full w-full object-cover"
                     src={product?.image1}
+                    effect="blur"
                     alt="item detail"
+                    placeholderSrc={PlaceHolder}
                   />
                 </button>
                 <button
@@ -89,37 +103,42 @@ export const ProductPage = () => {
                 </h1>
                 <p className="text-pretty">{product?.description}</p>
               </div>
-
               <div>
                 <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center m-5 rounded-md font-nunito font-medium text-lg leading-8">
-                    <p className="pr-3">QTY</p>
-                    <button onClick={() => decrement(product?.id)}>
-                      <img src={IconMinus} alt="minus" />
-                    </button>
-                    <p className="px-6 text-2xl">
-                      {cart[index]?.quantity || 0}
-                    </p>
-                    <button onClick={() => increment(product?.id)}>
-                      <img src={IconPlus} alt="plus" />
-                    </button>
-                  </div>
-                  <a
-                    href="#"
-                    className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
+                  {!isClicked ? (
+                    ''
+                  ) : (
+                    <div className="flex items-center mt-3">
+                      <Decrement id={product?.id} />
+                      <p className="px-6 text-2xl">
+                        {cart[index]?.quantity || 0}
+                      </p>
+                      <Increment id={product?.id} />
+                    </div>
+                  )}
+
+                  <button
+                    className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
                       isClicked ? 'cursor-not-allowed bg-primary_500_color' : ''
                     }`}
                     onClick={event => {
                       event.preventDefault()
+                      if (productInCart) {
+                        increment(product?.id)
+                        console.log(isClicked)
+                      }
                       if (!isClicked) {
                         cart.push(product as Product)
                         notify()
+                        increment(product?.id)
                         setIsClicked(true)
+                        multiply()
+                        totalSum()
                       }
                     }}
                   >
                     Add to cart
-                  </a>
+                  </button>
                   <Toaster position="top-center" reverseOrder={false} />
                 </div>
               </div>
@@ -130,3 +149,4 @@ export const ProductPage = () => {
     </>
   )
 }
+export default ProductPage

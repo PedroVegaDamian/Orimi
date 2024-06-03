@@ -17,7 +17,7 @@ import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 import { Button, Title } from '@/components/ui';
 import DeleteAccountModal from '@/components/modals/DeleteUser';
 
-const ProfilePage = () => {
+export const ProfilePage = () => {
     const { signOut, isRehydrating, user, fetchUser } = useStore(state => ({
         signOut: state.signOut,
         isRehydrating: state.isRehydrating,
@@ -102,4 +102,5 @@ const ProfilePage = () => {
     );
 }
 
-export default ProfilePage;
+
+export default ProfilePage

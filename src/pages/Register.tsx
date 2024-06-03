@@ -4,7 +4,7 @@ import { useRegister } from '@/hooks/useRegister'
 import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui'
 import { countryPrefixes } from '@/utils/prefixes'
 
-export const RegisterPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const {
     userData,
     firstNameError,
