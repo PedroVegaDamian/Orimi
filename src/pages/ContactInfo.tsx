@@ -9,6 +9,8 @@ import { UserData } from '@/models/user';
 
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 const ContactInfoPage = () => {
     const { user } = useStore(state => ({
         user: state.user as UserData | null,
@@ -20,12 +22,14 @@ const ContactInfoPage = () => {
         if (user && user.email) {
             try {
                 await sendResetPasswordEmail(user.email);
-                console.log("Correo de restablecimiento enviado a:", user.email);
+                toast.success("Restore email sent to: " + user.email);
             } catch (error) {
                 console.error("Error al enviar correo de restablecimiento:", error);
+                toast.error("Error sending reset email");
             }
         } else {
             console.log("No se pudo obtener el correo electrónico del usuario.");
+            toast.error("Could not get user email");
         }
     }, [user]);
 
@@ -62,6 +66,7 @@ const ContactInfoPage = () => {
                 </div>
             </div>
             <hr className='border-grey_color w-[90%] mx-auto'/>
+            <Toaster position="bottom-right" reverseOrder={false} />
         </section>
     );
 };

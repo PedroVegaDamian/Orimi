@@ -199,26 +199,28 @@ const AddressListPage = () => {
                         <p>Loading addresses...</p>
                     ) : addresses.length > 0 ? (
                         addresses.map(address => (
-                            <div key={address.id} className={address.isDefault ? 'border-primary_800_color border-2 rounded-10' : ''}>
+                            <div key={address.id} className={address.isDefault ? 'border-primary_800_color border-2 rounded-10 p-4' : ''}> 
                                 <div className='flex'>
-                                    <Radio
-                                        id={`defaultAddress-${address.id}`}
-                                        name="defaultAddress"
-                                        value={address.id}
-                                        checked={address.isDefault}
-                                        onChange={onChange}
-                                        label=""
-                                        className={address.isDefault ? 'text-primary_800_color ring-primary_800_color focus:ring-primary_800_color' : ''}
-                                    />
-                                    <p>
-                                        {address.company && `${address.company}, `}
-                                        {address.street}, 
-                                        {address.city}, 
-                                        {address.state},
-                                        {address.zip},
-                                        {address.country}
-                                        {address.notes && ` (${address.notes})`}
-                                    </p>
+                                    <label htmlFor={`defaultAddress-${address.id}`} className="flex cursor-pointer">
+                                        <Radio
+                                            id={`defaultAddress-${address.id}`}
+                                            name="defaultAddress"
+                                            value={address.id}
+                                            checked={address.isDefault}
+                                            onChange={onChange}
+                                            label=""
+                                            className={address.isDefault ? 'text-primary_800_color ring-primary_800_color focus:ring-primary_800_color' : ''}
+                                        />
+                                        <p className="ml-2">
+                                            {address.company && `${address.company}, `}
+                                            {address.street}, 
+                                            {address.city}, 
+                                            {address.state},
+                                            {address.zip},
+                                            {address.country}
+                                            {address.notes && ` (${address.notes})`}
+                                        </p>
+                                    </label>
                                 </div>
                                 {address.isDefault && <p>Default shipping</p>}
                                 <div className='flex m-6'>
