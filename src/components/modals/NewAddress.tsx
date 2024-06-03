@@ -9,6 +9,8 @@ import { Address } from '@/models/user';
 import { db } from '@/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 interface NewAddressModalProps extends ModalBaseProps {
     existingAddresses: Address[];
     updateAddress: (addressId: string, address: Partial<Address>) => void;
@@ -42,6 +44,8 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
     });
 
     const isFirstAddress = useMemo(() => existingAddresses.length === 0, [existingAddresses]);
+    const notifySuccess = () => toast.success('Address successfully added.');
+    const notifyError = (message: string) => toast.error(`Error: ${message}`);
 
     useEffect(() => {
         if (isOpen) {
@@ -135,9 +139,11 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                     }
                 }
                 await handleNewAddress(newAddress);
+                notifySuccess();
                 close();
             } catch (error) {
                 console.error('Failed to add new address:', error);
+                notifyError((error as Error).message || 'Unknown error');
             } finally {
                 setIsSubmitting(false);
             }
@@ -146,9 +152,9 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
-            <form onSubmit={handleSubmit} className='bg-white_color p-4 rounded-lg pr-[40px]'>
-                <Title>Add new address</Title>
-                <div className="flex flex-row flex-wrap items-center justify-center content-center mx-auto max-h-[340px] gap-x-[50px] gap-y-[20px]">
+            <form onSubmit={handleSubmit} className='bg-white_color pt-[60px] pb-[60px] p-4 rounded-lg pr-[40px] max-h-full overflow-auto'>
+                <Title className='fixed top-0 left-0 right-0 bg-white_color z-10 p-4' style={{ marginTop: '10px' }}>Add new address</Title>
+                <div className="flex flex-row flex-wrap items-start justify-center mx-auto gap-x-[50px] gap-y-[20px]">
                     <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
                         <Label htmlFor='company'>Company</Label>
                         <Input
@@ -263,11 +269,12 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                         />
                     </div>
                 )}
-                <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
+                <div className='fixed bottom-0 left-0 right-0 bg-white z-10 flex justify-center gap-[20px] p-4' style={{ marginBottom: '10px' }}>
                     <Button type="submit" disabled={isSubmitting}>Save</Button>
                     <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
                 </div>
             </form>
+            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };

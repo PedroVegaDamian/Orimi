@@ -12,6 +12,8 @@ import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 
 import { useUserStore } from '@/store/userStore'; 
 
+import toast, { Toaster } from 'react-hot-toast';
+
 export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
     const user = useStore(state => state.user);
     const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +22,9 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
     const signOut = useStore(state => state.signOut);
     const setUser = useUserStore(state => state.setUser); 
 
+    const notifySuccess = () => toast.success('Account successfully deleted.');
+    const notifyError = (message: string) => toast.error(`Error: ${message}`);
+
     const handleDeleteAccount = async () => {
         if (user) {
             setIsLoading(true);
@@ -27,14 +32,18 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
                 await deleteAccount(password);
                 setUser(null); 
                 signOut(navigate);
+                notifySuccess();
+                close();
             } catch (error) {
                 console.error("Error deleting account: ", error);
+                notifyError((error as Error).message);
             } finally {
                 setIsLoading(false);
                 close();
             }
         } else {
             console.error('No user found.');
+            notifyError('No user found.');
         }
     };
 
@@ -58,6 +67,7 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
                     <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
                 </div>
             </div>
+            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };

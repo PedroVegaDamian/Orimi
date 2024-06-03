@@ -2,12 +2,27 @@ import ModalBase from './ModalBase';
 import { ModalBaseProps } from '@/components/modals/ModalBase';
 import { Title, Button } from "@/components/ui";
 
+import toast, { Toaster } from 'react-hot-toast';
+
 interface DeleteAddressModalProps extends ModalBaseProps {
     onDeleteAddress: (addressId: string) => void;
     addressId: string;
 }
 
 const DeleteAddressModal: React.FC<DeleteAddressModalProps> = ({ isOpen, close, onDeleteAddress, addressId }) => {
+    const notifySuccess = () => toast.success('Address successfully deleted.');
+    const notifyError = () => toast.error('Failed to delete the address.');
+
+    const handleDelete = () => {
+        try {
+            onDeleteAddress(addressId);
+            notifySuccess();
+            close();
+        } catch (error) {
+            notifyError();
+        }
+    };
+    
     if (!isOpen) return null;
 
     return (
@@ -19,10 +34,10 @@ const DeleteAddressModal: React.FC<DeleteAddressModalProps> = ({ isOpen, close, 
                 </label>
             </div>
             <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
-                <Button type="button" onClick={() => onDeleteAddress(addressId)}>Delete</Button>
+                <Button type="button" onClick={handleDelete}>Delete</Button>
                 <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
             </div>
-            
+            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };

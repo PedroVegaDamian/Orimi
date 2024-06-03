@@ -5,6 +5,8 @@ import { Input, Label, Title, Button, ErrorMessage, Checkbox } from "@/component
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { addressRegex } from '@/utils/validationsRegex';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 interface EditAddressModalProps {
     isOpen: boolean;
     address: Address;
@@ -28,6 +30,9 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
     useEffect(() => {
         setEditedAddress(address);
     }, [address]);
+
+    const notifySuccess = () => toast.success('Address successfully updated.');
+    const notifyError = (message: string) => toast.error(`Error: ${message}`);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditedAddress({
@@ -79,10 +84,15 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                     }
                 });
             }
-            updateAddress(editedAddress.id, editedAddress);
-            close();
+            try {
+                updateAddress(editedAddress.id, editedAddress);
+                notifySuccess();
+                close();
+            } catch (error) {
+                notifyError((error as Error).message);
+            }
         }
-    };    
+    };  
 
     return (
         <ModalBase isOpen={isOpen} close={close}>
@@ -195,6 +205,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                     <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
                 </div>
             </form>
+            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };

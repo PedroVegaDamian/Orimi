@@ -17,10 +17,6 @@ import IconTrash from '@/assets/icons/icon_papelera_black.svg';
 import { Button, Title } from '@/components/ui';
 import DeleteAccountModal from '@/components/modals/DeleteUser';
 
-// import ContactInfoPage from '@/pages/ContactInfo';
-// import AddressListPage from '@/pages/AddressList';
-// import OrdersPage from '@/pages/Orders';
-
 const ProfilePage = () => {
     const { signOut, isRehydrating, user, fetchUser } = useStore(state => ({
         signOut: state.signOut,
@@ -49,9 +45,9 @@ const ProfilePage = () => {
     return (
         <div>
             <Title>Profile</Title>
-            <div className="flex w-full h-full">
-                <div className="bg-white_color ml-[30px] max-w-[315px] h-[245px] p-[40px] flex flex-col justify-center items-start w-full">
-                    <div className='w-full space-y-[40px]'>
+            <div className="flex w-full h-full pb-10">
+                <div className='ml-[30px] max-w-[315px] h-[740px] flex flex-col justify-between'>
+                    <div className='w-full space-y-[40px] bg-white_color p-[40px]'>
                         <Link 
                             className={`flex items-center w-full ${selectedSection === 'myData' ? 'text-primary_800_color' : ''}`} 
                             to="myData"
@@ -80,27 +76,28 @@ const ProfilePage = () => {
                             <img src={selectedSection === 'orders' ? IconArrowColor : IconArrow} className="ml-auto"/>
                         </Link>
                     </div>
+                    <div className='w-full space-y-[10px] p-[40px]'>
+                        <Button onClick={() => { setUser(null); signOut(navigate)}} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
+                            <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
+                            Sign off
+                        </Button>
+                        <Button onClick={() => setDeleteAccountModalOpen(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'>
+                            <img src={IconTrash} alt="trash Icon" className="mr-[28px]" />
+                            Delete account
+                        </Button> 
+                        {deleteAccountModalOpen && (
+                            <DeleteAccountModal
+                                isOpen={deleteAccountModalOpen}
+                                close={() => setDeleteAccountModalOpen(false)}
+                            />
+                        )}
+                    </div>
                 </div>
                 <main className="bg-white_color h-[740px] ml-[40px] mr-[40px] w-full">
                     <Outlet />
                 </main>
             </div>
-            <div className='flex flex-col flex-nowrap content-start justify-end items-start align-center ml-[30px] max-w-[315px] h-[100px]'>
-                <Button onClick={() => { setUser(null); signOut(navigate)}} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
-                    <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
-                    Sign off
-                </Button>
-                <Button onClick={() => setDeleteAccountModalOpen(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'>
-                    <img src={IconTrash} alt="trash Icon" className="mr-[28px]" />
-                    Delete account
-                </Button> 
-                {deleteAccountModalOpen && (
-                    <DeleteAccountModal
-                        isOpen={deleteAccountModalOpen}
-                        close={() => setDeleteAccountModalOpen(false)}
-                    />
-                )}
-            </div>
+
         </div>
     );
 }

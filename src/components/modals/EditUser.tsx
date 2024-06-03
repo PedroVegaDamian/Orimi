@@ -8,6 +8,7 @@ import { useStore } from '@/store';
 import { nameRegex, phoneRegex } from '@/utils/validationsRegex';
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages';
 import { countryPrefixes } from '@/utils/prefixes';
+import toast, { Toaster } from 'react-hot-toast';
 
 const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBaseProps & { user: UserData }) => {
     const [userData, setUserData] = useState<UserData>({ ...userDataFromProps });
@@ -25,6 +26,9 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             setPrefix(userDataFromProps.phonePrefix || countryPrefixes[0].prefix);
         }
     }, [isOpen, userDataFromProps]);
+
+    const notifySuccess = () => toast.success('Profile successfully updated.');
+    const notifyError = (message: string) => toast.error(`Error: ${message}`);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -90,12 +94,15 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
             const result = await updateProfileServices().updateUserInfo(updatedUserData);
             if (result.success) {
                 useStore.getState().setUser(updatedUserData);
+                notifySuccess();
                 close();
             } else {
                 console.error("Failed to update user details", result.message);
+                notifyError(result.message || 'Unknown error')
             }
         } catch (error) {
             console.error('Update failed:', error);
+            notifyError((error as Error).message || 'Unknown error');
         }
         setIsSubmitting(false);
     };
@@ -168,6 +175,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                     <Button type="button" onClick={() => close()} className='bg-transparent'>Cancel</Button>
                 </div>
             </form>
+            <Toaster position="bottom-right" reverseOrder={false} />
         </ModalBase>
     );
 };
