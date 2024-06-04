@@ -62,7 +62,7 @@ export default {
       orange_500_color: 'rgba(214, 65, 24, 1)',
       red_color: 'rgba(255, 61, 61, 1)',
       red_500_color: 'rgba(255, 2, 2, 1)',
-      bg_color: 'rgba(246, 243, 243, 1)'
+      bg_color: 'rgba(246, 243, 243, 1)',
     }
   },
   plugins: []

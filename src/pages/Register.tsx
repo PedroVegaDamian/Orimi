@@ -113,7 +113,7 @@ const RegisterPage: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <Button type="submit"> Create account</Button>
+          <Button type="submit" className='mt-[97px] '> Create account</Button>
         </div>
       </form>
 
