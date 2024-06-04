@@ -1,34 +1,15 @@
-import HeaderImage from '@/assets/portada.png'
-import { Loading } from '@/components/Loading'
-import { Suspense, lazy, useEffect, useState } from 'react'
-import { db } from '@/firebase/index'
-import { collection, getDocs } from 'firebase/firestore'
-import { Product as ProductType } from '@/models'
+import HeaderImage from '@/assets/portada.png';
+import { Loading } from '@/components/Loading';
+import { Suspense, lazy } from 'react';
+import { useFetchProducts } from '@/hooks/useFetchProducts';
 
-const ProductItem = lazy(() => import('@/components/ProductsList'))
+const ProductItem = lazy(() => import('@/components/ProductsList'));
 
 const HomePage = () => {
-  const [products, setProducts] = useState<ProductType[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true)
-      const productsCollection = collection(db, 'products')
-      const productsSnapshot = await getDocs(productsCollection)
-      const productsData = productsSnapshot.docs.map(doc => {
-        const data = doc.data() as Omit<ProductType, 'id'>
-        return { id: doc.id, ...data }
-      })
-      setProducts(productsData)
-      setLoading(false)
-    }
-
-    fetchProducts()
-  }, [])
+  const { products, loading } = useFetchProducts();
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -52,7 +33,7 @@ const HomePage = () => {
         </Suspense>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

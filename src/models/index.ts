@@ -24,3 +24,14 @@ export interface CartState {
   totalSum: () => void
   isStock: (id: string | undefined) => void
 }
+
+
+export enum Categories {
+  All = 'All',
+  Birds = 'birds',
+  Mammals = 'mammals',
+  Amphibians = 'amphibians',
+  Fish = 'fish',
+  Insects = 'insects',
+  Reptiles = 'reptiles',
+}
