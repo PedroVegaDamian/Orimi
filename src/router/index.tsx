@@ -122,7 +122,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'register',
-        element: <RegisterPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <RegisterPage />
+          </Suspense>
+        )
       }
     ]
   },
