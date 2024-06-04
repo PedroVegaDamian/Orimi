@@ -17,6 +17,10 @@ const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 import { ProtectedRoute } from './ProtectedRoute'
 import { getCurrentUser } from '@/services/user'
+import OrdersPage  from '@/pages/Orders'
+import ContactInfoPage from '@/pages/ContactInfo'
+import AddressListPage from '@/pages/AddressList'
+//import ProfilePage from '@/pages/Profile'
 
 export const router = createBrowserRouter([
   {
@@ -76,11 +80,29 @@ export const router = createBrowserRouter([
         loader: async () => await getCurrentUser(),
         element: (
           <ProtectedRoute>
-               <Suspense fallback={<Loading />}>
+              <Suspense fallback={<Loading />}>
             <ProfilePage />
           </Suspense>
           </ProtectedRoute>
-        )
+        ),
+        children:[
+          {
+            path: 'myData',
+            element: <ContactInfoPage />
+          },
+          {
+            path: 'addresses',
+            element: <AddressListPage />
+          },
+          {
+            path: 'orders',
+            element: <OrdersPage />
+          },
+          {
+            index: true,
+            element: <Navigate to="myData" />
+          }
+        ]
       },
       {
         path: 'favorites',
@@ -106,7 +128,6 @@ export const router = createBrowserRouter([
           </Suspense>
         )
       }
-      
     ]
   },
   {

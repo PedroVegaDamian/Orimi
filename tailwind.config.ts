@@ -44,6 +44,7 @@ export default {
       primary_color: 'rgba(222, 207, 255, 1)',
       white_color: 'rgba(255, 255, 255, 1)',
       grey_color: 'rgba(217, 217, 217, 1)',
+      grey_color_bg: 'rgba(140, 140, 140, 0.2)',
       grey_500_color: 'rgba(140, 140, 140, 1)',
       grey_800_color: 'rgba(49, 43, 61, 1)',
       grey_900_color: 'rgba(47, 45, 51, 1)',
@@ -66,4 +67,4 @@ export default {
     }
   },
   plugins: []
-} satisfies Config
+} satisfies Config;
