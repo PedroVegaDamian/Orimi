@@ -47,7 +47,7 @@ const ProductsPage = () => {
     <div className="bg-bg_color">
       <div className="m-8">
         <h1 className="mt-5 mb-5 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
-          ProductsPage
+          Products
         </h1>
         <div className="mb-4 flex justify-center">
           {categories.map(category => (

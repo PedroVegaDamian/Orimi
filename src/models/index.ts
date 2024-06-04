@@ -9,9 +9,9 @@ export interface Product {
   price: number;
   slug: string;
   stock: number;
-  quantity?: number;
-  subtotal?: number;
-  isStock?: boolean;
+  quantity: number;
+  subtotal: number;
+  isStock: boolean;
 }
 
 export interface CartState {
