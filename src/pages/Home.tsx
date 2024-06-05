@@ -11,7 +11,7 @@ const HomePage = () => {
         <img
           src={HeaderImage}
           alt="header"
-          className="h-28 w-full overflow-hidden"
+          className="h-28 overflow-hidden w-full object-center object-cover"
         />
       </div>
 
