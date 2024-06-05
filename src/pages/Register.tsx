@@ -16,7 +16,7 @@ const RegisterPage: React.FC = () => {
     confirmPasswordError,
     handleInputChange,
     handlePrefixChange,
-    handleRegister    
+    handleRegister
   } = useRegister()
 
   return (
@@ -62,19 +62,18 @@ const RegisterPage: React.FC = () => {
             <Label htmlFor="phone">
               Phone<span className="text-red_color">*</span>
             </Label>
-            <div className='flex flex-row'>
-              <select 
-                id="prefix" 
-                name="prefix" 
+            <div className="flex flex-row">
+              <select
+                id="prefix"
+                name="prefix"
                 onChange={handlePrefixChange}
                 className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
-                value={userData.phonePrefix || ""}
-              
+                value={userData.phonePrefix || ''}
               >
                 <option value="" disabled>
                   Select prefix
                 </option>
-                {countryPrefixes.map((country) => (
+                {countryPrefixes.map(country => (
                   <option key={country.code} value={country.prefix}>
                     {country.name} ({country.prefix})
                   </option>
@@ -124,8 +123,9 @@ const RegisterPage: React.FC = () => {
               value={userData.password}
               onChange={handleInputChange}
             />
-            <small className='text-grey_500_color'>
-              The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.
+            <small className="text-grey_500_color">
+              The password must have: at least 6 characters, one uppercase
+              letter, one lowercase letter and one number.
             </small>
             <div style={{ height: '20px' }}>
               <ErrorMessage message={passwordError} />

@@ -1,18 +1,18 @@
-import { useStore } from '@/store';
-import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useUserStore } from '@/store/userStore';
+import { useStore } from '@/store'
+import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useUserStore } from '@/store/userStore'
 
-import IconUser from '@/assets/icons/icon_user_black.svg';
-import IconUserColor from '@/assets/icons/icon_user.svg';
-import IconArrow from '@/assets/icons/icon_arrow_right_black.svg';
-import IconArrowColor from '@/assets/icons/icon_arrow_right_color.svg';
-import IconAddress from '@/assets/icons/icon_address_black.svg';
-import IconAddressColor from '@/assets/icons/icon_address_color.svg';
-import IconBag from '@/assets/icons/icon_bag.svg';
-import IconBagColor from '@/assets/icons/icon_bag_color.svg';
-import IconOff from '@/assets/icons/icon_off_black.svg';
-import IconTrash from '@/assets/icons/icon_papelera_black.svg';
+import IconUser from '@/assets/icons/icon_user_black.svg'
+import IconUserColor from '@/assets/icons/icon_user.svg'
+import IconArrow from '@/assets/icons/icon_arrow_right_black.svg'
+import IconArrowColor from '@/assets/icons/icon_arrow_right_color.svg'
+import IconAddress from '@/assets/icons/icon_address_black.svg'
+import IconAddressColor from '@/assets/icons/icon_address_color.svg'
+import IconBag from '@/assets/icons/icon_bag.svg'
+import IconBagColor from '@/assets/icons/icon_bag_color.svg'
+import IconOff from '@/assets/icons/icon_off_black.svg'
+import IconTrash from '@/assets/icons/icon_papelera_black.svg'
 
 import { Button, Title } from '@/components/ui';
 import DeleteAccountModal from '@/components/modals/DeleteUser';
@@ -31,17 +31,17 @@ export const ProfilePage: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('myData');
     const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
 
-    useEffect(() => {
-        if (!user) {
-            fetchUser();
-        }
-        const path = location.pathname.split('/').pop();
-        setSelectedSection(path || 'myData');
-    }, [user, fetchUser, location.pathname]);
-
-    if (isRehydrating || !user) {
-        return <p>Loading user data...</p>;
+  useEffect(() => {
+    if (!user) {
+      fetchUser()
     }
+    const path = location.pathname.split('/').pop()
+    setSelectedSection(path || 'myData')
+  }, [user, fetchUser, location.pathname])
+
+  if (isRehydrating || !user) {
+    return <p>Loading user data...</p>
+  }
 
     return (
         <div>
