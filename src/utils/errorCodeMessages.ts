@@ -7,9 +7,11 @@ export const CustomErrorCodes = {
   FAIL_REGISTER_USER: 'auth/fail-register-user',
   ERROR_DURING_REGISTRATION: 'auth/error-during-registration',
   ERROR_REGISTERING: 'auth/error-registering',
+  INVALID_ADDRESS: 'auth/invalid-address',
+  REQUIRED_FIELD: 'auth/required-field',
+  REQUIRED_PREFIX: 'auth/required-prefix',
 };
 
-// Si también tienes mensajes de error, asegúrate de que sean exportados si los necesitas
 export const errorMessages = {
   [AuthErrorCodes.INVALID_PASSWORD]: 'Incorrect password, please try again.',
   [AuthErrorCodes.USER_DELETED]: 'User not found, please try again.',
@@ -20,11 +22,14 @@ export const errorMessages = {
   [AuthErrorCodes.INTERNAL_ERROR]: 'Oops.. there was an error during authentication. Please try again.',
 
   [CustomErrorCodes.INVALID_NAME]: 'Invalid format. Must contain only these letters, and have at most one space.',
+  [CustomErrorCodes.REQUIRED_PREFIX]: 'Prefix is required',
   [CustomErrorCodes.INVALID_PHONE_NUMBER]: 'Invalid phone number.',
   [CustomErrorCodes.INVALID_CONFIRM_PASSWORD]: 'Passwords do not match.',
   [CustomErrorCodes.FAIL_REGISTER_USER]: 'Failed to register user.',
   [CustomErrorCodes.ERROR_DURING_REGISTRATION]: 'Error during registration.',
   [CustomErrorCodes.ERROR_REGISTERING]: 'Unknown error occurred during registration.',
+  [CustomErrorCodes.INVALID_ADDRESS]: 'Invalid format.',
+  [CustomErrorCodes.REQUIRED_FIELD]: 'Input requerido.',
 };
 
 export const messageErrorCode = (code: string, defaultMsg: string = 'An unexpected error occurred.') => {

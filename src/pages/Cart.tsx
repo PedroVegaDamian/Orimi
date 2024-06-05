@@ -7,7 +7,7 @@ import { Increment } from '@/components/Increment'
 import { Decrement } from '@/components/Decrement'
 import { useNavigate } from 'react-router-dom'
 
-export const CartPage = () => {
+ const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
   const {user} = useUserStore()
  
@@ -125,3 +125,5 @@ export const CartPage = () => {
     </div>
   )
 }
+
+export default CartPage

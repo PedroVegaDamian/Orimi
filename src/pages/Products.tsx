@@ -1,3 +1,7 @@
+//TODO: hacer
+
+
+
 export const ProductsPage = () => {
   return (
     <div>
@@ -5,3 +9,5 @@ export const ProductsPage = () => {
     </div>
   )
 }
+
+export default ProductsPage
