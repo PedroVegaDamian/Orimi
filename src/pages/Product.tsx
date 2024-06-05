@@ -7,9 +7,6 @@ import { Toaster } from 'react-hot-toast'
 import { useCartStore } from '@/store/cartStore'
 import { Decrement } from '@/components/Decrement'
 import { Increment } from '@/components/Increment'
-import { LazyLoadImage} from 'react-lazy-load-image-component'
-import 'react-lazy-load-image-component/src/effects/blur.css'
-import PlaceHolder from '@/assets/icons/placeholder-loading.svg'
 
 const ProductPage = () => {
   //UseParams
@@ -23,38 +20,23 @@ const ProductPage = () => {
   const { cart, increment, multiply, totalSum } = useCartStore()
   //Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
-<<<<<<< feature/cartShopping
   //Check if the product is in the cart
   const [isInCart, setIsInCart] = useState(false)
-  const [productInCart, setProductInCart] = useState<Product | undefined>();
- 
-  
-=======
+  const [productInCart, setProductInCart] = useState<Product | undefined>()
 
-  const productInCart = cart.find(items => items.id === product?.id)
-
->>>>>>> develop
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
-<<<<<<< feature/cartShopping
 
       const productInCart = cart.find(items => items.id === product?.id)
       setProductInCart(productInCart)
       setIsInCart(productInCart ? true : false)
-     
     }
     fetchProducts()
   }, [slug, cart])
-  
-=======
-    }
-    fetchProducts()
-  }, [slug])
 
->>>>>>> develop
   return (
     <>
       <section className="py-12">
@@ -63,15 +45,10 @@ const ProductPage = () => {
             {/* imagenes */}
             <div className="col-span-3">
               <div className="flex items-center justify-center overflow-hiddenrounded-lg">
-                <LazyLoadImage
-                  className="max-w-full object-cover overflow-hidden rounded-lg"
+                <img
+                  className="w-6/12 h-6/12 max-w-full object-cover overflow-hidden rounded-lg"
                   src={image}
-                  effect="blur"
                   alt="item detail"
-                  placeholderSrc={PlaceHolder}
-                  wrapperProps={{
-                    className: 'block w-6/12 h-6/12'
-                  }}
                 />
               </div>
               <div className="flex flex-row justify-center pt-10 space-x-10">
@@ -80,12 +57,10 @@ const ProductPage = () => {
                   className=" aspect-square mb-3 w-32 h-32 overflow-hidden rounded-lg text-center"
                   onClick={() => setImage(product?.image1)}
                 >
-                  <LazyLoadImage
+                  <img
                     className="h-full w-full object-cover"
                     src={product?.image1}
-                    effect="blur"
                     alt="item detail"
-                    placeholderSrc={PlaceHolder}
                   />
                 </button>
                 <button
@@ -125,10 +100,7 @@ const ProductPage = () => {
               </div>
               <div>
                 <div className="flex flex-col items-center gap-4">
-<<<<<<< feature/cartShopping
-              {!isInCart || !isInCart?(""):( 
-=======
-                  {!isClicked ? (
+                  {!isInCart || !isInCart ? (
                     ''
                   ) : (
                     <div className="flex items-center mt-3">
@@ -139,19 +111,19 @@ const ProductPage = () => {
                       <Increment id={product?.id} />
                     </div>
                   )}
->>>>>>> develop
 
                   <button
                     className={`flex items-center justify-center bg-primary_color rounded-md bg-slate-900 mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked || isInCart ? 'cursor-not-allowed bg-primary_500_color' : ''
+                      isClicked || isInCart
+                        ? 'cursor-not-allowed bg-primary_500_color'
+                        : ''
                     }`}
                     disabled={isClicked || isInCart}
                     onClick={event => {
                       event.preventDefault()
                       if (productInCart) {
                         increment(product?.id)
-                      }
-                     else if(!isClicked) {
+                      } else if (!isClicked) {
                         cart.push(product as Product)
                         notify()
                         increment(product?.id)
@@ -174,4 +146,5 @@ const ProductPage = () => {
     </>
   )
 }
+
 export default ProductPage
