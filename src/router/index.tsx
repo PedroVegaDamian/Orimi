@@ -105,6 +105,15 @@ export const router = createBrowserRouter([
         ]
       },
       {
+        path: 'profile',
+        loader: async () => await getCurrentUser(),
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        )
+      },
+      {
         path: 'favorites',
         element: (
           <Suspense fallback={<Loading />}>
