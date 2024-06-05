@@ -6,8 +6,8 @@ const OrdersPage = () => {
         <section>
         <Title className='md:text-left md:pl-[100px]'>My Orders</Title>
         <hr className='border-grey_color w-[90%] mx-auto'/>
-        <div className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-col items-center md:items-start">
-            <div className="flex flex-col items-center md:items-start mb-4 md:mb-0 md:w-full">
+        <div className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-col items-start md:items-start">
+            <div className="flex flex-col items-start md:items-start mb-4 md:mb-0 md:w-full">
                 <p>Order: numero-pedido</p>
                 <p>Date: fecha</p>
                 <p>Price: <span className='text-primary_800_color font-bold'>$80.99</span></p>
