@@ -64,7 +64,7 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
                         <img src={IconTrash} alt="Trash Icon" className="mr-[28px]" />
                         {isLoading ? 'Deleting...' : 'Delete account'}
                     </Button>
-                    <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                    <Button type="button" onClick={close} extraClass='bg-white_color'>Cancel</Button>
                 </div>
             </div>
         </ModalBase>

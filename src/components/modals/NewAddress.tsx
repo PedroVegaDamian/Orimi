@@ -274,7 +274,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                 <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-full max-w-2xl'>
                     <div className='flex justify-evenly gap-[20px]'>
                         <Button type="submit" disabled={isSubmitting}>Save</Button>
-                        <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                        <Button type="button" onClick={close} extraClass='bg-white_color'>Cancel</Button>
                     </div>
                 </div>
             </form>

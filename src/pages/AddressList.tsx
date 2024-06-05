@@ -191,9 +191,9 @@ const AddressListPage = () => {
 
     return (
         <section>
-            <Title>Address List</Title>
+            <Title className='md:text-left md:pl-[100px]'>Address List</Title>
             <hr className='border-grey_color w-[90%] mx-auto'/>
-            <div className="flex flex-nowrap justify-between items-start content-start w-[90%] mx-auto pt-[24px] pb-[24px]">
+            <div className="flex flex-col items-center md:flex-row md:justify-between md:items-start content-start w-[90%] mx-auto pt-[24px] pb-[24px]">
                 <ul className='max-w-[400px]'>
                     {isFetchingAddresses ? (
                         <p>Loading addresses...</p>
@@ -265,7 +265,7 @@ const AddressListPage = () => {
                         <p>You do not have any addresses yet. Add one.</p>
                     )}
                 </ul>
-                <button onClick={() => setNewAddressModalOpen(true)} className="flex items-center">
+                <button onClick={() => setNewAddressModalOpen(true)} className="flex items-center p-4">
                     <img src={IconPlusLineBlack} alt="Plus Icon" className="mr-[10px]" />
                     <span>Add New Address</span>
                 </button>

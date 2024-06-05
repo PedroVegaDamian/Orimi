@@ -142,12 +142,12 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                     </div>
                     <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] h-[90px]">
                         <Label htmlFor='phone'>Phone<span className="text-red_color">*</span></Label>
-                        <div className='flex flex-row'>
+                        <div className='flex flex-col md:flex-row md:space-x-4'>
                             <select 
                                 id="prefix" 
                                 name="prefix" 
                                 onChange={handlePrefixChangeInternal}
-                                className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+                                className="border-1 border-grey_color rounded-10 px-[17px] w-[217px] h-[40px]"
                                 value={prefix}
                             >
                                 {countryPrefixes.map((country) => (
@@ -172,7 +172,7 @@ const EditUserModals = ({ isOpen, close, user: userDataFromProps }: ModalBasePro
                 </div>
                 <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
                     <Button type="submit" disabled={isSubmitting}>Save</Button>
-                    <Button type="button" onClick={() => close()} className='bg-transparent'>Cancel</Button>
+                    <Button type="button" onClick={() => close()} extraClass='bg-white_color'>Cancel</Button>
                 </div>
             </form>
         </ModalBase>

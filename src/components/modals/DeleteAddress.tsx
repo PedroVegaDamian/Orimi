@@ -40,7 +40,7 @@ const DeleteAddressModal: React.FC<DeleteAddressModalProps> = ({ isOpen, close, 
             </div>
             <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>
                 <Button type="button" onClick={handleDelete}>Delete</Button>
-                <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                <Button type="button" onClick={close} extraClass='bg-white_color'>Cancel</Button>
             </div>
         </ModalBase>
     );
