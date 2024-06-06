@@ -17,7 +17,7 @@ const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
-const DefaultLayout = lazy(() => import('@/layouts/DefaulLayout'))
+const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
 
 import OrdersPage from '@/pages/Orders'
 import ContactInfoPage from '@/pages/ContactInfo'
@@ -108,15 +108,6 @@ export const router = createBrowserRouter([
             element: <Navigate to="myData" />
           }
         ]
-      },
-      {
-        path: 'profile',
-        loader: async () => await getCurrentUser(),
-        element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        )
       },
       {
         path: 'favorites',
