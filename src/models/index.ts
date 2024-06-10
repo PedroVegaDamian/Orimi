@@ -1,15 +1,17 @@
 export interface Product {
-  id: string
-  description: string
-  image1: string
-  image2: string
-  image3: string
-  name: string
-  price: number
-  slug: string
-  stock: number
-  quantity: number
-  subtotal: number
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  image1: string;
+  image2: string;
+  image3: string;
+  price: number;
+  slug: string;
+  stock: number;
+  quantity: number;
+  subtotal: number;
+  isStock: boolean;
 }
 
 export interface CartState {
@@ -21,4 +23,15 @@ export interface CartState {
   multiply: () => void
   totalSum: () => void
   isStock: (id: string | undefined) => void
+}
+
+
+export enum Categories {
+  All = 'All',
+  Birds = 'birds',
+  Mammals = 'mammals',
+  Amphibians = 'amphibians',
+  Fish = 'fish',
+  Insects = 'insects',
+  Reptiles = 'reptiles',
 }
