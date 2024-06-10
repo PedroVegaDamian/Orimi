@@ -16,7 +16,7 @@ export const Navbar = () => {
   const isActiveLink = (path : string) => location.pathname === path;
 
   return (
-    <header className="bg-white_color flex justify-between items-center h-[107px] p-6 font-nunito sticky z-10 top-0">
+    <header className="bg-white_color flex justify-between items-center h-[107px] p-6 font-nunito sticky z-10 top-0 shadow-[0_4px_4px_0_rgba(0,0,0,0.15)] ">
       {/* mobile */}
       <div className="flex items-center lg:hidden justify-between w-full">
         <img
@@ -25,10 +25,17 @@ export const Navbar = () => {
           className="cursor-pointer w-[30px] h-[30px]"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         />
-        <Link to="/" className="mx-4 text-center">
+        <Link 
+          to="/" 
+          className="mx-4 text-center" 
+          onClick={() => setIsMenuOpen(false)}>
           <img src={Logo} alt="Oromi Logo" />
         </Link>
-        <Link to="/cart" className="text-right w-[30px] h-[30px] relative">
+        <Link 
+          to="/cart" 
+          className="text-right w-[30px] h-[30px] relative"
+          onClick={() => setIsMenuOpen(false)}
+        >
           <img src={IconBag} alt="Bag Icon" />
           {cartItemsCount > 0 && (
             <span className="bg-primary_800_color text-white_color rounded-full w-5 h-5 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
@@ -42,7 +49,7 @@ export const Navbar = () => {
         <img src={Logo} alt="Oromi Logo" />
       </Link>
 
-      <nav className={`lg:flex lg:gap-[20px] lg:items-center lg:ml-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]' : 'opacity-0 lg:opacity-100 lg:shadow-none'} absolute lg:static top-[107px] left-0 right-0 bg-white_color lg:bg-transparent w-full pl-[50px] pt-[24px] pb-[24px] pr-[20px]`}>
+      <nav className={`lg:flex lg:gap-[20px] lg:items-center lg:ml-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 shadow-[0_4px_4px_0_rgba(0,0,0,0.15)]' : 'hidden lg:opacity-100 lg:shadow-none'} absolute lg:static top-[107px] left-0 right-0 bg-white_color lg:bg-transparent w-full pl-[50px] pt-[24px] pb-[24px] pr-[20px]`}>
         <div className="lg:flex lg:justify-end lg:w-full">
           <Link to="/" className={`flex items-center justify-between mb-[15px] lg:mb-0 lg:mr-[30px] ${isActiveLink('/') ? 'text-primary_800_color font-bold' : ''}`} onClick={() => setIsMenuOpen(false)}>
             Home <img className={`lg:hidden ${isActiveLink('/') ? '_color' : ''}`} src={isActiveLink('/') ? IconArrowColor : IconArrow} alt="Arrow Right Icon" />
