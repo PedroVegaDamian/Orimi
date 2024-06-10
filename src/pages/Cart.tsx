@@ -7,10 +7,9 @@ import { Increment } from '@/components/Increment'
 import { Decrement } from '@/components/Decrement'
 import { useNavigate } from 'react-router-dom'
 
- const CartPage = () => {
+const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
   const {user} = useUserStore()
- 
   const navigate = useNavigate()
 
   const handleRemove = (slug: string | undefined) => {
@@ -20,9 +19,9 @@ import { useNavigate } from 'react-router-dom'
   }
   const handleClick = () => {
     if (user) {
-     navigate( '/checkout')
+      navigate( '/checkout')
     } else {
-     navigate('/login')
+      navigate('/login')
     }
   }
   return (
