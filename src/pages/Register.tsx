@@ -41,7 +41,7 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] mb-2 lg:mb-0">
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="lastName">
               Last name<span className="text-red_color">*</span>
             </Label>
@@ -58,7 +58,7 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] lg:max-w-[500px]">
+          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[475px] lg:max-w-[500px]">
             <Label htmlFor="phone">
               Phone<span className="text-red_color">*</span>
             </Label>
@@ -100,7 +100,7 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] mb-2 lg:mb-0">
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="email">
               Email address<span className="text-red_color">*</span>
             </Label>
@@ -117,30 +117,32 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[220px] lg:max-w-[450px] mb-2 lg:mb-0">
-            <Label htmlFor="password">
-              Password<span className="text-red_color">*</span>
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Enter password"
-              name="password"
-              value={userData.password}
-              onChange={handleInputChange}
-            />
-            {!passwordError && (
-              <small className="text-grey_500_color font-[8px]">
-                The password must have: at least 6 characters, one uppercase
-                letter, one lowercase letter and one number.
-              </small>
-            )}
-            <div style={{ height: '20px' }}>
-              <ErrorMessage message={passwordError} />
-            </div>
-          </div>
+          <div className="flex flex-col flex-nowrap justify-center content-center sm:max-w-[217px] mb-2 lg:mb-0 md:max-w-[475px]">
+  <Label htmlFor="password">
+    Password<span className="text-red_color">*</span>
+  </Label>
+  <Input
+    id="password"
+    type="password"
+    placeholder="Enter password"
+    name="password"
+    value={userData.password}
+    onChange={handleInputChange}
+    className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
+  />
+  {!passwordError && (
+    <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
+      The password must have: at least 6 characters, one uppercase
+      letter, one lowercase letter and one number.
+    </small>
+  )}
+  <div style={{ height: '20px' }}>
+    <ErrorMessage message={passwordError} />
+  </div>
+</div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px] mb-2 lg:mb-0">
+
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="confirmPassword">
               Confirm Password<span className="text-red_color">*</span>
             </Label>
