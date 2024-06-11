@@ -15,7 +15,7 @@ export const useFetchProducts = (options?: OptionsProducts) => {
     }
 
     fetchProducts()
-  }, [options])
+  }, [])
 
   return { products, loading }
 }
