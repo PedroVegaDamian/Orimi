@@ -57,7 +57,7 @@ const ProductPage = () => {
 
   return (
     <>
-      <section className="py-12">
+      <section className="lg:py-12">
         <div className="container mx-auto px-4">
           <div className="mt-8 grid grid-cols-5 gap-4 lg:gap-0">
             {/* imágenes */}
@@ -69,10 +69,10 @@ const ProductPage = () => {
                   alt="item detail"
                 />
               </div>
-              <div className="flex flex-row justify-center pt-10 space-x-10 lg:space-x-4 w-full lg:w-auto mt-4 lg:mt-0">
+              <div className="flex flex-row justify-center pt-2 lg:pt-10 space-x-2 lg:space-x-4 w-full lg:w-auto mt-4 lg:mt-0">
                 <button
                   type="button"
-                  className="aspect-square mb-3 w-1/3 lg:w-32 h-32 overflow-hidden rounded-lg text-center"
+                  className="aspect-square mb-3 w-1/3 lg:w-32 lg:h-32 overflow-hidden rounded-lg text-center"
                   onClick={() => handleImageClick(product?.image1)}
                 >
                   <img
@@ -138,7 +138,7 @@ const ProductPage = () => {
                   </button>
                 </div>
               </div>
-              <p className="text-pretty text-center lg:text-left mt-4 lg:mt-0 mb-[70px] lg:hidden">
+              <p className="text-pretty text-start lg:text-left mt-4 lg:mt-0 mb-[120px] lg:hidden">
                 {product?.description}
               </p>
               {/* Diseño para dispositivos grandes */}
