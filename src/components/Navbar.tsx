@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import Logo from '@/assets/logo.svg';
 import IconBag from '@/assets/icons/icon_bag.svg';
 import IconHamburger from '@/assets/icons/icon_burger_black.svg';
 import IconArrow from '@/assets/icons/icon_arrow_right_black.svg';
 import IconArrowColor from '@/assets/icons/icon_arrow_right_color.svg';
+
 import { RenderLinkUser } from '@/components/RenderLinkUser';
+
 import { useCartStore } from '@/store/cartStore'; 
+import { useUserStore } from '@/store/userStore';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const cartItemsCount = useCartStore((state) => state.cart.length);
+  const { user } = useUserStore();
+
+  useEffect(() => {
+    const userId = user?.id;
+    if (userId) {
+      useCartStore.getState().loadCart(userId);
+    } else {
+      useCartStore.getState().clearCart();
+    }
+  }, [user]);
 
   const isActiveLink = (path : string) => location.pathname === path;
 

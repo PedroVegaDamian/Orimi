@@ -22,6 +22,9 @@ export interface CartState {
   removeProduct: (slug: string | undefined) => void
   multiply: () => void
   totalSum: () => void
+  clearCart: () => void;
+  loadCart: (userId: string | undefined) => void
+  saveCart: (userId: string | undefined) => void
   isStock: (id: string | undefined) => void
 }
 
