@@ -22,22 +22,6 @@ export default {
         '16': '16px',
         '22': '22px'
       },
-      spacing: {
-        '7.25': '1.8125rem', // Aproximadamente 29px
-        '9': '2.25rem', // Exactamente 36px
-        '10': '10px',
-        '17': '17px',
-        '20': '20px',
-        '30.5': '7.625rem', // 122px si 1rem = 16px
-        '40': '40px',
-        '47.44': '47.44px',
-        '80': '80px',
-        '97': '97px',
-        '144': '144px',
-        '230': '230px',
-        '450': '450px',
-        '475': '475px'
-      },
       maxHeight: {
         '303': '303px'
       },
@@ -60,6 +44,7 @@ export default {
       primary_color: 'rgba(222, 207, 255, 1)',
       white_color: 'rgba(255, 255, 255, 1)',
       grey_color: 'rgba(217, 217, 217, 1)',
+      grey_color_bg: 'rgba(140, 140, 140, 0.2)',
       grey_500_color: 'rgba(140, 140, 140, 1)',
       grey_800_color: 'rgba(49, 43, 61, 1)',
       grey_900_color: 'rgba(47, 45, 51, 1)',
@@ -82,4 +67,4 @@ export default {
     }
   },
   plugins: []
-} satisfies Config
+} satisfies Config;

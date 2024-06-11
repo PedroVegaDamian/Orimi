@@ -1,61 +1,146 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from 'react'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
-import { DefaultLayout } from '@/layouts/DefaulLayout'
-import { HomePage } from '@/pages/Home'
-import { CartPage } from '@/pages/Cart'
-import { AboutPage } from '@/pages/About'
-import { LoginPage } from '@/pages/Login'
-import { ContactPage } from '@/pages/Contact'
-import { ProductPage } from '@/pages/Product'
-import { ProductsPage } from '@/pages/Products'
-import { FavoritesPage } from '@/pages/Favorites'
-import { RegisterPage } from '@/pages/Register'
+import { Loading } from '@/components/Loading'
+import { getCurrentUser } from '@/services/user'
+import { ProtectedRoute } from './ProtectedRoute'
+
+const HomePage = lazy(() => import('@/pages/Home'))
+const CartPage = lazy(() => import('@/pages/Cart'))
+const AboutPage = lazy(() => import('@/pages/About'))
+const LoginPage = lazy(() => import('@/pages/Login'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
+const ProductPage = lazy(() => import('@/pages/Product'))
+const ContactPage = lazy(() => import('@/pages/Contact'))
+const ProfilePage = lazy(() => import('@/pages/Profile'))
+const ProductsPage = lazy(() => import('@/pages/Products'))
+const RegisterPage = lazy(() => import('@/pages/Register'))
+const FavoritesPage = lazy(() => import('@/pages/Favorites'))
+const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
+
+import OrdersPage from '@/pages/Orders'
+import ContactInfoPage from '@/pages/ContactInfo'
+import AddressListPage from '@/pages/AddressList'
 
 export const router = createBrowserRouter([
   {
-    path: '',
-    element: <DefaultLayout />,
+    path: '/',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <DefaultLayout />
+      </Suspense>
+    ),
     children: [
       {
         path: '',
-        element: <HomePage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <HomePage />
+          </Suspense>
+        )
       },
       {
         path: 'products',
-        element: <ProductsPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ProductsPage />
+          </Suspense>
+        )
       },
       {
         path: 'product/:slug',
-        element: <ProductPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ProductPage />
+          </Suspense>
+        )
       },
       {
         path: 'about',
-        element: <AboutPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <AboutPage />
+          </Suspense>
+        )
       },
       {
         path: 'contact',
-        element: <ContactPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ContactPage />
+          </Suspense>
+        )
       },
       {
         path: 'login',
-        element: <LoginPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <LoginPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'profile',
+        loader: async () => await getCurrentUser(),
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<Loading />}>
+              <ProfilePage />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: 'myData',
+            element: <ContactInfoPage />
+          },
+          {
+            path: 'addresses',
+            element: <AddressListPage />
+          },
+          {
+            path: 'orders',
+            element: <OrdersPage />
+          },
+          {
+            index: true,
+            element: <Navigate to="myData" />
+          }
+        ]
       },
       {
         path: 'favorites',
-        element: <FavoritesPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <FavoritesPage />
+          </Suspense>
+        )
       },
       {
         path: 'cart',
-        element: <CartPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <CartPage />
+          </Suspense>
+        )
       },
       {
         path: 'register',
-        element: <RegisterPage />
+        element: (
+          <Suspense fallback={<Loading />}>
+            <RegisterPage />
+          </Suspense>
+        )
       }
     ]
   },
   {
     path: '*',
-    element: <Navigate to="/" />
+    element: (
+      <Suspense fallback={<Loading />}>
+        <NotFound />
+      </Suspense>
+    )
   }
 ])

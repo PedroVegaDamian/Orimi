@@ -1,46 +1,35 @@
-import { useEffect, useState } from 'react'
-import { getProducts } from '@/services/getProducts'
-import { Product } from '@/models'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Product } from '@/models';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import PlaceHolder from '@/assets/icons/placeholder-loading.svg';
 
-export const ProductItem = () => {
-  const [products, setProducts] = useState<Product[]>([])
+import { Link } from 'react-router-dom';
 
+interface ProductsListProps {
+  products: Product[];
+}
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const productsList = await getProducts()
-      setProducts(productsList)
-    }
-    fetchProducts()
-  }, [])
-
+const ProductsList: React.FC<ProductsListProps> = ({ products }) => {
   return (
     <>
-      {products.map((product, index) => (
-        <div>
-            <Link to={`/product/${product.slug}`} key={index}>
-            <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg bg-white">
-              <div className="relative mx-3 mt-3 flex h-60 ">
-                <img src={product.image} alt={product.name} />
-              </div>
-              <div className="mt-4 px-5 pb-5">
-                <h5 className=" items-center tracking-tight font-nunito text-20 font-bold text-center text-primary_800_color text-2xl">
-                  {product.name}
-                </h5>
-
-                <div className="mt-2 mb-5 flex items-center justify-center">
-                  <p>
-                    <span className="font-nunito text-center text-xs font-semibold leading-4">
-                      ${product.price}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-        </Link>
+      {products.map(product => (
+        <Link key={product.id} to={`/product/${product.slug}`} className="flex flex-col bg-white p-4 rounded-lg items-center">
+          <div key={product.id} className="flex flex-col bg-white p-4 rounded-lg">
+            <LazyLoadImage
+              className="h-48 w-full object-cover rounded-lg"
+              effect="blur"
+              alt={product.name}
+              src={product.image1}
+              placeholderSrc={PlaceHolder}
+            />
+            <h3 className="mt-4 font-nunito text-xl font-bold text-primary_800_color text-center">{product.name}</h3>
+            <p className="mt-2 text-lg font-semibold text-center">${product.price}</p>
           </div>
+        </Link>
       ))}
     </>
-  )
-}
+  );
+};
+
+export default ProductsList;

@@ -72,7 +72,7 @@ const socialLinks = {
 };
 
 
-export const AboutPage = () => {
+const AboutPage = () => {
 
   const [name, setName] = useState<TextComponentKey>("default")
 
@@ -111,3 +111,5 @@ export const AboutPage = () => {
     </div>
   )
 }
+
+export default AboutPage
