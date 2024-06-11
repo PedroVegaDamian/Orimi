@@ -1,15 +1,15 @@
-import HeaderImage from '@/assets/portada.png';
-import { Loading } from '@/components/Loading';
-import { Suspense, lazy } from 'react';
-import { useFetchProducts } from '@/hooks/useFetchProducts';
+import HeaderImage from '@/assets/portada.png'
+import { Loading } from '@/components/Loading'
+import { Suspense, lazy } from 'react'
+import { useFetchProducts } from '@/hooks/useFetchProducts'
 
-const ProductItem = lazy(() => import('@/components/ProductsList'));
+const ProductItem = lazy(() => import('@/components/ProductsList'))
 
 const HomePage = () => {
-  const { products, loading } = useFetchProducts();
+  const { products, loading } = useFetchProducts({ limit: 10 })
 
   if (loading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
@@ -33,7 +33,7 @@ const HomePage = () => {
         </Suspense>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
