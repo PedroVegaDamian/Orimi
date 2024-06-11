@@ -38,7 +38,7 @@ export const Navbar = () => {
         >
           <img src={IconBag} alt="Bag Icon" />
           {cartItemsCount > 0 && (
-            <span className="bg-primary_800_color text-white_color rounded-full w-5 h-5 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+            <span className="bg-primary_800_color text-white_color rounded-full w-3 h-3 text-[9px] pt-[2px] flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
               {cartItemsCount}
             </span>
           )}
@@ -71,7 +71,7 @@ export const Navbar = () => {
       <Link to="/cart" className="hidden lg:flex items-center justify-between mb-[15px] mt-[10px] relative" onClick={() => setIsMenuOpen(false)}>
         <img src={IconBag} alt="Carrito Icon" />
         {cartItemsCount > 0 && (
-          <span className="bg-primary_800_color text-white_color rounded-full w-5 h-5 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+          <span className="bg-primary_800_color text-white_color rounded-full w-3 h-3 text-[9px] pt-[2px] flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2 ">
             {cartItemsCount}
           </span>
         )}
