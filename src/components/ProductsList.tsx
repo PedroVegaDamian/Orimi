@@ -17,7 +17,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ products }) => {
         <Link key={product.id} to={`/product/${product.slug}`} className="flex flex-col bg-white p-4 rounded-lg items-center">
           <div key={product.id} className="flex flex-col bg-white p-4 rounded-lg">
             <LazyLoadImage
-              className="h-48 w-full object-cover rounded-lg"
+              className="w-48 h-48 object-cover rounded-lg"
               effect="blur"
               alt={product.name}
               src={product.image1}
