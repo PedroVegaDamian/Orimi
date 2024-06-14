@@ -1,10 +1,17 @@
 import HeaderImage from '@/assets/portada.png'
 import { Loading } from '@/components/Loading'
-// import { ProductItem } from '@/components/ProductsList'
 import { Suspense, lazy } from 'react'
+import { useFetchProducts } from '@/hooks/useFetchProducts'
 
 const ProductItem = lazy(() => import('@/components/ProductsList'))
+
 const HomePage = () => {
+  const { products, loading } = useFetchProducts({ limit: 10 })
+
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <div className="bg-bg_color">
       <div className="">
@@ -21,7 +28,7 @@ const HomePage = () => {
         </h1>
         <Suspense fallback={<Loading />}>
           <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] w-full">
-            <ProductItem />
+            <ProductItem products={products} />
           </div>
         </Suspense>
       </div>
