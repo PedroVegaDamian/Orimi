@@ -14,6 +14,9 @@ const CheckoutPage = () => {
     // Create a Checkout Session
     const res = await fetch(
       'https://orimi-checkout.orimi.workers.dev/create-checkout-session',
+     
+      // 'http://localhost:61801/create-checkout-session',
+
       {
         method: 'POST',
         headers: {
