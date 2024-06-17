@@ -75,10 +75,10 @@ const AboutPage = () => {
   const links = socialLinks[name];
 
   return (
-    <div className="w-full mb-[100px]">
-      <div className="grid lg:grid-cols-3 justify-items-center">
-        <section className="w-full lg:col-span-2 overflow-auto">
-          <div className="flex flex-col justify-center items-center mt-9 md:ml-9 lg:hidden">
+    <div className="w-full mb-[100px] min-h-screen overflow-hidden">
+      <div className="relative grid lg:grid-cols-3 justify-items-center">
+        <section className="w-full lg:col-span-2 overflow-hidden">
+          <div className="lg:hidden mt-[20px]">
             <ImageGrid setName={handleSetName} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
           </div>
           <RenderedText />
@@ -95,10 +95,8 @@ const AboutPage = () => {
             </>
           )}
         </section>
-        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center mt-9 ml-9">
-          <div>
-            <ImageGrid setName={handleSetName} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
-          </div>
+        <section className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center relative h-[700px] ml-[20px]">
+          <ImageGrid setName={handleSetName} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
         </section>
       </div>
     </div>
