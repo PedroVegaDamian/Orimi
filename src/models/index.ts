@@ -38,3 +38,12 @@ export enum Categories {
   Insects = 'insects',
   Reptiles = 'reptiles'
 }
+
+
+export interface Order {
+  id: string;
+  created: number;
+  amount_total: number;
+  currency: string;
+  items: Product[]
+}
