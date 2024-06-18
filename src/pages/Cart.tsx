@@ -11,8 +11,6 @@ const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
   const { user } = useUserStore()
 
-  console.log('USER :' + user?.email)
-
   const navigate = useNavigate()
 
   const handleRemove = (slug: string | undefined) => {
@@ -24,7 +22,7 @@ const CartPage = () => {
     if (user) {
       navigate('/checkout')
     } else {
-      navigate('/login')
+      navigate('/login?redirect=/checkout')
     }
   }
   return (
