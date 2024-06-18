@@ -5,11 +5,13 @@ import {
 } from '@stripe/react-stripe-js'
 import { useCallback } from 'react'
 import { useCartStore } from '@/store/cartStore'
+import { useUserStore } from '@/store/userStore'
 
 const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 
 const CheckoutPage = () => {
   const cart = useCartStore(state => state.cart)
+  const user = useUserStore(state => state.user)
   const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
     const res = await fetch(
@@ -22,7 +24,7 @@ const CheckoutPage = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(cart)
+        body: JSON.stringify({cart, user})
       }
     )
     const data = await res.json()
