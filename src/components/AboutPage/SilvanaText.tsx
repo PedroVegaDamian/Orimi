@@ -1,8 +1,8 @@
+import { Title } from "@/components/ui/Title";
+
 const SilvanaText = () => (
-    <>
-        <h1 className="mb-20 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
-            Silvana Loureiro Molina - QA Analyst Software
-        </h1>
+    <div className="max-w-[90%] mx-auto mb-[100px] md:ml-9 lg:ml-[100px]">
+        <Title> Silvana Loureiro Molina - QA Analyst Software </Title>
         <p className="pb-5">
             Silvana Loureiro is a QA professional with a solid background supported by a Software Tester Diploma obtained at the Software Testing Center(endorsed by the Faculty of Engineering of Uruguay).Her passion for continuous improvement has led her to complement her education with courses in Python, programming for testers, and Postman, among others, allowing her to acquire advanced technical skills for her role.
         </p>
@@ -15,7 +15,7 @@ const SilvanaText = () => (
         <p className="pb-5">
             In summary, Silvana Loureiro is a committed, results - oriented professional with a unique combination of technical and soft skills.Her passion for excellence and her ability to work in a team make her an invaluable asset for this web development project.
         </p>
-    </>
+    </div>
 );
 
 export default SilvanaText;

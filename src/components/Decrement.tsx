@@ -16,7 +16,7 @@ export const Decrement = ({ id }: QuantityControlProps) => {
   return (
     <>
       <button onClick={() => handleDecrement(id)}>
-        <img src={IconMinus} alt="minus" />
+        <img src={IconMinus} alt="minus" className='w-[15px] lg:w-[20px]' />
       </button>
     </>
   )
