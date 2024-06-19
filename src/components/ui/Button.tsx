@@ -1,36 +1,29 @@
-import React from 'react'
-
-//TODO:hover y disabled
+import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: 'small' | 'medium' | 'large'
-  extraClass?: string
-  bgColor?: 'bg-primary_color' | 'bg-red_color'
-  disabled?: boolean
+  size?: 'small' | 'medium' | 'large';
+  extraClass?: string;
+  bgColor?: 'bg-primary_color' | 'bg-red_color';
 }
 
-export function Button({
+export const Button: React.FC<ButtonProps> = ({
   children,
-  disabled,
   size = 'medium',
   bgColor = 'bg-primary_color',
   extraClass,
   ...props
-}: ButtonProps) {
-  const baseClasses =
-    'text-black_color rounded-10 font-nunito font-semibold drop-shadow-lg'
+}) => {
+  const baseClasses = 'text-black_color rounded-10 font-nunito font-semibold drop-shadow-lg';
   const sizeClasses = {
     small: 'w-[100px] h-[47px] text-sm',
     medium: 'w-[144px] h-[47px] text-base',
-    large: 'w-[254px] h-[47px] text-lg'
-  }
-  const combinedClasses = `${baseClasses} ${
-    disabled ? 'bg-gray_color cursor-not-allowed' : ''
-  } ${sizeClasses[size]} ${extraClass || ''} ${bgColor}`
+    large: 'w-[254px] h-[47px] text-lg',
+  };
+  const combinedClasses = `${baseClasses} ${props.disabled ? 'bg-gray_color cursor-not-allowed' : ''} ${sizeClasses[size]} ${extraClass || ''} ${bgColor}`;
 
   return (
     <button className={combinedClasses} {...props}>
       {children}
     </button>
-  )
-}
+  );
+};
