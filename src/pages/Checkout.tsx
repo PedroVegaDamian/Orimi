@@ -7,18 +7,17 @@ import { useCallback } from 'react'
 import { useCartStore } from '@/store/cartStore'
 import { useUserStore } from '@/store/userStore'
 
-
 const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 
 const CheckoutPage = () => {
   const cart = useCartStore(state => state.cart)
   const user = useUserStore(state => state.user)
 
-
   const fetchClientSecret = useCallback(async () => {
     try {
       const res = await fetch(
-        'https://orimi-checkout.orimi.workers.dev/create-checkout-session',
+        // 'https://orimi-checkout.orimi.workers.dev/create-checkout-session',
+        'http://localhost:3000/create-checkout-session',
         {
           method: 'POST',
           headers: {
@@ -33,7 +32,7 @@ const CheckoutPage = () => {
       console.error('Error fetching client secret:', error)
       return
     }
-  }, []) 
+  }, [])
 
   const options = { fetchClientSecret }
 
