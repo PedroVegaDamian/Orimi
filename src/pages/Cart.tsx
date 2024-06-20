@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom'
   }
   const handleClick = () => {
     if (user) {
-     navigate( '/checkout')
+     navigate('/checkout')
     } else {
      navigate('/login')
     }

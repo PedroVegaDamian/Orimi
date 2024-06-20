@@ -20,6 +20,7 @@ const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
 
 import OrdersPage from '@/pages/Orders'
+const CheckoutPage = lazy(() => import('@/pages/Checkout'))
 import ContactInfoPage from '@/pages/ContactInfo'
 import AddressListPage from '@/pages/AddressList'
 
@@ -123,6 +124,17 @@ export const router = createBrowserRouter([
           <Suspense fallback={<Loading />}>
             <CartPage />
           </Suspense>
+        )
+      },
+      {
+        path: 'checkout',
+        loader: async () => await getCurrentUser(),
+        element: (
+          <ProtectedRoute>
+               <Suspense fallback={<Loading />}>
+            <CheckoutPage />
+          </Suspense>
+          </ProtectedRoute>
         )
       },
       {
