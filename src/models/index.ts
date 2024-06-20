@@ -27,6 +27,7 @@ export interface CartState {
   multiply: () => void
   totalSum: () => void
   isStock: (id: string | undefined) => void
+  resetCart: () => void
 }
 
 export enum Categories {
