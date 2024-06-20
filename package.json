@@ -12,6 +12,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.4.1",
+    "@formspark/use-formspark": "^0.1.39",
     "firebase": "^10.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

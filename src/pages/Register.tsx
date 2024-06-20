@@ -23,8 +23,8 @@ const RegisterPage: React.FC = () => {
     <div className="bg-white_color">
       <Title>Create an account</Title>
       <form onSubmit={handleRegister}>
-        <div className="flex flex-col flex-wrap items-start justify-center content-center mx-auto max-h-[330px] gap-x-[80px] gap-y-[20px]">
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+        <div className="flex flex-col flex-wrap items-center lg:items-start justify-center content-center mx-auto lg:max-h-[330px] lg:gap-x-[80px] lg:gap-y-[20px]">
+          <div className="flex flex-col lg:flex-col lg:flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="firstName">
               First name<span className="text-red_color">*</span>
             </Label>
@@ -41,7 +41,7 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="lastName">
               Last name<span className="text-red_color">*</span>
             </Label>
@@ -58,16 +58,16 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[475px] lg:max-w-[500px]">
             <Label htmlFor="phone">
               Phone<span className="text-red_color">*</span>
             </Label>
-            <div className="flex flex-row">
+            <div className="flex flex-col lg:flex-row">
               <select
                 id="prefix"
                 name="prefix"
                 onChange={handlePrefixChange}
-                className="border-1 border-grey_color rounded-10 px-[17px] w-[150px] h-[40px]"
+                className="border-1 border-grey_color rounded-10 px-[17px] lg:w-[150px] h-[40px]"
                 value={userData.phonePrefix || ''}
               >
                 <option value="" disabled>
@@ -79,6 +79,9 @@ const RegisterPage: React.FC = () => {
                   </option>
                 ))}
               </select>
+              <div className='h-[25px] lg:hidden'>
+                <ErrorMessage message={prefixError} />
+              </div>
               <Input
                 id="phone"
                 type="text"
@@ -86,15 +89,18 @@ const RegisterPage: React.FC = () => {
                 name="phone"
                 value={userData.phone}
                 onChange={handleInputChange}
+                className='lg:ml-[20px] lg:max-w-[300px]'
               />
             </div>
-            <div style={{ height: '20px', display: 'flex', gap: '41px' }}>
-              <ErrorMessage message={prefixError} />
+            <div className='h-[25px] lg:h-auto lg:flex lg:flex-row lg:gap-[41px]'>
               <ErrorMessage message={phoneError} />
+              <div className='hidden lg:block'>
+                <ErrorMessage message={prefixError} />
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="email">
               Email address<span className="text-red_color">*</span>
             </Label>
@@ -111,28 +117,32 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
-            <Label htmlFor="password">
-              Password<span className="text-red_color">*</span>
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Enter password"
-              name="password"
-              value={userData.password}
-              onChange={handleInputChange}
-            />
-            <small className="text-grey_500_color">
-              The password must have: at least 6 characters, one uppercase
-              letter, one lowercase letter and one number.
-            </small>
-            <div style={{ height: '20px' }}>
-              <ErrorMessage message={passwordError} />
-            </div>
-          </div>
+          <div className="flex flex-col flex-nowrap justify-center content-center sm:max-w-[217px] mb-2 lg:mb-0 md:max-w-[475px]">
+  <Label htmlFor="password">
+    Password<span className="text-red_color">*</span>
+  </Label>
+  <Input
+    id="password"
+    type="password"
+    placeholder="Enter password"
+    name="password"
+    value={userData.password}
+    onChange={handleInputChange}
+    className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
+  />
+  {!passwordError && (
+    <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
+      The password must have: at least 6 characters, one uppercase
+      letter, one lowercase letter and one number.
+    </small>
+  )}
+  <div style={{ height: '20px' }}>
+    <ErrorMessage message={passwordError} />
+  </div>
+</div>
 
-          <div className="flex flex-col flex-nowrap justify-center content-center max-w-[450px]">
+
+          <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="confirmPassword">
               Confirm Password<span className="text-red_color">*</span>
             </Label>
@@ -150,13 +160,13 @@ const RegisterPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-center mt-[97px]">
+        <div className="text-center mt-4 lg:mt-[97px]">
           <Button type="submit"> Create account</Button>
         </div>
       </form>
 
       <Link
-        className="py-[10px] block font-nunito text-base font-bold leading-19 text-center text-primary_800_color justify-center pt-5 pb-[10px]"
+        className="py-[10px] block font-nunito text-base font-bold leading-19 text-center text-primary_800_color justify-center lg:pt-5 pb-[10px] mb-[100px] lg:mb-0"
         to="/login"
       >
         Sign in

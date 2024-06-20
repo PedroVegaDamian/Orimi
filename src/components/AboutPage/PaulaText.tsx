@@ -1,8 +1,8 @@
+import { Title } from "@/components/ui/Title";
+
 const PaulaText = () => (
-    <>
-        <h1 className="mb-20 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
-            Paula Villegas Castro - Full Stack Developer
-        </h1>
+    <div className="max-w-[90%] mx-auto mb-[100px] md:ml-9 lg:ml-[100px]">
+        <Title> Paula Villegas Castro - Full Stack Developer </Title>
         <p className="pb-5">
             My name is Paula Villegas Castro, and I am a fullstack developer. My journey in the world of programming began with a frontend bootcamp, where I acquired a solid foundation in web development. My curiosity and desire to learn led me to participate in a project supported by Fundación Telefónica and 42 Madrid, where I was able to expand and refine my skills.
         </p>
@@ -15,7 +15,7 @@ const PaulaText = () => (
         <p className="pb-5">
             I want to continue growing in the programming world, which is why I am working on this project with my colleagues. It gives me the opportunity to apply my skills in a collaborative and challenging environment.
         </p>
-    </>
+    </div>
 );
 
 export default PaulaText;
