@@ -14,11 +14,12 @@ const HomePage = () => {
 
   return (
     <div className="bg-bg_color">
-      <div className="">
+      <div className="relative w-full" style={{ maxHeight: '250px', minHeight: '100px' }}>
         <img
           src={HeaderImage}
           alt="header"
-          className="h-28 w-full overflow-hidden"
+          className="w-full h-full object-cover"
+          style={{ maxHeight: '250px', minHeight: '100px' }}
         />
       </div>
 
@@ -27,7 +28,7 @@ const HomePage = () => {
           Best Sellers
         </h1>
         <Suspense fallback={<Loading />}>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] w-full">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-5 w-full justify-center items-center align-middle">
             <ProductItem products={products} />
           </div>
         </Suspense>
