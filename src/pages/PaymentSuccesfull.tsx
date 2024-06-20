@@ -5,24 +5,20 @@ import { useCartStore } from '@/store/cartStore'
 import addOrder from '@/services/addOrder'
 
 const PaymentSuccesfullPage = () => {
-  const navigate = useNavigate()
   const { cart, resetCart } = useCartStore()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     const sessionId = urlParams.get('session_id')
 
-    fetch(`http://localhost:3000/session-status?session_id=${sessionId}`)
+    fetch(
+      `https://orimi-checkout.orimi.workers.dev/session-status?session_id=${sessionId}`
+    )
       .then(res => res.json())
-      .then(data => {
-        const fetchAddOrder = async () => {
-          await addOrder(data.session, cart)
-        }
-        fetchAddOrder()
-        resetCart()
-        // borrar el carrito set cart to empty.
-      })
+      .then(data => addOrder(data.session, cart))
+      .then(() => resetCart())
   }, [])
 
   return (
