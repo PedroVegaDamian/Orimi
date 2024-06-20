@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { signIn } from '@/services/login'
 import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { auth } from '@/firebase'
 import { getUserById } from '@/services/user'
 import { useUserStore } from '@/store/userStore'
@@ -14,6 +14,7 @@ export const useLogin = () => {
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const setUser = useUserStore(state => state.setUser)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,7 +51,9 @@ export const useLogin = () => {
     if (result.success) {
       const user = await getUserById(result.user?.uid as string)
       setUser(user)
-      navigate('/')
+      const queryParams = searchParams.get('redirect')
+      if (queryParams === '/checkout') navigate('/checkout')
+      else navigate('/')
     } else {
       setError('Invalid email or password. Please try again.')
       console.error(result?.message)

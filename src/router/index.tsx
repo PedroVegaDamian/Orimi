@@ -18,6 +18,7 @@ const ProductsPage = lazy(() => import('@/pages/Products'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
+const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
 
 import OrdersPage from '@/pages/Orders'
 const CheckoutPage = lazy(() => import('@/pages/Checkout'))
@@ -131,10 +132,18 @@ export const router = createBrowserRouter([
         loader: async () => await getCurrentUser(),
         element: (
           <ProtectedRoute>
-               <Suspense fallback={<Loading />}>
-            <CheckoutPage />
-          </Suspense>
+            <Suspense fallback={<Loading />}>
+              <CheckoutPage />
+            </Suspense>
           </ProtectedRoute>
+        )
+      },
+      {
+        path: 'paymentsuccessfull',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PaymentSuccesfull />
+          </Suspense>
         )
       },
       {
