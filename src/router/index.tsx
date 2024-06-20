@@ -129,7 +129,6 @@ export const router = createBrowserRouter([
       },
       {
         path: 'checkout',
-        loader: async () => await getCurrentUser(),
         element: (
           <ProtectedRoute>
             <Suspense fallback={<Loading />}>
