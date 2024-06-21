@@ -12,19 +12,18 @@ const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 const CheckoutPage = () => {
   const cart = useCartStore(state => state.cart)
   const user = useUserStore(state => state.user)
+  const LOCAL_DOMAIN = 'http://localhost:3000/create-checkout-session'
+  const DOMAIN =  'https://orimi-checkout.orimi.workers.dev/create-checkout-session'
 
   const fetchClientSecret = useCallback(async () => {
     try {
-      const res = await fetch(
-        'https://orimi-checkout.orimi.workers.dev/create-checkout-session',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ cart, user: { email: user?.email } })
-        }
-      )
+      const res = await fetch(`${DOMAIN}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cart, user: { email: user?.email } })
+      })
       const data = await res.json()
       return data.clientSecret
     } catch (error) {
