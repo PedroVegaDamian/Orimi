@@ -14,7 +14,7 @@ const PaymentSuccesfullPage = () => {
     const sessionId = urlParams.get('session_id')
 
     fetch(
-      `https://orimi-checkout.orimi.workers.dev/session-status?session_id=${sessionId}`
+      `https://orimi-checkout-prod.orimi.workers.dev/session-status?session_id=${sessionId}`
     )
       .then(res => res.json())
       .then(data => addOrder(data.session, cart))
