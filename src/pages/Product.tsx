@@ -1,11 +1,12 @@
 import { getProduct } from '@/services/getProduct'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Product } from '@/models'
 import toast, { Toaster } from 'react-hot-toast'
 import { useCartStore } from '@/store/cartStore'
 import { Decrement } from '@/components/Decrement'
 import { Increment } from '@/components/Increment'
+import IconArrowBack from '@/assets/icons/icon_arrow_left_black.svg'
 
 const ProductPage = () => {
   // UseParams
@@ -22,7 +23,7 @@ const ProductPage = () => {
   // Check if the product is in the cart
   const [isInCart, setIsInCart] = useState(false)
   const [productInCart, setProductInCart] = useState<Product | undefined>()
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
@@ -40,7 +41,9 @@ const ProductPage = () => {
     setImage(imageUrl)
   }
 
-  const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAddToCart = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault()
     if (productInCart) {
       increment(product?.id)
@@ -61,7 +64,14 @@ const ProductPage = () => {
         <div className="container mx-auto px-4">
           <div className="mt-8 grid grid-cols-5 gap-4 lg:gap-0">
             {/* imágenes */}
-            <div className="col-span-5 lg:col-span-3 flex flex-col items-center">
+            <div className="col-span-5 flex flex-col items-start">
+              <button
+              onClick={() => navigate(-1)}
+                type="button"
+                className=" lg:hidden flex items-start justify-start w-1/2 py-2 text-primary_800_color"
+              >
+                <img className=" text-primary_800_color" src={IconArrowBack}></img>
+              </button>
               <div className="flex items-center justify-center overflow-hidden rounded-lg w-full lg:w-6/12">
                 <img
                   className="w-full h-full object-cover overflow-hidden rounded-lg"
@@ -117,7 +127,9 @@ const ProductPage = () => {
                     {isInCart && (
                       <div className="flex items-center mt-3">
                         <Decrement id={product?.id} />
-                        <p className="px-6 text-2xl">{cart[index]?.quantity || 0}</p>
+                        <p className="px-6 text-2xl">
+                          {cart[index]?.quantity || 0}
+                        </p>
                         <Increment id={product?.id} />
                       </div>
                     )}
@@ -129,7 +141,9 @@ const ProductPage = () => {
                   </span>
                   <button
                     className={`flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked || isInCart ? 'cursor-not-allowed bg-primary_500_color' : ''
+                      isClicked || isInCart
+                        ? 'cursor-not-allowed bg-primary_500_color'
+                        : ''
                     }`}
                     disabled={isClicked || isInCart}
                     onClick={handleAddToCart}
@@ -156,13 +170,17 @@ const ProductPage = () => {
                   {isInCart && (
                     <div className="flex items-center mt-3">
                       <Decrement id={product?.id} />
-                      <p className="px-6 text-2xl">{cart[index]?.quantity || 0}</p>
+                      <p className="px-6 text-2xl">
+                        {cart[index]?.quantity || 0}
+                      </p>
                       <Increment id={product?.id} />
                     </div>
                   )}
                   <button
                     className={`flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 mb-[70px] text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked || isInCart ? 'cursor-not-allowed bg-primary_500_color' : ''
+                      isClicked || isInCart
+                        ? 'cursor-not-allowed bg-primary_500_color'
+                        : ''
                     }`}
                     disabled={isClicked || isInCart}
                     onClick={handleAddToCart}
