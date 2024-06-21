@@ -13,17 +13,19 @@ const LoginPage = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const ProductPage = lazy(() => import('@/pages/Product'))
 const ContactPage = lazy(() => import('@/pages/Contact'))
-const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
-const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
 
-import OrdersPage from '@/pages/Orders'
+const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
 const CheckoutPage = lazy(() => import('@/pages/Checkout'))
-import ContactInfoPage from '@/pages/ContactInfo'
-import AddressListPage from '@/pages/AddressList'
+
+const ProfilePage = lazy(() => import('@/pages/Profile'))
+const ContactInfoPage = lazy(() => import('@/pages/ContactInfo'))
+const AddressListPage = lazy(() => import('@/pages/AddressList'))
+const OrdersPage = lazy(() => import('@/pages/Orders'))
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'))
 
 export const router = createBrowserRouter([
   {
@@ -104,6 +106,10 @@ export const router = createBrowserRouter([
           {
             path: 'orders',
             element: <OrdersPage />
+          },
+          {
+            path: 'orders/:orderId',
+            element: <OrderDetailPage />
           },
           {
             index: true,

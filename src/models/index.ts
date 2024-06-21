@@ -43,8 +43,12 @@ export enum Categories {
 
 export interface Order {
   id: string;
-  created: number;
-  amount_total: number;
-  currency: string;
-  items: Product[]
+  order_number: string;
+  date: string;
+  cart: {
+    image1: string;
+    quantity: number;
+    subtotal?: number;
+    price: number;
+  }[];
 }

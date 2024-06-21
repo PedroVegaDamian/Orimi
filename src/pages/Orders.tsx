@@ -1,35 +1,46 @@
 import { useEffect, useState } from 'react';
+import { fetchOrdersFromFirebase } from '@/services/fetchOrders';
 import { Title } from '@/components/ui';
 import IconEyeBlack from '@/assets/icons/icon_eye_black.svg';
-import { Order } from '@/models/index'; 
+import { useUserStore } from '@/store/userStore';
+import { Order } from '@/models';
+import { Link } from 'react-router-dom';
 
 const OrdersPage = () => {
+    const userEmail = useUserStore((state) => state.user?.email);
     const [orders, setOrders] = useState<Order[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
-            try {
-                const response = await fetch('https://orimi-checkout.orimi.workers.dev/profile/orders');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Verificar que los datos recibidos son un array
-                if (!Array.isArray(data)) {
-                    throw new Error('Data is not an array');
-                }
+            if (!userEmail) {
+                setError('User email is required');
+                setLoading(false);
+                return;
+            }
 
-                setOrders(data);
+            try {
+                const ordersData = await fetchOrdersFromFirebase(userEmail);
+                setOrders(ordersData);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching orders:', error);
+                setError('Failed to fetch orders');
+                setLoading(false);
             }
         };
 
         fetchOrders();
-    }, []);
+    }, [userEmail]);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <section>
@@ -44,15 +55,15 @@ const OrdersPage = () => {
                 orders.map((order) => (
                     <div key={order.id} className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-col items-start md:items-start">
                         <div className="flex flex-col items-start md:items-start mb-4 md:mb-0 md:w-full">
-                            <p>Order: {order.id}</p>
-                            <p>Date: {new Date(order.created * 1000).toLocaleDateString()}</p>
-                            <p>Price: <span className='text-primary_800_color font-bold'>{(order.amount_total / 100).toFixed(2)} {order.currency.toUpperCase()}</span></p>
+                            <p>Order: {order.order_number.slice(-6)}</p>
+                            <p>Date: {order.date}</p>
+                            <p>Price: <span className='text-primary_800_color font-bold'>${order.cart.reduce((total, item) => total + (item.subtotal || 0), 0).toFixed(2)}</span></p>
                         </div>
                         <div className='flex items-center justify-center w-full'>
-                            <a href={`/order/${order.id}`} className='flex items-center'>
+                            <Link to={`/profile/orders/${order.id}`} className='flex items-center'>
                                 See your order
                                 <img src={IconEyeBlack} alt="Plus Icon" className="ml-[10px]" />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 ))
