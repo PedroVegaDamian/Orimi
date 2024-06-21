@@ -3,6 +3,7 @@ import { useLogin } from '@/hooks/useLogin'
 import IconFacebook from '@/assets/icons/icon_facebook.svg'
 import IconGoogle from '@/assets/icons/icon_google.svg'
 import { useUserStore } from '@/store/userStore'
+import { useEffect } from 'react'
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -16,12 +17,15 @@ const LoginPage = () => {
     error,
     handleSubmit
   } = useLogin()
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   return (
     <>
-      {user ? (
-        navigate('/')
-      ) : (
+    
         <section className="bg-white_color">
           <div className="flex flex-col items-center justify-center px-6 py-8">
             <div className="w-full max-w-md ">
@@ -134,7 +138,7 @@ const LoginPage = () => {
             </div>
           </div>
         </section>
-      )}
+     
     </>
   )
 }
