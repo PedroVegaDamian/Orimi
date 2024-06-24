@@ -89,7 +89,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center">
+        {/* <div className="flex flex-col justify-center items-center">
           <div>
             <svg
               width="545"
@@ -127,7 +127,7 @@ const LoginPage = () => {
               <span>Facebook</span>
             </button>
           </div>
-        </div>
+        </div> */}
       </section>
     </>
   )
