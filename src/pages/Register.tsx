@@ -93,9 +93,9 @@ const RegisterPage: React.FC = () => {
               />
             </div>
             <div className='h-[25px] lg:h-auto lg:flex lg:flex-row lg:gap-[41px]'>
-              <ErrorMessage message={phoneError} />
+              <ErrorMessage message={prefixError}/>
               <div className='hidden lg:block'>
-                <ErrorMessage message={prefixError} />
+                <ErrorMessage message={phoneError} />
               </div>
             </div>
           </div>
@@ -118,29 +118,27 @@ const RegisterPage: React.FC = () => {
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center sm:max-w-[217px] mb-2 lg:mb-0 md:max-w-[475px]">
-  <Label htmlFor="password">
-    Password<span className="text-red_color">*</span>
-  </Label>
-  <Input
-    id="password"
-    type="password"
-    placeholder="Enter password"
-    name="password"
-    value={userData.password}
-    onChange={handleInputChange}
-    className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
-  />
-  {!passwordError && (
-    <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
-      The password must have: at least 6 characters, one uppercase
-      letter, one lowercase letter and one number.
-    </small>
-  )}
-  <div style={{ height: '20px' }}>
-    <ErrorMessage message={passwordError} />
-  </div>
-</div>
-
+            <Label htmlFor="password">
+              Password<span className="text-red_color">*</span>
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              name="password"
+              value={userData.password}
+              onChange={handleInputChange}
+              className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
+            />
+            {!passwordError && (
+              <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
+                The password must have: at least 6 characters, one uppercase letter, one lowercase letter, one number and one special character.
+              </small>
+            )}
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={passwordError} />
+            </div>
+          </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="confirmPassword">
