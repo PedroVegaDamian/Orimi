@@ -1,11 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useLogin } from '@/hooks/useLogin'
-import IconFacebook from '@/assets/icons/icon_facebook.svg'
-import IconGoogle from '@/assets/icons/icon_google.svg'
 
 const LoginPage = () => {
-  const navigate = useNavigate()
-
   const {
     setEmail,
     setPassword,
@@ -70,8 +66,8 @@ const LoginPage = () => {
                     Submit
                   </button>
                   <Link
-                   className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
-                   to='/reset-password'
+                    className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
+                    to="/forgot-password"
                   >
                     Forgot password?
                   </Link>
@@ -79,7 +75,7 @@ const LoginPage = () => {
                     Don’t have an account yet?{' '}
                     <Link
                       className="font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
-                      to='/register'
+                      to="/register"
                     >
                       Create account
                     </Link>

@@ -18,6 +18,8 @@ const ProductsPage = lazy(() => import('@/pages/Products'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
+const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword'))
+const SendRestePasswordEmailPage = lazy(() => import('@/pages/SendResetPasswordEmail'))
 
 import OrdersPage from '@/pages/Orders'
 import ContactInfoPage from '@/pages/ContactInfo'
@@ -77,6 +79,22 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <LoginPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'forgot-password',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ForgotPasswordPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'send-reset-password-email',  
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SendRestePasswordEmailPage />
           </Suspense>
         )
       },
