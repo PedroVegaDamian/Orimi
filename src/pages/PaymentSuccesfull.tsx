@@ -12,37 +12,17 @@ const PaymentSuccessfulPage = () => {
   const { user } = useUserStore();
 
   useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const sessionId = urlParams.get('session_id');
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const sessionId = urlParams.get('session_id')
 
-    console.log('User:', user);
-
-    if (sessionId && user) {
-      fetch(
-        `https://orimi-checkout.orimi.workers.dev/session-status?session_id=${sessionId}`
-      )
-        .then(res => res.json())
-        .then(data => {
-          const order = {
-            ...data.session,
-            cart,
-            // shippingAddress: defaultAddress, 
-          };
-          return addOrder(order, cart);
-        })
-        .then(() => resetCart())
-        .catch(error => console.error('Error processing order:', error));
-    }
-  }, [cart, resetCart, user]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/');
-    }, 60000);
-
-    return () => clearTimeout(timer);
-  }, [navigate]);
+    fetch(
+      `https://orimi-checkout-prod.orimi.workers.dev/session-status?session_id=${sessionId}`
+    )
+      .then(res => res.json())
+      .then(data => addOrder(data.session, cart))
+      .then(() => resetCart())
+  }, [])
 
   return (
     <div className="flex justify-center items-center w-full mt-10">

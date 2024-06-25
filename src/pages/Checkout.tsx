@@ -16,7 +16,7 @@ const CheckoutPage = () => {
   const fetchClientSecret = useCallback(async () => {
     try {
       const res = await fetch(
-        'https://orimi-checkout.orimi.workers.dev/create-checkout-session',
+        'https://orimi-checkout-prod.orimi.workers.dev/create-checkout-session',
         {
           method: 'POST',
           headers: {

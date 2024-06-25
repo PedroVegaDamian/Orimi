@@ -23,7 +23,7 @@ const CartPage = () => {
     if (user) {
       navigate('/checkout')
     } else {
-      navigate('/login')
+      navigate('/login?redirect=/checkout')
     }
   }
 
