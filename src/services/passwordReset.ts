@@ -2,6 +2,7 @@ import { getAuth, updatePassword as firebaseUpdatePassword, reauthenticateWithCr
 import { doc, updateDoc, getFirestore, serverTimestamp } from "firebase/firestore";
 import { FirebaseError } from 'firebase/app'; 
 import { NavigateFunction } from 'react-router-dom';
+import { useUserStore } from '@/store/userStore';
 
 const auth = getAuth();
 const db = getFirestore();
@@ -37,8 +38,10 @@ export const updatePassword = async (currentPassword: string, newPassword: strin
         });
 
         // Sign out the user and redirect to login
+        const userStore = useUserStore.getState();
         await firebaseSignOut(auth);
         localStorage.removeItem('user');
+        userStore.setUser(null);
         console.log('User has been signed out');
         navigate('/login');
     } catch (error: unknown) {
