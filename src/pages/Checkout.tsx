@@ -5,13 +5,14 @@ import {
 } from '@stripe/react-stripe-js'
 import { useCallback } from 'react'
 import { useCartStore } from '@/store/cartStore'
-import { useUserStore } from '@/store/userStore'
+import { useLoaderData } from 'react-router-dom'
+import { UserPrimaryData } from '@/models/user'
 
 const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 
 const CheckoutPage = () => {
   const cart = useCartStore(state => state.cart)
-  const user = useUserStore(state => state.user)
+  const user = useLoaderData() as UserPrimaryData
 
   const fetchClientSecret = useCallback(async () => {
     try {

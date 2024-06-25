@@ -22,14 +22,14 @@ const CartPage = () => {
 
   const handleClick = () => {
     if (user) {
-      navigate('/checkout')
+      navigate('/checkout', { state: { from: '/cart' } })
     } else {
       navigate('/login?redirect=/checkout')
     }
   }
 
   return (
-    <div className='bg-bg_color'>
+    <div className="bg-bg_color">
       {cart.length === 0 ? (
         <EmptyCart />
       ) : (
@@ -40,8 +40,12 @@ const CartPage = () => {
             <div className="grid py-6 text-center lg:text-left">
               <div className="grid grid-cols-3">
                 <p></p>
-                <p className="font-nunito lg:text-xl text-gray-500 text-center">Quantity</p>
-                <p className="font-nunito lg:text-xl text-gray-500 text-center">Total</p>
+                <p className="font-nunito lg:text-xl text-gray-500 text-center">
+                  Quantity
+                </p>
+                <p className="font-nunito lg:text-xl text-gray-500 text-center">
+                  Total
+                </p>
               </div>
             </div>
             {/* Table Content */}
@@ -64,7 +68,9 @@ const CartPage = () => {
                 <div className="flex justify-center items-center h-[80px] flex-col">
                   <div className="flex items-center">
                     <Decrement id={product?.id} />
-                    <p className="px-[10px] lg:px-6 lg:text-2xl">{product.quantity}</p>
+                    <p className="px-[10px] lg:px-6 lg:text-2xl">
+                      {product.quantity}
+                    </p>
                     <Increment id={product?.id} />
                   </div>
                   {product.stock <= 0 && (
@@ -88,7 +94,9 @@ const CartPage = () => {
             {/* Total Amount */}
             <div className="rounded-lg pr-6 lg:rounded-xl lg:p-6 w-full mb-8 bg-white_color border-1 border-primary_color">
               <div className="flex items-center justify-end w-full py-6">
-                <p className="font-nunito pr-5 font-bold lg:text-3xl lg:font-medium">Total</p>
+                <p className="font-nunito pr-5 font-bold lg:text-3xl lg:font-medium">
+                  Total
+                </p>
                 <h6 className="font-nunito font-bold lg:font-medium lg:text-3xl leading-9">
                   {`$  ${total}`}
                 </h6>
