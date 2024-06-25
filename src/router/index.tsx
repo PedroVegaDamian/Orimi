@@ -15,7 +15,7 @@ const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
-import { ProtectedRoute } from './ProtectedRoute'
+import { LoginProtectedRoute, ProtectedRoute } from './ProtectedRoute'
 import { getCurrentUser } from '@/services/user'
 
 export const router = createBrowserRouter([
@@ -65,10 +65,13 @@ export const router = createBrowserRouter([
       },
       {
         path: 'login',
+        loader: async () => await getCurrentUser(),
         element: (
-          <Suspense fallback={<Loading />}>
-            <LoginPage />
-          </Suspense>
+          <LoginProtectedRoute>
+            <Suspense fallback={<Loading />}>
+              <LoginPage />
+            </Suspense>
+          </LoginProtectedRoute>
         )
       },
       {
@@ -76,9 +79,9 @@ export const router = createBrowserRouter([
         loader: async () => await getCurrentUser(),
         element: (
           <ProtectedRoute>
-               <Suspense fallback={<Loading />}>
-            <ProfilePage />
-          </Suspense>
+            <Suspense fallback={<Loading />}>
+              <ProfilePage />
+            </Suspense>
           </ProtectedRoute>
         )
       },
@@ -106,7 +109,6 @@ export const router = createBrowserRouter([
           </Suspense>
         )
       }
-      
     ]
   },
   {
