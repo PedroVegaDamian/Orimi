@@ -30,8 +30,8 @@ export const Input: React.FC<InputProps> = ({ className, type, name, value, onCh
       value = value.replace(/\s/g, ''); // Sin espacios
     }
 
-    e.target.value = value; // Update the event's value
-    onChange(e); // Call the onChange handler
+    e.target.value = value; 
+    onChange(e); 
   };
 
   return <input {...props} type={type} name={name} value={value} className={combinedClasses} onChange={handleInputChange} />;
