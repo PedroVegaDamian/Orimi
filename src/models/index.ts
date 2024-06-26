@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface Product {
   id: string
   name: string
@@ -43,6 +45,8 @@ export enum Categories {
 
 export interface Order {
   id: string;
+  email: string;
+  createdAt: Timestamp;
   order_number: string;
   date: string;
   cart: {

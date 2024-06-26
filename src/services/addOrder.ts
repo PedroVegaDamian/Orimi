@@ -1,20 +1,19 @@
-import { db } from '@/firebase'
-import { Product } from '@/models'
-import { doc, setDoc } from 'firebase/firestore'
-import DateFormater from '@/utils/dateFormater'
+import { db } from '@/firebase';
+import { Product } from '@/models';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 type Session = {
-  id: string
-  created: number
-  customer_email: string
+  id: string;
+  created: number;
+  customer_email: string;
 }
 
 const addOrder = async (session: Session, cart: Product[]) => {
   try {
-    const orderRef = doc(db, 'orders', session.id)
-    const order = await setDoc(orderRef, {
+    const orderRef = doc(db, 'orders', session.id);
+    await setDoc(orderRef, {
       order_number: session.id,
-      date: DateFormater(session.created),
+      date: new Date(session.created * 1000).toISOString(), // Guardar la fecha como string ISO
       email: session.customer_email,
       cart: cart.map(item => ({
         image1: item.image1,
@@ -22,13 +21,14 @@ const addOrder = async (session: Session, cart: Product[]) => {
         price: item.price,
         quantity: item.quantity,
         subtotal: item.subtotal
-      }))
-    })
-    return order
+      })),
+      createdAt: serverTimestamp() 
+    });
+    console.log('Order added successfully');
   } catch (error) {
-    console.error('Error adding order: ', error)
-    throw error
+    console.error('Error adding order: ', error);
+    throw error;
   }
 }
 
-export default addOrder
+export default addOrder;
