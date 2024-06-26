@@ -42,6 +42,8 @@ const OrdersPage = () => {
         return <p>{error}</p>;
     }
 
+    const recentOrders = orders.slice(-3).reverse();
+
     return (
         <section>
             <Title className='md:text-left md:pl-[100px]'>My Orders</Title>
@@ -52,7 +54,7 @@ const OrdersPage = () => {
                     <p>Select a product, add it to your cart, and complete the purchase.</p>
                 </div>
             ) : (
-                orders.map((order) => (
+                recentOrders.map((order) => (
                     <div key={order.id} className="w-[90%] mx-auto pt-[24px] pb-[24px] flex flex-col items-start md:items-start">
                         <div className="flex flex-col items-start md:items-start mb-4 md:mb-0 md:w-full">
                             <p>Order: {order.order_number.slice(-6)}</p>
@@ -65,10 +67,11 @@ const OrdersPage = () => {
                                 <img src={IconEyeBlack} alt="Plus Icon" className="ml-[10px]" />
                             </Link>
                         </div>
+                        <hr className='border-grey_color w-[90%] mx-auto mt-4'/>
                     </div>
+                    
                 ))
             )}
-            <hr className='border-grey_color w-[90%] mx-auto'/>
         </section>
     );
 };
