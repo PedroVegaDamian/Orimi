@@ -20,7 +20,7 @@ const CartPage = () => {
   }
   const handleClick = () => {
     if (user) {
-      navigate('/checkout')
+      navigate('/checkout', { state: { from: '/cart' } })
     } else {
       navigate('/login?redirect=/checkout')
     }

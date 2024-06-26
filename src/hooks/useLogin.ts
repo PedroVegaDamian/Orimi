@@ -52,7 +52,8 @@ export const useLogin = () => {
       const user = await getUserById(result.user?.uid as string)
       setUser(user)
       const queryParams = searchParams.get('redirect')
-      if (queryParams === '/checkout') navigate('/checkout')
+      if (queryParams === '/checkout')
+      navigate('/checkout', { state: { from: '/cart' } })
       else navigate('/')
     } else {
       setError('Invalid email or password. Please try again.')

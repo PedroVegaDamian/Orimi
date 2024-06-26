@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import { Loading } from '@/components/Loading'
 import { getCurrentUser } from '@/services/user'
-import { ProtectedRoute } from './ProtectedRoute'
+import { ProtectedRoute, CheckoutProtectedRoute } from './ProtectedRoute'
 
 const HomePage = lazy(() => import('@/pages/Home'))
 const CartPage = lazy(() => import('@/pages/Cart'))
@@ -129,11 +129,14 @@ export const router = createBrowserRouter([
       },
       {
         path: 'checkout',
+        loader: async () => await getCurrentUser(),
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<Loading />}>
-              <CheckoutPage />
-            </Suspense>
+            <CheckoutProtectedRoute>
+              <Suspense fallback={<Loading />}>
+                <CheckoutPage />
+              </Suspense>
+            </CheckoutProtectedRoute>
           </ProtectedRoute>
         )
       },

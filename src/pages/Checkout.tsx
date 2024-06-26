@@ -5,14 +5,15 @@ import {
 } from '@stripe/react-stripe-js'
 import { useCallback } from 'react'
 import { useCartStore } from '@/store/cartStore'
-import { useUserStore } from '@/store/userStore'
+import { useLoaderData } from 'react-router-dom'
+import { UserPrimaryData } from '@/models/user'
 
 const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 
 const CheckoutPage = () => {
   const cart = useCartStore(state => state.cart)
-  const user = useUserStore(state => state.user)
-  const LOCAL_DOMAIN = 'http://localhost:3000/create-checkout-session'
+  const user = useLoaderData() as UserPrimaryData
+  // const LOCAL_DOMAIN = 'http://localhost:8787/create-checkout-session'
   const DOMAIN =  'https://orimi-checkout.orimi.workers.dev/create-checkout-session'
 
   const fetchClientSecret = useCallback(async () => {
