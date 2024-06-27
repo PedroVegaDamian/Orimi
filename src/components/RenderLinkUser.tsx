@@ -28,7 +28,7 @@ export const RenderLinkUser = ({ className = '', onClick }: RenderLinkUserProps)
 
     if (user) {
         return (
-            <Link to="/profile" className={`block bg-primary_color py-3 px-4 rounded-xl max-w-[10rem] ${className} overflow-hidden text-ellipsis whitespace-nowrap`}>
+            <Link to="/profile" className={`block bg-primary_color py-3 px-4 rounded-xl max-w-[10rem] ${className} overflow-hidden text-ellipsis whitespace-nowrap`} onClick={onClick}>
                 <span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
                     Hi {user.firstName} {user.lastName}!
                 </span>

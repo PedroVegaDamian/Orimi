@@ -11,7 +11,6 @@ import { Title } from '@/components/ui/Title'
 const CartPage = () => {
   const { total, cart, removeProduct, multiply, totalSum } = useCartStore()
   const { user } = useUserStore()
-
   const navigate = useNavigate()
 
   const handleRemove = (slug: string | undefined) => {
