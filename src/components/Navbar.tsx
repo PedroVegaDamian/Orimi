@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 import Logo from '@/assets/logo.svg';
 import IconBag from '@/assets/icons/icon_bag.svg';
@@ -15,8 +16,23 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const cartItemsCount = useCartStore((state) => state.cart.length);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const isActiveLink = (path : string) => location.pathname === path;
+  const isActiveLink = (path: string) => location.pathname === path;
+  useBodyScrollLock(isMenuOpen);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuRef]);
 
   return (
     <header className="bg-white_color flex justify-between items-center h-[107px] p-6 font-nunito sticky z-10 top-0 shadow-[0_4px_4px_0_rgba(0,0,0,0.15)] ">
@@ -52,7 +68,7 @@ export const Navbar = () => {
         <img src={Logo} alt="Oromi Logo" />
       </Link>
 
-      <nav className={`lg:flex lg:gap-[20px] lg:items-center lg:ml-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 shadow-[0_4px_4px_0_rgba(0,0,0,0.15)]' : 'hidden lg:opacity-100 lg:shadow-none'} absolute lg:static top-[107px] left-0 right-0 bg-white_color lg:bg-transparent w-full pl-[50px] pt-[24px] pb-[24px] pr-[20px]`}>
+      <nav ref={menuRef} className={`lg:flex lg:gap-[20px] lg:items-center lg:ml-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 shadow-[0_4px_4px_0_rgba(0,0,0,0.15)]' : 'hidden lg:opacity-100 lg:shadow-none'} absolute lg:static top-[107px] left-0 right-0 bg-white_color lg:bg-transparent w-full pl-[50px] pt-[24px] pb-[24px] pr-[20px]`}>
         <div className="lg:flex lg:justify-end lg:w-full">
           <Link to="/" className={`flex items-center justify-between mb-[15px] lg:mb-0 lg:mr-[30px] ${isActiveLink('/') ? 'text-primary_800_color font-bold' : ''}`} onClick={() => setIsMenuOpen(false)}>
             Home <img className={`lg:hidden ${isActiveLink('/') ? '_color' : ''}`} src={isActiveLink('/') ? IconArrowColor : IconArrow} alt="Arrow Right Icon" />

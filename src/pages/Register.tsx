@@ -1,23 +1,17 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useRegister } from '@/hooks/useRegister'
-import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui'
-import { countryPrefixes } from '@/utils/prefixes'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useRegister } from '@/hooks/useRegister';
+import { Title, Label, Input, Button, ErrorMessage } from '@/components/ui';
+import { countryPrefixes } from '@/utils/prefixes';
 
 const RegisterPage: React.FC = () => {
   const {
     userData,
-    firstNameError,
-    lastNameError,
-    prefixError,
-    phoneError,
-    emailError,
-    passwordError,
-    confirmPasswordError,
+    errors,
     handleInputChange,
     handlePrefixChange,
     handleRegister
-  } = useRegister()
+  } = useRegister();
 
   return (
     <div className="bg-white_color">
@@ -37,7 +31,7 @@ const RegisterPage: React.FC = () => {
               onChange={handleInputChange}
             />
             <div style={{ height: '20px' }}>
-              <ErrorMessage message={firstNameError} />
+              <ErrorMessage message={errors.firstName || ''} />
             </div>
           </div>
 
@@ -54,7 +48,7 @@ const RegisterPage: React.FC = () => {
               onChange={handleInputChange}
             />
             <div style={{ height: '20px' }}>
-              <ErrorMessage message={lastNameError} />
+              <ErrorMessage message={errors.lastName || ''} />
             </div>
           </div>
 
@@ -80,7 +74,7 @@ const RegisterPage: React.FC = () => {
                 ))}
               </select>
               <div className='h-[25px] lg:hidden'>
-                <ErrorMessage message={prefixError} />
+                <ErrorMessage message={errors.phonePrefix || ''} />
               </div>
               <Input
                 id="phone"
@@ -93,9 +87,9 @@ const RegisterPage: React.FC = () => {
               />
             </div>
             <div className='h-[25px] lg:h-auto lg:flex lg:flex-row lg:gap-[41px]'>
-              <ErrorMessage message={phoneError} />
+              <ErrorMessage message={errors.phonePrefix || ''} />
               <div className='hidden lg:block'>
-                <ErrorMessage message={prefixError} />
+                <ErrorMessage message={errors.phone || ''} />
               </div>
             </div>
           </div>
@@ -113,34 +107,32 @@ const RegisterPage: React.FC = () => {
               onChange={handleInputChange}
             />
             <div style={{ height: '20px' }}>
-              <ErrorMessage message={emailError} />
+              <ErrorMessage message={errors.email || ''} />
             </div>
           </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center sm:max-w-[217px] mb-2 lg:mb-0 md:max-w-[475px]">
-  <Label htmlFor="password">
-    Password<span className="text-red_color">*</span>
-  </Label>
-  <Input
-    id="password"
-    type="password"
-    placeholder="Enter password"
-    name="password"
-    value={userData.password}
-    onChange={handleInputChange}
-    className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
-  />
-  {!passwordError && (
-    <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
-      The password must have: at least 6 characters, one uppercase
-      letter, one lowercase letter and one number.
-    </small>
-  )}
-  <div style={{ height: '20px' }}>
-    <ErrorMessage message={passwordError} />
-  </div>
-</div>
-
+            <Label htmlFor="password">
+              Password<span className="text-red_color">*</span>
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              name="password"
+              value={userData.password}
+              onChange={handleInputChange}
+              className="sm:w-full sm:max-w-[217px] md:max-w-[475px]"
+            />
+            {!errors.password && (
+              <small className="text-grey_500_color text-[10px] max-w-[217px] md:max-w-[475px] block">
+                The password must have: at least 6 characters, one uppercase letter, one lowercase letter, one number and one special character.
+              </small>
+            )}
+            <div style={{ height: '20px' }}>
+              <ErrorMessage message={errors.password || ''} />
+            </div>
+          </div>
 
           <div className="flex flex-col flex-nowrap justify-center content-center lg:max-w-[450px] mb-2 lg:mb-0">
             <Label htmlFor="confirmPassword">
@@ -155,13 +147,13 @@ const RegisterPage: React.FC = () => {
               onChange={handleInputChange}
             />
             <div style={{ height: '20px' }}>
-              <ErrorMessage message={confirmPasswordError} />
+              <ErrorMessage message={errors.confirmPassword || ''} />
             </div>
           </div>
         </div>
 
         <div className="text-center mt-4 lg:mt-[97px]">
-          <Button type="submit"> Create account</Button>
+          <Button type="submit">Create account</Button>
         </div>
       </form>
 
@@ -172,6 +164,7 @@ const RegisterPage: React.FC = () => {
         Sign in
       </Link>
     </div>
-  )
+  );
 }
-export default RegisterPage
+
+export default RegisterPage;
