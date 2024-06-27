@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { useCartStore } from '@/store/cartStore'
 import { Decrement } from '@/components/Decrement'
 import { Increment } from '@/components/Increment'
-import IconArrowBack from '@/assets/icons/icon_arrow_left_black.svg'
+import IconArrowBack from '@/assets/icons/icon_arrow_left_color.svg'
 
 const ProductPage = () => {
   // UseParams
@@ -66,11 +66,15 @@ const ProductPage = () => {
             {/* imágenes */}
             <div className="col-span-5 flex flex-col items-start">
               <button
-              onClick={() => navigate(-1)}
+                onClick={() => navigate(-1)}
                 type="button"
                 className=" lg:hidden flex items-start justify-start w-1/2 py-2 text-primary_800_color"
               >
-                <img className=" text-primary_800_color" src={IconArrowBack}></img>
+                <img
+                  className=" text-primary_800_color"
+                  src={IconArrowBack}
+                ></img>
+                <p className="pl-3 items-center">BACK</p>
               </button>
               <div className="flex items-center justify-center overflow-hidden rounded-lg w-full lg:w-6/12">
                 <img
