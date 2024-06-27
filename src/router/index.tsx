@@ -22,7 +22,7 @@ const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
 
 import OrdersPage from '@/pages/Orders'
 const CheckoutPage = lazy(() => import('@/pages/Checkout'))
-import ContactInfoPage from '@/pages/ContactInfo'
+import UserInfoPage from '@/pages/UserInfo'
 import AddressListPage from '@/pages/AddressList'
 
 export const router = createBrowserRouter([
@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: 'myData',
-            element: <ContactInfoPage />
+            element: <UserInfoPage />
           },
           {
             path: 'addresses',

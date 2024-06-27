@@ -8,7 +8,7 @@ import IconPencil from '@/assets/icons/icon_pencil_black.svg';
 import { UserData } from '@/models/user';
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
-const ContactInfoPage = () => {
+const UserInfoPage = () => {
     const { user } = useStore(state => ({
         user: state.user as UserData | null,
     }));
@@ -60,4 +60,4 @@ const ContactInfoPage = () => {
     );
 };
 
-export default ContactInfoPage;
+export default UserInfoPage;

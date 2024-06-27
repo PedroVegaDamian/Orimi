@@ -23,6 +23,8 @@ export const updatePassword = async (currentPassword: string, newPassword: strin
         throw new Error("User is not authenticated or does not have an email.");
     }
 
+
+
     try {
         // Reauthenticate the user
         await reauthenticate(user.email, currentPassword);

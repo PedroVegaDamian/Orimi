@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ModalBase from './ModalBase';
 import { Input, Label, Title, Button, ErrorMessage } from "@/components/ui";
-import { updatePassword } from '@/services/passwordReset';
+import { updatePassword } from '@/services/updatePassword';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -30,6 +30,12 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, close
 
         if (!currentPassword) {
             newErrors.currentPassword = 'The current password is required.';
+            isValid = false;
+        }
+
+        // Validation: currentPassword !== newPassword
+        if (currentPassword === newPassword) {
+            newErrors.currentPassword = 'The new password cannot be the same as the current password.';
             isValid = false;
         }
 
