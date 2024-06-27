@@ -1,37 +1,21 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useStore } from '@/store';
 import { Title } from '@/components/ui';
 import EditUserModals from '@/components/modals/EditUser';
-import { sendResetPasswordEmail } from '@/services/passwordReset';
+import ChangePasswordModal from '@/components/modals/ChangePassword';
 
 import IconPencil from '@/assets/icons/icon_pencil_black.svg';
 import { UserData } from '@/models/user';
-
 import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
-import toast, { Toaster } from 'react-hot-toast';
-
-const ContactInfoPage = () => {
+const UserInfoPage = () => {
     const { user } = useStore(state => ({
         user: state.user as UserData | null,
     }));
     const [isModalOpen, setIsModalOpen] = useState(false);
-    useBodyScrollLock(isModalOpen);
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-    const handleResetPassword = useCallback(async () => {
-        if (user && user.email) {
-            try {
-                await sendResetPasswordEmail(user.email);
-                toast.success("Restore email sent to: " + user.email);
-            } catch (error) {
-                console.error("Error al enviar correo de restablecimiento:", error);
-                toast.error("Error sending reset email");
-            }
-        } else {
-            console.log("No se pudo obtener el correo electrónico del usuario.");
-            toast.error("Could not get user email");
-        }
-    }, [user]);
+    useBodyScrollLock(isModalOpen || isPasswordModalOpen);
 
     if (!user) {
         return <p>Loading...</p>;
@@ -59,16 +43,21 @@ const ContactInfoPage = () => {
                             user={user} 
                         />
                     )}
-                    <button onClick={handleResetPassword} className="flex items-center">
+                    <button onClick={() => setIsPasswordModalOpen(true)} className="flex items-center">
                         <img src={IconPencil} alt="Pencil Icon" className="mr-[10px]" />
                         <span>Change Password</span>
                     </button>
+                    {isPasswordModalOpen && (
+                        <ChangePasswordModal 
+                            isOpen={isPasswordModalOpen} 
+                            close={() => setIsPasswordModalOpen(false)} 
+                        />
+                    )}
                 </div>
             </div>
             <hr className='border-grey_color w-[90%] mx-auto'/>
-            <Toaster position="bottom-right" reverseOrder={false} />
         </section>
     );
 };
 
-export default ContactInfoPage;
+export default UserInfoPage;
