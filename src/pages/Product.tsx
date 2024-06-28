@@ -20,8 +20,6 @@ const ProductPage = () => {
   const { cart, increment, multiply, totalSum } = useCartStore()
   // Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
-  // Check if the product is in the cart
-  const [isInCart, setIsInCart] = useState(false)
   const [productInCart, setProductInCart] = useState<Product | undefined>()
   const navigate = useNavigate()
   useEffect(() => {
@@ -64,21 +62,21 @@ const ProductPage = () => {
         <div className="container mx-auto px-4">
           <div className="mt-8 grid grid-cols-5 gap-4 lg:gap-0">
             {/* imágenes */}
-            <div className="col-span-5 flex flex-col items-start">
               <button
                 onClick={() => navigate(-1)}
                 type="button"
-                className=" lg:hidden flex items-start justify-start w-1/2 py-2 text-primary_800_color"
+                className=" lg:hidden flex w-1/2 py-2 items-start text-primary_800_color"
               >
                 <img
-                  className=" text-primary_800_color"
+                  className=" lg:col-span-3 text-primary_800_color"
                   src={IconArrowBack}
                 ></img>
-                <p className="pl-3 items-center">BACK</p>
+                <p className="pl-3">BACK</p>
               </button>
-              <div className="flex items-center justify-center overflow-hidden rounded-lg w-full lg:w-6/12">
+            <div className="col-span-5 lg:col-span-3 flex flex-col items-center">
+              <div className=" flex items-center justify-center overflow-hidden rounded-lg w-full lg:w-6/12">
                 <img
-                  className="w-full h-full object-cover overflow-hidden rounded-lg"
+                  className="w-full h-full object-cover overflow-hidden rounded-lg lg:col-span-4"
                   src={image}
                   alt="item detail"
                 />
@@ -97,7 +95,7 @@ const ProductPage = () => {
                 </button>
                 <button
                   type="button"
-                  className="aspect-square mb-3 w-1/3 lg:w-32 h-32 overflow-hidden rounded-lg text-center"
+                  className="aspect-square mb-3 w-1/3 lg:w-32 lg:h-32 overflow-hidden rounded-lg text-center"
                   onClick={() => handleImageClick(product?.image2)}
                 >
                   <img
@@ -108,7 +106,7 @@ const ProductPage = () => {
                 </button>
                 <button
                   type="button"
-                  className="aspect-square mb-3 w-1/3 lg:w-32 h-32 overflow-hidden rounded-lg text-center"
+                  className="aspect-square mb-3 w-1/3 lg:w-32 lg:h-32 overflow-hidden rounded-lg text-center"
                   onClick={() => handleImageClick(product?.image3)}
                 >
                   <img
@@ -121,46 +119,45 @@ const ProductPage = () => {
             </div>
             {/* nombre, precio, descripción */}
             <div className="col-span-5 lg:col-start-4 lg:col-end-6">
-              {/* Diseño para dispositivos pequeños */}
-              <div className="block lg:hidden sm:grid sm:grid-cols-2 sm:gap-4">
-                <div className="sm:col-span-1 flex justify-around items-center">
-                  <h1 className="font-nunito text-2xl font-bold text-primary_800_color">
-                    {product?.name}
-                  </h1>
-                  <div className="flex items-center">
-                    {isInCart && (
-                      <div className="flex items-center mt-3">
-                        <Decrement id={product?.id} />
-                        <p className="px-6 text-2xl">
-                          {cart[index]?.quantity || 0}
-                        </p>
-                        <Increment id={product?.id} />
-                      </div>
-                    )}
+              {/* Diseño*/}
+              <div className="grid grid-cols-2 grid-rows-2 lg:grid lg:grid-rows-4 lg:gap-4">
+                <div className="row-span-3 lg:col-span-2 justify-around items-center">
+                  <div className="lg:col-span-2  lg:flex lg:items-center lg:justify-start">
+                    <h1 className="font-nunito flex text-2xl font-bold justify-center items-center text-primary_800_color ">
+                      {product?.name}
+                    </h1>
+                    <span className="row-span-1 flex pt-3 justify-center items-center lg:justify-start lg:items-start lg:inline-block lg:p-1 lg:pl-4 font-nunito text-lg text-grey_800_color">
+                      ${product?.price}
+                    </span>
+                  </div>
+                  <div className="hidden lg:text-pretty lg:mt-4 lg:block lg:row-span-2 lg:p-2 lg:text-left mt-4">
+                    {product?.description}
                   </div>
                 </div>
-                <div className="sm:col-span-1 flex justify-around items-center">
-                  <span className="font-nunito text-lg text-grey_800_color">
-                    ${product?.price}
-                  </span>
+
+                <div className="flex row-span-1 justify-center lg:col-span-2 lg:col-start-1 lg:col-end-3 lg:flex lg:items-center lg:justify-center  items-center">
+                  <Decrement id={product?.id} />
+
+                  <p className="px-6 text-2xl">{cart[index]?.quantity || 0}</p>
+
+                  <Increment id={product?.id} />
+                </div>
+
+                <div className="lg:col-span-2 flex justify-around items-center">
                   <button
-                    className={`flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked || isInCart
-                        ? 'cursor-not-allowed bg-primary_500_color'
-                        : ''
-                    }`}
-                    disabled={isClicked || isInCart}
+                    className="col-start-2 bg-purple-400 lg:flex lg:items-center lg:justify-center lg:p-4 flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color "
                     onClick={handleAddToCart}
                   >
                     Add to cart
                   </button>
                 </div>
+                <div className="col-span-2 bg-pink-200 p-2 lg:row-span-1 lg:col-span-1 text-pretty text-start lg:text-left mt-4 lg:mt-0 mb-[120px] lg:hidden">
+                  {product?.description}
+                </div>
               </div>
-              <p className="text-pretty text-start lg:text-left mt-4 lg:mt-0 mb-[120px] lg:hidden">
-                {product?.description}
-              </p>
+
               {/* Diseño para dispositivos grandes */}
-              <div className="hidden lg:flex flex-col items-center lg:items-start">
+              {/* <div className="hidden lg:flex flex-col items-center lg:items-start">
                 <h1 className="font-nunito pb-10 text-22 font-bold text-left text-primary_800_color text-2xl">
                   {product?.name}
                   <span className="pl-10 font-nunito text-lg text-center text-grey_800_color ">
@@ -193,7 +190,7 @@ const ProductPage = () => {
                   </button>
                   <Toaster position="top-center" reverseOrder={false} />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
