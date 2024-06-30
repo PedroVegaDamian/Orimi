@@ -5,7 +5,7 @@ const DefaultText = () => (
         <Title> About us </Title>
         <p className="pb-5">
             Hello and welcome to our origami shop!
-            We are a passionate team formed by Carolina, Pedro, Rocío, Silvana, and Paula, united by our shared love for the art of origami. We are dedicated to sharing the beauty and creativity of this ancient Japanese technique through our carefully curated selection of handmade origamis.
+            We are a passionate team formed by Carolina, Pedro, Rocío, and Silvana, united by our shared love for the art of origami. We are dedicated to sharing the beauty and creativity of this ancient Japanese technique through our carefully curated selection of handmade origamis.
         </p>
         <p className="pb-5">
             Each piece in our collection is unique, created with precision and dedication to capture the essence and delicacy of this millennia-old art. From paper cranes to lotus flowers, our goal is to offer you a unique experience as you explore the world of origami.

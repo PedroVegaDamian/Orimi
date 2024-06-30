@@ -1,4 +1,5 @@
 import React from 'react';
+import { validateInput } from '@/components/InputValidation';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type: string;
@@ -12,25 +13,8 @@ export const Input: React.FC<InputProps> = ({ className, type, name, value, onCh
   const combinedClasses = `${baseStyles} ${className || ''}`;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { value } = e.target;
-
-    if (name === 'phone') {
-      value = value.replace(/[^0-9]/g, '').slice(0, 15); // Solo números y máximo 15 caracteres
-    }
-
-    if (name === 'firstName' || name === 'lastName') {
-      value = value.replace(/[^a-zA-ZñÑ\s]/g, ''); // Solo letras y espacios
-      value = value.replace(/(^\s+|\s+$)/g, ''); // Sin espacios al inicio ni al final
-      if (value.split(/\s+/).length > 4) {
-        value = value.split(/\s+/).slice(0, 4).join(' '); // No más de 3 espacios no continuos
-      }
-    }
-
-    if (name === 'password') {
-      value = value.replace(/\s/g, ''); // Sin espacios
-    }
-
-    e.target.value = value; 
+    const validatedValue = validateInput(name, e.target.value);
+    e.target.value = validatedValue; 
     onChange(e); 
   };
 

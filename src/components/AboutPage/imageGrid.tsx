@@ -5,7 +5,6 @@ import carolImage from '@/assets/img/carol.jpg';
 import pedroImage from '@/assets/img/pedro.jpeg';
 import rocioImage from '@/assets/img/rocio.png';
 import silvanaImage from '@/assets/img/silvana.png';
-import paulaImage from '@/assets/img/paula.jpg';
 
 type ImageGridProps = {
     setName: (name: TextComponentKey) => void;
@@ -19,7 +18,6 @@ const ImageGrid: React.FC<ImageGridProps> = ({ setName, selectedImage, setSelect
         { src: pedroImage, alt: "Pedro", name: "pedro" },
         { src: rocioImage, alt: "Rocio", name: "rocio" },
         { src: silvanaImage, alt: "Silvana", name: "silvana" },
-        { src: paulaImage, alt: "Paula", name: "paula" }
     ];
 
     const handleImageClick = (name: TextComponentKey) => {
