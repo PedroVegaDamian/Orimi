@@ -36,7 +36,7 @@ const CheckoutPage = () => {
   const options = { fetchClientSecret }
 
   return (
-    <div id="checkout">
+    <div id="checkout mb-[150px]">
       <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>

@@ -26,7 +26,7 @@ const ProductsPage = () => {
   const categories = Object.values(Categories);
 
   return (
-    <div className="bg-bg_color">
+    <div className="bg-bg_color mb-[120px]">
       <div className="m-8">
         <h1 className="mt-5 mb-5 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
           Products

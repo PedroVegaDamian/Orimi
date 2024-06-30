@@ -18,7 +18,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <section className="bg-white_color">
+      <section className="bg-white_color mb-[100px]">
         <div className="flex flex-col items-center justify-center px-6 py-8">
           <div className="w-full max-w-md ">
             <div className="p-6 space-y-4 ">
