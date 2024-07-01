@@ -13,7 +13,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="bg-bg_color">
+    <div className="bg-bg_color mb-[120px]">
       <div className="relative w-full" style={{ maxHeight: '250px', minHeight: '100px' }}>
         <img
           src={HeaderImage}

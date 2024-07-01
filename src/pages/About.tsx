@@ -5,22 +5,20 @@ import CarolinaText from '@/components/AboutPage/CarolinaText';
 import SilvanaText from '@/components/AboutPage/SilvanaText';
 import PedroText from '@/components/AboutPage/PedroText';
 import RocioText from '@/components/AboutPage/RocioText';
-import PaulaText from '@/components/AboutPage/PaulaText';
 import SocialLinks from '@/components/AboutPage/SocialLinks';
 import ImageGrid from '@/components/AboutPage/imageGrid';
 
 import { Button } from '@/components/ui/Button';
 import IconArrow from '@/assets/icons/icon_arrow_left_black.svg';
 
-export type TextComponentKey = 'default' | 'carolina' | 'silvana' | 'pedro' | 'rocio' | 'paula'; 
+export type TextComponentKey = 'default' | 'carolina' | 'silvana' | 'pedro' | 'rocio' ; 
 
 const textComponents = {
   default: DefaultText,
   carolina: CarolinaText,
   silvana: SilvanaText,
   pedro: PedroText,
-  rocio: RocioText,
-  paula: PaulaText, 
+  rocio: RocioText, 
 };
 
 const socialLinks = {
@@ -50,11 +48,6 @@ const socialLinks = {
   rocio: {
     linkedin: "https://www.linkedin.com/in/rocio-peralta-4396333a/",
     github: "https://github.com/rocio-peralta",
-    website: ""
-  },
-  paula: {
-    linkedin: "https://www.linkedin.com/in/paulavillegascastro/",
-    github: "https://github.com/Apaulav/",
     website: ""
   }
 };

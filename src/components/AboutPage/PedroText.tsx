@@ -1,7 +1,7 @@
 import { Title } from "@/components/ui/Title";
 
 const PedroText = () => (
-    <div className="max-w-[90%] mx-auto mb-[100px] md:ml-9 lg:ml-[100px]">
+    <div className="max-w-[90%] mx-auto md:mb-[100px] md:ml-9 lg:ml-[100px]">
         <Title> Pedro Vega Damian - Frontend Developer </Title>
         <p className="pb-5">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at convallis nunc. Duis nec nisi nunc. Nullam venenatis dignissim libero, id vehicula tortor vestibulum non. Vivamus elementum lorem sed lectus volutpat, ac fringilla tortor aliquet. Curabitur blandit malesuada turpis, nec tincidunt est gravida in. Aenean ut turpis ac sapien hendrerit auctor. Nullam imperdiet leo at massa egestas, a dignissim libero fermentum. Nulla facilisi. Praesent in metus ultricies, consequat ligula vel, elementum nunc.
