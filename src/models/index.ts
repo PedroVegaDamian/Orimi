@@ -23,7 +23,7 @@ export interface OptionsProducts {
 export interface CartState {
   total: number
   cart: Product[]
-  increment: (id: string | undefined) => void
+  increment: (product: Product, quantityToAdd?: number) => void
   decrement: (id: string | undefined) => void
   removeProduct: (slug: string | undefined) => void
   multiply: () => void

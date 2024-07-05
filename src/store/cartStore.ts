@@ -1,24 +1,32 @@
 import { CartState } from '@/models'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { Product } from '@/models'
+import {
+  incrementExistingProduct,
+  addNewProductToCart,
+  addProductToCartWithQuantity
+} from '@/hooks/cartOperation'
 
 export const useCartStore = create<CartState>()(
   persist(
     set => ({
       total: 0,
       cart: [],
-      increment: (id: string | undefined) =>
-        set(state => ({
-          cart: state.cart.map(product =>
-            product.id === id && product.stock > 0
-              ? {
-                  ...product,
-                  quantity: product.quantity + 1 || 1,
-                  stock: product.stock - 1
-                }
-              : product
+      increment: (product: Product,quantityToAdd: number|undefined ) =>
+        set(state => {
+          const existingProductIndex = state.cart.findIndex(
+            p => p.id === product.id
           )
-        })),
+          if(quantityToAdd){
+            return addProductToCartWithQuantity(state, product, quantityToAdd)
+          }
+          if (existingProductIndex >= 0) {
+            return incrementExistingProduct(state, existingProductIndex)
+          } else {
+            return addNewProductToCart(state, product)
+          }
+        }),
       decrement: (id: string | undefined) =>
         set(state => ({
           cart: state.cart.map(product =>

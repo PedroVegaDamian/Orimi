@@ -1,5 +1,6 @@
 import { getProduct } from '@/services/getProduct'
-import { useEffect, useState } from 'react'
+import {useEffect, useState } from 'react'
+// import { ChangeEvent, FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Product } from '@/models'
 import toast, { Toaster } from 'react-hot-toast'
@@ -11,26 +12,29 @@ import IconArrowBack from '@/assets/icons/icon_arrow_left_color.svg'
 const ProductPage = () => {
   // UseParams
   const { slug } = useParams<{ slug: string }>()
+
   // UseState
-  const [product, setProduct] = useState<Product | null>(null)
+  const [product, setProduct] = useState<Product | undefined>(undefined)
   const [image, setImage] = useState<string | undefined>(undefined)
-  const [isClicked, setIsClicked] = useState(false)
+
   // Toast
-  const notify = () => toast.success('Successfully added to the cart.')
+  const notify = () =>
+    toast.success(
+      `Successfully added ${cart[index]?.quantity}  ${cart[index]?.name} to the cart.`
+    )
+
+  // UseCartStore
   const { cart, increment, multiply, totalSum } = useCartStore()
+
   // Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
-  const [productInCart, setProductInCart] = useState<Product | undefined>()
   const navigate = useNavigate()
+
   useEffect(() => {
     const fetchProducts = async () => {
       const product = await getProduct(slug ?? '')
       setProduct(product)
       setImage(product?.image1)
-
-      const productInCart = cart.find(items => items.id === product?.id)
-      setProductInCart(productInCart)
-      setIsInCart(productInCart ? true : false)
     }
     fetchProducts()
   }, [slug, cart])
@@ -43,36 +47,41 @@ const ProductPage = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault()
-    if (productInCart) {
-      increment(product?.id)
-    } else if (!isClicked) {
-      cart.push(product as Product)
-      notify()
-      increment(product?.id)
-      setIsClicked(true)
-      setIsInCart(true)
-      multiply()
-      totalSum()
-    }
+    notify()
+    increment(product as Product)
+    multiply()
+    totalSum()
   }
+  // LOGIC FOR INPUT
+  // const [inputValue, setInputValue] = useState(Number)
+  // const handleInputQuantity = (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault() 
+  //   increment(product as Product, inputValue) 
+  //   notify()
+  // }
+
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setProduct(product)
+  //   setInputValue(Number(event.target.value))
+  // }
 
   return (
     <>
       <section className="lg:py-12">
         <div className="container mx-auto px-4">
           <div className="mt-8 grid grid-cols-5 gap-4 lg:gap-0">
-            {/* imágenes */}
-              <button
-                onClick={() => navigate(-1)}
-                type="button"
-                className=" lg:hidden flex w-1/2 py-2 items-start text-primary_800_color"
-              >
-                <img
-                  className=" lg:col-span-3 text-primary_800_color"
-                  src={IconArrowBack}
-                ></img>
-                <p className="pl-3">BACK</p>
-              </button>
+            {/* images */}
+            <button
+              onClick={() => navigate(-1)}
+              type="button"
+              className=" lg:hidden flex w-1/2 py-2 items-start text-primary_800_color"
+            >
+              <img
+                className=" lg:col-span-3 text-primary_800_color"
+                src={IconArrowBack}
+              ></img>
+              <p className="pl-3">BACK</p>
+            </button>
             <div className="col-span-5 lg:col-span-3 flex flex-col items-center">
               <div className=" flex items-center justify-center overflow-hidden rounded-lg w-full lg:w-6/12">
                 <img
@@ -117,9 +126,9 @@ const ProductPage = () => {
                 </button>
               </div>
             </div>
-            {/* nombre, precio, descripción */}
+            {/* name, price, description */}
             <div className="col-span-5 lg:col-start-4 lg:col-end-6">
-              {/* Diseño*/}
+              {/* design*/}
               <div className="grid grid-cols-2 grid-rows-2 lg:grid lg:grid-rows-4 lg:gap-4">
                 <div className="row-span-3 lg:col-span-2 justify-around items-center">
                   <div className="lg:col-span-2  lg:flex lg:items-center lg:justify-start">
@@ -134,63 +143,62 @@ const ProductPage = () => {
                     {product?.description}
                   </div>
                 </div>
+                <div className="flex row-span-1 justify-center flex-col lg:col-span-2 lg:col-start-1 lg:col-end-3 lg:flex lg:flex-col lg:items-center lg:justify-center  items-center">
+                  <div className="flex items-center">
+                    <Decrement id={product?.id} />
+                    <p className="text-xl text-center w-16">{cart[index]?.quantity || 0 }</p>
 
-                <div className="flex row-span-1 justify-center lg:col-span-2 lg:col-start-1 lg:col-end-3 lg:flex lg:items-center lg:justify-center  items-center">
-                  <Decrement id={product?.id} />
+                    {/* INPUT
+                    
+                    <form onSubmit={handleInputQuantity}>
+                      <input
+                        className="text-xl bg-bg_color text-center w-16"
+                        defaultValue={cart[index]?.quantity || 0 || inputValue}
+                        // value={inputValue}
+                        onChange={handleChange}
+                      />
+                    </form> */}
 
-                  <p className="px-6 text-2xl">{cart[index]?.quantity || 0}</p>
+                    {/* 
+                      DROPDOWN MENU
+                      <select className="px-3 pl-3 bg-bg_color text-2xl justify-center items-center">
+                        <option className="justify-center items-center">
+                          {cart[index]?.quantity || 0}
+                        </option>
+                        {[...Array(cart[index]?.stock).keys()].map(n => (
+                          <option
+                            className="justify-center items-center"
+                            key={n + 1}
+                            value={n + 1}
+                          >
+                            {n + 1}
+                          </option>
+                        ))}
+                      </select> */}
 
-                  <Increment id={product?.id} />
+                    <Increment product={product} />
+                  </div>
+
+                  {cart[index]?.stock <= 0 && (
+                    <p className=" text-red_color text-[11px] lg:pt-2">
+                      Insufficient stock
+                    </p>
+                  )}
                 </div>
 
                 <div className="lg:col-span-2 flex justify-around items-center">
                   <button
-                    className="col-start-2 bg-purple-400 lg:flex lg:items-center lg:justify-center lg:p-4 flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color "
+                    className="col-start-2 bg-purple-400 lg:flex lg:items-center lg:justify-center lg:p-4 flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color"
                     onClick={handleAddToCart}
                   >
-                    Add to cart
+                    Added to cart
                   </button>
+                  <Toaster position="top-center" reverseOrder={false} />
                 </div>
                 <div className="col-span-2 bg-pink-200 p-2 lg:row-span-1 lg:col-span-1 text-pretty text-start lg:text-left mt-4 lg:mt-0 mb-[120px] lg:hidden">
                   {product?.description}
                 </div>
               </div>
-
-              {/* Diseño para dispositivos grandes */}
-              {/* <div className="hidden lg:flex flex-col items-center lg:items-start">
-                <h1 className="font-nunito pb-10 text-22 font-bold text-left text-primary_800_color text-2xl">
-                  {product?.name}
-                  <span className="pl-10 font-nunito text-lg text-center text-grey_800_color ">
-                    ${product?.price}
-                  </span>
-                </h1>
-                <p className="text-pretty text-center lg:text-left mt-4">
-                  {product?.description}
-                </p>
-                <div className="flex w-full flex-col items-center gap-4">
-                  {isInCart && (
-                    <div className="flex items-center mt-3">
-                      <Decrement id={product?.id} />
-                      <p className="px-6 text-2xl">
-                        {cart[index]?.quantity || 0}
-                      </p>
-                      <Increment id={product?.id} />
-                    </div>
-                  )}
-                  <button
-                    className={`flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 mb-[70px] text-center text-sm font-medium text-white hover:bg-primary_500_color ${
-                      isClicked || isInCart
-                        ? 'cursor-not-allowed bg-primary_500_color'
-                        : ''
-                    }`}
-                    disabled={isClicked || isInCart}
-                    onClick={handleAddToCart}
-                  >
-                    Add to cart
-                  </button>
-                  <Toaster position="top-center" reverseOrder={false} />
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
