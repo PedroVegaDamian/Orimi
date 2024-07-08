@@ -20,7 +20,7 @@ const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword'))
 const SendRestePasswordEmailPage = lazy(() => import('@/pages/SendResetPasswordEmail'))
-
+const ConfirmChangePasswordPage = lazy(() => import('@/pages/ConfirmChangePassword'))
 import OrdersPage from '@/pages/Orders'
 import ContactInfoPage from '@/pages/ContactInfo'
 import AddressListPage from '@/pages/AddressList'
@@ -98,6 +98,13 @@ export const router = createBrowserRouter([
           </Suspense>
         )
       },
+      {path:'confirmChangePassword',
+        element:(
+          <Suspense fallback={<Loading />}>
+            <ConfirmChangePasswordPage />
+          </Suspense>
+        )
+        },
       {
         path: 'profile',
         loader: async () => await getCurrentUser(),

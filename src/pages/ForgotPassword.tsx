@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { sendResetPasswordEmail } from '@/services/passwordReset'
+import { sendResetPasswordEmail } from '@/services/resetPassword'
 import { useNavigate } from 'react-router-dom'
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    await sendResetPasswordEmail(email)
+    sendResetPasswordEmail(email)
     navigate('/send-reset-password-email')
   }
 
