@@ -191,7 +191,7 @@ const ProductPage = () => {
                     className="col-start-2 bg-purple-400 lg:flex lg:items-center lg:justify-center lg:p-4 flex items-center justify-center bg-primary_color rounded-md mt-3 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary_500_color"
                     onClick={handleAddToCart}
                   >
-                    Added to cart
+                    Add to cart
                   </button>
                   <Toaster position="top-center" reverseOrder={false} />
                 </div>
