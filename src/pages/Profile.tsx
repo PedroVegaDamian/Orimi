@@ -82,7 +82,7 @@ export const ProfilePage: React.FC = () => {
             <div className='hidden md:block w-full space-y-[10px] p-[40px]'>
                 <Button onClick={() => { setUser(null); signOut(navigate)}} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
                     <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
-                    Sign off
+                    Sign out
                 </Button>
                 <Button onClick={() => setDeleteAccountModalOpen(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'>
                     <img src={IconTrash} alt="trash Icon" className="mr-[28px]" />
@@ -100,10 +100,10 @@ export const ProfilePage: React.FC = () => {
             <Outlet />
         </main>
     </div>
-    <div className='md:hidden w-full space-y-[10px] p-[40px]'>
+    <div className='md:hidden w-full space-y-[10px] p-[40px] pb-[160px] pd:mb[0px]'>
         <Button onClick={() => { setUser(null); signOut(navigate)}} size="large" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px]'>
             <img src={IconOff} alt="Plus Icon" className="mr-[28px]" />
-            Sign off
+            Sign out
         </Button>
         <Button onClick={() => setDeleteAccountModalOpen(true)} size="large" bgColor="bg-red_color" extraClass='flex m-auto mt-[10px] justify-start items-center aling-left pl-[15px] bg-red-500'>
             <img src={IconTrash} alt="trash Icon" className="mr-[28px]" />

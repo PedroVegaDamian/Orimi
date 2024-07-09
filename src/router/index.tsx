@@ -13,17 +13,27 @@ const LoginPage = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const ProductPage = lazy(() => import('@/pages/Product'))
 const ContactPage = lazy(() => import('@/pages/Contact'))
-const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
+
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword'))
-const SendRestePasswordEmailPage = lazy(() => import('@/pages/SendResetPasswordEmail'))
-const ConfirmChangePasswordPage = lazy(() => import('@/pages/ConfirmChangePassword'))
-import OrdersPage from '@/pages/Orders'
-import ContactInfoPage from '@/pages/ContactInfo'
-import AddressListPage from '@/pages/AddressList'
+const SendRestePasswordEmailPage = lazy(
+  () => import('@/pages/SendResetPasswordEmail')
+)
+const ConfirmChangePasswordPage = lazy(
+  () => import('@/pages/ConfirmChangePassword')
+)
+
+const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
+const CheckoutPage = lazy(() => import('@/pages/Checkout'))
+
+const ProfilePage = lazy(() => import('@/pages/Profile'))
+const UserInfoPage = lazy(() => import('@/pages/UserInfo'))
+const AddressListPage = lazy(() => import('@/pages/AddressList'))
+const OrdersPage = lazy(() => import('@/pages/Orders'))
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'))
 
 export const router = createBrowserRouter([
   {
@@ -91,20 +101,21 @@ export const router = createBrowserRouter([
         )
       },
       {
-        path: 'send-reset-password-email',  
+        path: 'send-reset-password-email',
         element: (
           <Suspense fallback={<Loading />}>
             <SendRestePasswordEmailPage />
           </Suspense>
         )
       },
-      {path:'confirmChangePassword',
-        element:(
+      {
+        path: 'confirmChangePassword',
+        element: (
           <Suspense fallback={<Loading />}>
             <ConfirmChangePasswordPage />
           </Suspense>
         )
-        },
+      },
       {
         path: 'profile',
         loader: async () => await getCurrentUser(),
@@ -118,7 +129,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: 'myData',
-            element: <ContactInfoPage />
+            element: <UserInfoPage />
           },
           {
             path: 'addresses',
@@ -127,6 +138,10 @@ export const router = createBrowserRouter([
           {
             path: 'orders',
             element: <OrdersPage />
+          },
+          {
+            path: 'orders/:orderId',
+            element: <OrderDetailPage />
           },
           {
             index: true,
@@ -147,6 +162,24 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <CartPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'checkout',
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<Loading />}>
+              <CheckoutPage />
+            </Suspense>
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'paymentsuccessfull',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PaymentSuccesfull />
           </Suspense>
         )
       },

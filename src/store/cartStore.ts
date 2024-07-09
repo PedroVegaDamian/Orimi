@@ -60,7 +60,12 @@ export const useCartStore = create<CartState>()(
               : { ...product, isStock: false }
           )
         }))
-      }
+      },
+      resetCart: () =>
+        set(() => ({
+          total: 0,
+          cart: []
+        }))
     }),
     { name: 'CART ITEMS ORIMI' }
   )

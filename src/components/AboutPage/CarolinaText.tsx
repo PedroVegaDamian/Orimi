@@ -1,9 +1,9 @@
+import { Title } from "@/components/ui/Title";
+
 const CarolinaText = () => {
     return (
-        <>
-            <h1 className="mb-20 font-nunito text-22 font-bold text-center text-primary_800_color text-2xl">
-                Carolina Herrera Santana - UX/UI designer and Front-end Developer
-            </h1>
+        <div className="max-w-[90%] mx-auto md:mb-[100px] md:ml-9 lg:ml-[100px]">
+            <Title> Carolina Herrera Santana - UX/UI designer and Front-end Developer </Title>
                 <p className="pb-5">
                     Carolina Herrera Santana is a UX/UI designer and Front-end Developer with a solid and multifaceted trajectory. Standing out for her analytical and detail-oriented approach, she has demonstrated exceptional skills in creating intuitive and attractive interfaces for various platforms.
                 </p>
@@ -26,7 +26,7 @@ const CarolinaText = () => {
                     >About us</button>
                 </section> */}
 
-            </>
+            </div>
             )
 }
 export default CarolinaText;

@@ -47,16 +47,19 @@ export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
         }
     };
 
+
     return (
         <ModalBase isOpen={isOpen} close={close}>
             <Title>Delete account</Title>
             <div className="p-4 flex flex-col items-center">
                 <p className='mb-4'>Do you want to delete your account?</p>
                 <Input
+                    id="currentPassword"
                     type="password"
+                    placeholder="Enter your password"
+                    name="currentPassword"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
                     required
                 />
                 <div className='flex direccion-row justify-center gap-[20px] mt-[20px]'>

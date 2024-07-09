@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface Product {
   id: string
   name: string
@@ -27,6 +29,7 @@ export interface CartState {
   multiply: () => void
   totalSum: () => void
   isStock: (id: string | undefined) => void
+  resetCart: () => void
 }
 
 export enum Categories {
@@ -37,4 +40,19 @@ export enum Categories {
   Fish = 'fish',
   Insects = 'insects',
   Reptiles = 'reptiles'
+}
+
+
+export interface Order {
+  id: string;
+  email: string;
+  createdAt: Timestamp;
+  order_number: string;
+  date: string;
+  cart: {
+    image1: string;
+    quantity: number;
+    subtotal?: number;
+    price: number;
+  }[];
 }
