@@ -7,8 +7,8 @@ import { getUserById } from '@/services/user'
 import { useUserStore } from '@/store/userStore'
 
 export const useLogin = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('demo@gmail.com')
+  const [password, setPassword] = useState('Demo123')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [error, setError] = useState('')

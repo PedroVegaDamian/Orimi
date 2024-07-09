@@ -8,6 +8,8 @@ const LoginPage = () => {
   const navigate = useNavigate()
 
   const {
+    email,
+    password,
     setEmail,
     setPassword,
     errorEmail,
@@ -35,6 +37,7 @@ const LoginPage = () => {
                     id="email"
                     className="border border-solid border-grey_color text-gray-900 rounded-lg focus:ring-red-500 focus:border-grey_800_color block w-full p-2.5"
                     placeholder="name@company.com"
+                    value={email}
                     onChange={e => setEmail(e.target.value)}
                   ></input>
                   <span className="text-red_color text-sm font-medium">
@@ -51,6 +54,7 @@ const LoginPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="border border-solid border-grey_color text-gray-900 rounded-lg focus:ring-red-500 focus:border-grey_800_color block w-full p-2.5"
+                    value={password}
                     onChange={e => setPassword(e.target.value)}
                   ></input>
                   <span className="text-red_color text-sm font-medium">
@@ -71,8 +75,8 @@ const LoginPage = () => {
                     Submit
                   </button>
                   <Link
-                   className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
-                   to='/reset-password'
+                    className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
+                    to="/reset-password"
                   >
                     Forgot password?
                   </Link>
@@ -80,7 +84,7 @@ const LoginPage = () => {
                     Don’t have an account yet?{' '}
                     <Link
                       className="font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color hover:underline dark:text-primary-500"
-                      to='/register'
+                      to="/register"
                     >
                       Create account
                     </Link>
