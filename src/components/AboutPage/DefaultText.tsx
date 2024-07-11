@@ -28,7 +28,7 @@ const DefaultText = () => (
     <p className="pb-5">
       Feel free to reach out or make any suggestions—we’re here to listen and
       improve. We hope you enjoy our site as much as we enjoyed creating it.
-    </p>c
+    </p>
     <p className="pb-5">Thank you for visiting Orimi!</p>
   </div>
 )
