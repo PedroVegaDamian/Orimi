@@ -1,7 +1,5 @@
 import { CartState, Product } from '@/models'
 
-// add another function that chekc if we have a value that comes from the input
-
 export const incrementExistingProduct = (
   state: CartState,
   existingProductIndex: number

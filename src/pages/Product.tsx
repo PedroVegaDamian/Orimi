@@ -12,20 +12,16 @@ import IconArrowBack from '@/assets/icons/icon_arrow_left_color.svg'
 const ProductPage = () => {
   // UseParams
   const { slug } = useParams<{ slug: string }>()
-
   // UseState
   const [product, setProduct] = useState<Product | undefined>(undefined)
   const [image, setImage] = useState<string | undefined>(undefined)
-
   // Toast
   const notify = () =>
     toast.success(
       `Successfully added ${cart[index]?.quantity}  ${cart[index]?.name} to the cart.`
     )
-
   // UseCartStore
   const { cart, increment, multiply, totalSum } = useCartStore()
-
   // Index (for the quantity of the product in the cart)
   const index = cart.findIndex(product => product.slug === slug)
   const navigate = useNavigate()
@@ -52,19 +48,6 @@ const ProductPage = () => {
     multiply()
     totalSum()
   }
-  // LOGIC FOR INPUT
-  // const [inputValue, setInputValue] = useState(Number)
-  // const handleInputQuantity = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault() 
-  //   increment(product as Product, inputValue) 
-  //   notify()
-  // }
-
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setProduct(product)
-  //   setInputValue(Number(event.target.value))
-  // }
-
   return (
     <>
       <section className="lg:py-12">
@@ -147,35 +130,6 @@ const ProductPage = () => {
                   <div className="flex items-center">
                     <Decrement id={product?.id} />
                     <p className="text-xl text-center w-16">{cart[index]?.quantity || 0 }</p>
-
-                    {/* INPUT
-                    
-                    <form onSubmit={handleInputQuantity}>
-                      <input
-                        className="text-xl bg-bg_color text-center w-16"
-                        defaultValue={cart[index]?.quantity || 0 || inputValue}
-                        // value={inputValue}
-                        onChange={handleChange}
-                      />
-                    </form> */}
-
-                    {/* 
-                      DROPDOWN MENU
-                      <select className="px-3 pl-3 bg-bg_color text-2xl justify-center items-center">
-                        <option className="justify-center items-center">
-                          {cart[index]?.quantity || 0}
-                        </option>
-                        {[...Array(cart[index]?.stock).keys()].map(n => (
-                          <option
-                            className="justify-center items-center"
-                            key={n + 1}
-                            value={n + 1}
-                          >
-                            {n + 1}
-                          </option>
-                        ))}
-                      </select> */}
-
                     <Increment product={product} />
                   </div>
 
