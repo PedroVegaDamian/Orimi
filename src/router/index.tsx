@@ -19,6 +19,14 @@ const RegisterPage = lazy(() => import('@/pages/Register'))
 const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
 
+const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword'))
+const SendRestePasswordEmailPage = lazy(
+  () => import('@/pages/SendResetPasswordEmail')
+)
+const ConfirmChangePasswordPage = lazy(
+  () => import('@/pages/ConfirmChangePassword')
+)
+
 const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
 const CheckoutPage = lazy(() => import('@/pages/Checkout'))
 
@@ -86,6 +94,30 @@ export const router = createBrowserRouter([
               <LoginPage />
             </Suspense>
           </LoginProtectedRoute>
+        )
+      },
+      {
+        path: 'forgot-password',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ForgotPasswordPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'send-reset-password-email',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SendRestePasswordEmailPage />
+          </Suspense>
+        )
+      },
+      {
+        path: 'confirmChangePassword',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ConfirmChangePasswordPage />
+          </Suspense>
         )
       },
       {

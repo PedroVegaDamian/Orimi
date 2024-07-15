@@ -73,7 +73,7 @@ const LoginPage = () => {
                   </button>
                   <Link
                     className="block font-nunito text-base font-bold cursor-pointer leading-19 text-center text-primary_800_color justify-center pt-5 pb-10"
-                    to="/reset-password"
+                    to="/forgot-password"
                   >
                     Forgot password?
                   </Link>
