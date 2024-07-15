@@ -1,5 +1,5 @@
 import { getProduct } from '@/services/getProduct'
-import {useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { ChangeEvent, FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Product } from '@/models'
@@ -20,6 +20,8 @@ const ProductPage = () => {
     toast.success(
       `Successfully added ${cart[index]?.quantity}  ${cart[index]?.name} to the cart.`
     )
+  const notifyButton = () =>
+    toast.success(`Successfully added 1  ${product?.name} to the cart.`)
   // UseCartStore
   const { cart, increment, multiply, totalSum } = useCartStore()
   // Index (for the quantity of the product in the cart)
@@ -43,8 +45,15 @@ const ProductPage = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault()
+    console.log(cart)
+    if (!cart[index]) {
+      increment(product as Product)
+      notifyButton()
+      multiply()
+      totalSum()
+      return
+    }
     notify()
-    increment(product as Product)
     multiply()
     totalSum()
   }
@@ -129,7 +138,9 @@ const ProductPage = () => {
                 <div className="flex row-span-1 justify-center flex-col lg:col-span-2 lg:col-start-1 lg:col-end-3 lg:flex lg:flex-col lg:items-center lg:justify-center  items-center">
                   <div className="flex items-center">
                     <Decrement id={product?.id} />
-                    <p className="text-xl text-center w-16">{cart[index]?.quantity || 0 }</p>
+                    <p className="text-xl text-center w-16">
+                      {cart[index]?.quantity || 0}
+                    </p>
                     <Increment product={product} />
                   </div>
 
