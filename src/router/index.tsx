@@ -1,27 +1,41 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
+import { LoginProtectedRoute, ProtectedRoute } from './ProtectedRoute'
+import { getCurrentUser } from '@/services/user'
 import { Loading } from '@/components/Loading'
 
-const DefaultLayout = lazy(() => import('@/layouts/DefaulLayout'))
-const ProductPage = lazy(() => import('@/pages/Product'))
 const HomePage = lazy(() => import('@/pages/Home'))
 const CartPage = lazy(() => import('@/pages/Cart'))
 const AboutPage = lazy(() => import('@/pages/About'))
 const LoginPage = lazy(() => import('@/pages/Login'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
+const ProductPage = lazy(() => import('@/pages/Product'))
 const ContactPage = lazy(() => import('@/pages/Contact'))
-const ProfilePage = lazy(() => import('@/pages/Profile'))
 const ProductsPage = lazy(() => import('@/pages/Products'))
-const FavoritesPage = lazy(() => import('@/pages/Favorites'))
 const RegisterPage = lazy(() => import('@/pages/Register'))
-import { LoginProtectedRoute, ProtectedRoute } from './ProtectedRoute'
-import { getCurrentUser } from '@/services/user'
+        
+const FavoritesPage = lazy(() => import('@/pages/Favorites'))
+const DefaultLayout = lazy(() => import('@/layouts/DefaultLayout'))
+
+const PaymentSuccesfull = lazy(() => import('@/pages/PaymentSuccesfull'))
+const CheckoutPage = lazy(() => import('@/pages/Checkout'))
+
+const ProfilePage = lazy(() => import('@/pages/Profile'))
+const UserInfoPage = lazy(() => import('@/pages/UserInfo'))
+const AddressListPage = lazy(() => import('@/pages/AddressList'))
+const OrdersPage = lazy(() => import('@/pages/Orders'))
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'))
 
 export const router = createBrowserRouter([
   {
-    path: '',
-    element: <DefaultLayout />,
+    path: '/',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <DefaultLayout />
+      </Suspense>
+    ),
     children: [
       {
         path: '',
@@ -83,7 +97,29 @@ export const router = createBrowserRouter([
               <ProfilePage />
             </Suspense>
           </ProtectedRoute>
-        )
+        ),
+        children: [
+          {
+            path: 'myData',
+            element: <UserInfoPage />
+          },
+          {
+            path: 'addresses',
+            element: <AddressListPage />
+          },
+          {
+            path: 'orders',
+            element: <OrdersPage />
+          },
+          {
+            path: 'orders/:orderId',
+            element: <OrderDetailPage />
+          },
+          {
+            index: true,
+            element: <Navigate to="myData" />
+          }
+        ]
       },
       {
         path: 'favorites',
@@ -102,6 +138,24 @@ export const router = createBrowserRouter([
         )
       },
       {
+        path: 'checkout',
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<Loading />}>
+              <CheckoutPage />
+            </Suspense>
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'paymentsuccessfull',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PaymentSuccesfull />
+          </Suspense>
+        )
+      },
+      {
         path: 'register',
         element: (
           <Suspense fallback={<Loading />}>
@@ -113,6 +167,10 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/" />
+    element: (
+      <Suspense fallback={<Loading />}>
+        <NotFound />
+      </Suspense>
+    )
   }
 ])

@@ -1,5 +1,3 @@
-//import { AuthErrorCodes } from 'firebase/auth'
-
 export const CustomSuccessCodes = {
     USER_REGISTERED: 'auth/user-registered', 
 };

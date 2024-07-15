@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useLogin } from '@/hooks/useLogin'
+
 // import IconFacebook from '@/assets/icons/icon_facebook.svg'
 // import IconGoogle from '@/assets/icons/icon_google.svg'
 
 const LoginPage = () => {
   const {
+    email,
+    password,
     setEmail,
     setPassword,
     errorEmail,
@@ -14,7 +17,7 @@ const LoginPage = () => {
   } = useLogin()
   return (
     <>
-      <section className="bg-white_color">
+      <section className="bg-white_color mb-[100px]">
         <div className="flex flex-col items-center justify-center px-6 py-8">
           <div className="w-full max-w-md ">
             <div className="p-6 space-y-4 ">
@@ -31,6 +34,7 @@ const LoginPage = () => {
                     id="email"
                     className="border border-solid border-grey_color text-gray-900 rounded-lg focus:ring-red-500 focus:border-grey_800_color block w-full p-2.5"
                     placeholder="name@company.com"
+                    value={email}
                     onChange={e => setEmail(e.target.value)}
                   ></input>
                   <span className="text-red_color text-sm font-medium">
@@ -47,6 +51,7 @@ const LoginPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="border border-solid border-grey_color text-gray-900 rounded-lg focus:ring-red-500 focus:border-grey_800_color block w-full p-2.5"
+                    value={password}
                     onChange={e => setPassword(e.target.value)}
                   ></input>
                   <span className="text-red_color text-sm font-medium">
