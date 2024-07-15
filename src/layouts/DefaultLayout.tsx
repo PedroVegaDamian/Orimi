@@ -3,6 +3,7 @@ import { Footer } from '@/components/Footer'
 import { Navbar } from '@/components/Navbar'
 import { useUserStore } from '@/store/userStore'
 import { getCurrentUser, getUserById } from '@/services/user'
+import ScrollToTop from '@/hooks/scrollToTop.ts'
 
 const DefaultLayout = () => {
   const setUser = useUserStore(state => state.setUser)
@@ -26,6 +27,7 @@ const DefaultLayout = () => {
 
   return (
     <main className="bg-bg_color">
+      <ScrollToTop />
       <Navbar />
       <section className="min-h-[calc(100vh-107px)]">
         <Outlet />

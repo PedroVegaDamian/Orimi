@@ -1,7 +1,7 @@
 import { Title } from "@/components/ui/Title";
 
 const SilvanaText = () => (
-    <div className="max-w-[90%] mx-auto mb-[100px] md:ml-9 lg:ml-[100px]">
+    <div className="max-w-[90%] mx-auto md:mb-[100px] md:ml-9 lg:ml-[100px]">
         <Title> Silvana Loureiro Molina - QA Analyst Software </Title>
         <p className="pb-5">
             Silvana Loureiro is a QA professional with a solid background supported by a Software Tester Diploma obtained at the Software Testing Center(endorsed by the Faculty of Engineering of Uruguay).Her passion for continuous improvement has led her to complement her education with courses in Python, programming for testers, and Postman, among others, allowing her to acquire advanced technical skills for her role.

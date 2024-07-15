@@ -18,7 +18,7 @@ export const errorMessages = {
   [AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER]: 'Too many login attempts, please try later.',
   [AuthErrorCodes.EMAIL_EXISTS]: 'This email is already in use. Please use a different email.',
   [AuthErrorCodes.INVALID_EMAIL]: 'The email is invalid, please try another.',
-  [AuthErrorCodes.WEAK_PASSWORD]: 'The password must have: at least 6 characters, one uppercase letter, one lowercase letter and one number.',
+  [AuthErrorCodes.WEAK_PASSWORD]: 'The password must have: at least 6 characters, one uppercase letter, one lowercase letter, one number and one special character.',
   [AuthErrorCodes.INTERNAL_ERROR]: 'Oops.. there was an error during authentication. Please try again.',
 
   [CustomErrorCodes.INVALID_NAME]: 'Invalid format. Must contain only these letters, and have at most one space.',

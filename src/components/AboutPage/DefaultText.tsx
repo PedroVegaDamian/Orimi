@@ -31,6 +31,6 @@ const DefaultText = () => (
     </p>
     <p className="pb-5">Thank you for visiting Orimi!</p>
   </div>
-)
+);
 
 export default DefaultText
