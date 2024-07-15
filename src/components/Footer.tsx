@@ -75,18 +75,6 @@ export const Footer = () => {
           />
           Silvana
         </a>
-        <a
-          target="_blank"
-          href="https://github.com/Apaulav"
-          className="underline text-primary_tono5_color lg:text-[24px] text-[16px] flex flex-col md:flex-row flex-nowrap items-center md:items-baseline"
-        >
-          <img
-            className="md:w-[31px] lg:w-[31px] w-[20px] h-[20px] mr-2"
-            src={IconKeyboard}
-            alt="Heart Icon"
-          />
-          Paula
-        </a>
       </div>
     </footer>
   )

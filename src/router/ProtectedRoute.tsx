@@ -12,3 +12,11 @@ export const ProtectedRoute = ({ children }: Props) => {
 
   return children
 }
+
+export const LoginProtectedRoute = ({ children }: Props) => {
+  const user = useLoaderData()
+
+  if (user) return <Navigate replace to="/" />
+
+  return children
+}

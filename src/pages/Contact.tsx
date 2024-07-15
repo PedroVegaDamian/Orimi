@@ -90,7 +90,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mb-[100px]">
       <Toaster position="top-center" reverseOrder={false} />
       <Title>Contact Us</Title>
       <div className='flex flex-col md:flex-row items-start gap-6'>

@@ -59,7 +59,7 @@ const ProductPage = () => {
   }
   return (
     <>
-      <section className="lg:py-12">
+      <section className="lg:py-12 mb-[100px]">
         <div className="container mx-auto px-4">
           <div className="mt-8 grid grid-cols-5 gap-4 lg:gap-0">
             {/* images */}
