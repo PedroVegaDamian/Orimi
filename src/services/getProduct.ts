@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from '@firebase/firestore'
 import { Product } from '@/models'
 import { db } from '@/firebase'
 
-export const getProduct = async (slug: string): Promise<Product | null> => {
+export const getProduct = async (slug: string): Promise<Product | undefined> => {
   const productCollectionRef = query(
     collection(db, 'products'),
     where('slug', '==', slug)
@@ -17,6 +17,6 @@ export const getProduct = async (slug: string): Promise<Product | null> => {
       ...doc.data()
     } as Product;
   } else {
-    return null;
+    return undefined;
   }
 }

@@ -164,7 +164,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="Company"
                             name="company"
-                            value={newAddress.company}
+                            value={newAddress.company || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -178,7 +178,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="Street"
                             name="street"
-                            value={newAddress.street}
+                            value={newAddress.street || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -192,7 +192,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="City"
                             name="city"
-                            value={newAddress.city}
+                            value={newAddress.city || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -206,7 +206,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="Zip"
                             name="zip"
-                            value={newAddress.zip}
+                            value={newAddress.zip || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -220,7 +220,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="state"
                             name="state"
-                            value={newAddress.state}
+                            value={newAddress.state || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -234,7 +234,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="Country"
                             name="country"
-                            value={newAddress.country}
+                            value={newAddress.country || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -248,7 +248,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                             type="text"
                             placeholder="Observations"
                             name="notes"
-                            value={newAddress.notes}
+                            value={newAddress.notes || ''}
                             onChange={handleChange}
                         />
                     </div>
@@ -274,7 +274,7 @@ const NewAddressModal: React.FC<NewAddressModalProps> = ({ isOpen, close, existi
                 <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-full max-w-2xl'>
                     <div className='flex justify-evenly gap-[20px]'>
                         <Button type="submit" disabled={isSubmitting}>Save</Button>
-                        <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                        <Button type="button" onClick={close} extraClass='bg-white_color'>Cancel</Button>
                     </div>
                 </div>
             </form>

@@ -108,7 +108,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="Company"
                             name="company"
-                            value={editedAddress.company}
+                            value={editedAddress.company || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -122,7 +122,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="Street"
                             name="street"
-                            value={editedAddress.street}
+                            value={editedAddress.street  || ''}
                             onChange={handleChange}
                             required
                         />
@@ -137,7 +137,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="City"
                             name="city"
-                            value={editedAddress.city}
+                            value={editedAddress.city  || ''}
                             onChange={handleChange}
                             required
                         />
@@ -152,7 +152,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="Zip"
                             name="zip"
-                            value={editedAddress.zip}
+                            value={editedAddress.zip  || ''}
                             onChange={handleChange}
                             required
                         />
@@ -167,7 +167,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="Country"
                             name="country"
-                            value={editedAddress.country}
+                            value={editedAddress.country  || ''}
                             onChange={handleChange}
                         />
                         <div style={{ height: '10px' }}>
@@ -181,7 +181,7 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                             type="text"
                             placeholder="Observations"
                             name="notes"
-                            value={editedAddress.notes}
+                            value={editedAddress.notes  || ''}
                             onChange={handleChange}
                         />
                     </div>
@@ -204,8 +204,8 @@ const EditAddressModal: React.FC<EditAddressModalProps> = ({ isOpen, address, up
                 </div>
                 <div className='sticky bottom-0 left-0 right-0 bg-white_color z-10 p-4 mx-auto w-[60%] max-w-2xl'>
                     <div className='flex justify-evenly gap-[20px]'>
-                        <Button type="submit">Save Changes</Button>
-                        <Button type="button" onClick={close} className='bg-transparent'>Cancel</Button>
+                        <Button type="submit">Save</Button>
+                        <Button type="button" onClick={close} extraClass='bg-white_color'>Cancel</Button>
                     </div>
                 </div>
             </form>
