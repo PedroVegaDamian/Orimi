@@ -1,18 +1,36 @@
-import { Title } from "@/components/ui/Title";
+import { Title } from '@/components/ui/Title'
 
 const PedroText = () => (
-    <div className="max-w-[90%] mx-auto md:mb-[100px] md:ml-9 lg:ml-[100px]">
-        <Title> Pedro Vega Damian - Frontend Developer </Title>
-        <p className="pb-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at convallis nunc. Duis nec nisi nunc. Nullam venenatis dignissim libero, id vehicula tortor vestibulum non. Vivamus elementum lorem sed lectus volutpat, ac fringilla tortor aliquet. Curabitur blandit malesuada turpis, nec tincidunt est gravida in. Aenean ut turpis ac sapien hendrerit auctor. Nullam imperdiet leo at massa egestas, a dignissim libero fermentum. Nulla facilisi. Praesent in metus ultricies, consequat ligula vel, elementum nunc.
-        </p>
-        <p className="pb-5">
-            Proin fringilla varius libero, ac efficitur lorem lacinia non. Suspendisse potenti. Ut cursus eros id est ultricies fermentum. Nam in fringilla magna. Nulla vitae justo risus. Phasellus sodales diam quis velit cursus, ut convallis metus blandit. Curabitur consequat lectus at lacus vehicula, nec tincidunt odio tristique. Integer ut leo purus. Suspendisse potenti. Sed eu vestibulum ligula. Cras quis dolor ac quam convallis venenatis. Sed in justo sit amet velit laoreet suscipit.
-        </p>
-        <p className="pb-5">
-            Aliquam erat volutpat. Phasellus faucibus semper sapien, non tincidunt orci finibus a. Pellentesque ac malesuada metus. Nullam consequat, purus sit amet blandit auctor, ex risus cursus nunc, eget malesuada justo nulla a metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse potenti. Integer gravida, eros eget sodales lacinia, neque ex faucibus ligula, in pharetra odio elit sit amet dui. Nulla at egestas dui, et pharetra turpis. Suspendisse potenti. Curabitur dictum cursus vehicula. Suspendisse scelerisque diam turpis, eget congue urna luctus in.
-        </p>
-    </div>
-);
+  <div className="max-w-[90%] mx-auto md:mb-[100px] md:ml-9 lg:ml-[100px]">
+    <Title> Pedro Vega Damian - Frontend Developer </Title>
+    <p className="mb-5">
+      I am a specialized Frontend developer, passionate about creating
+      exceptional web experiences. My primary focus is mastering key
+      technologies like HTML, CSS, and Sass, which allow me to design and style
+      attractive and functional user interfaces. With a deep understanding of
+      JavaScript and TypeScript, I can implement dynamic functionalities and
+      ensure the robustness and scalability of the code.
+    </p>
+    <p className="mb-5">
+      I work with modern frameworks such as React, Next, Vue, and Nuxt to
+      develop robust and responsive user interfaces. These frameworks enable me
+      to create interactive and optimized web applications, ensuring an
+      excellent user experience on devices of different sizes and capabilities.
+    </p>
+    <p className="mb-5">
+      In addition to my frontend specialization, I have experience with
+      server-side technologies like Node.js and Express. This allows me to
+      develop and maintain complete web applications, from frontend to backend.
+      I am familiar with data management and manipulation using databases such
+      as MongoDB and Firebase, which enables me to create applications that can
+      efficiently and securely handle large volumes of data.
+    </p>
+    <p className="mb-5">
+      My goal is to continue refining my skills and staying up-to-date with the
+      latest trends and technologies in web development, to offer innovative and
+      high-quality solutions that meet the needs of users and clients.
+    </p>
+  </div>
+)
 
-export default PedroText;
+export default PedroText
