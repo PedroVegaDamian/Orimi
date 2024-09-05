@@ -1,5 +1,6 @@
-import { db } from '@/firebase'
 import { doc, collection, addDoc, getDocs } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 import { Address } from '@/models/user'
 
 const addAddressToFirebase = async (userId: string, address: Address) => {

@@ -1,5 +1,6 @@
-import { db } from '@/firebase'
 import { doc, setDoc } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 import { UserData } from '@/models/user'
 
 export const registerUser = async (userData: UserData) => {

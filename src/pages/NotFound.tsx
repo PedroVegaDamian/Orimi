@@ -1,11 +1,10 @@
 import React from 'react'
-
-import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
-import { Title } from '@/components/ui'
 import { Link } from 'react-router-dom'
 
 import PapelArrugado from '@/assets/papel_arrugado.svg'
+import { Footer } from '@/components/Footer'
+import { Navbar } from '@/components/Navbar'
+import { Title } from '@/components/ui'
 
 const NotFound: React.FC = () => {
 	return (

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { validateInput } from '@/components/InputValidation'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

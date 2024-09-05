@@ -1,12 +1,12 @@
-import { useCartStore } from '@/store/cartStore'
-import { useUserStore } from '@/store/userStore'
+import { Link, useNavigate } from 'react-router-dom'
+
 import IconBin from '@/assets/icons/icon_rubbish_bin.png'
-import { Link } from 'react-router-dom'
+import { Decrement } from '@/components/Decrement'
 import { EmptyCart } from '@/components/EmptyCart'
 import { Increment } from '@/components/Increment'
-import { Decrement } from '@/components/Decrement'
-import { useNavigate } from 'react-router-dom'
 import { Title } from '@/components/ui/Title'
+import { useCartStore } from '@/store/cartStore'
+import { useUserStore } from '@/store/userStore'
 
 const CartPage = () => {
 	const { total, cart, removeProduct, multiply, totalSum } = useCartStore()

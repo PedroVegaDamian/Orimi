@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import IconArrow from '@/assets/icons/icon_arrow_right_color.svg'
 
 interface AccordionProps {

@@ -1,5 +1,6 @@
-import { doc, getDoc } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
+
 import { auth, db } from '@/firebase'
 import { UserData } from '@/models/user'
 

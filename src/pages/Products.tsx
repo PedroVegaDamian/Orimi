@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, Suspense, lazy } from 'react'
+
 import { Loading } from '@/components/Loading'
-import { Suspense, lazy } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Categories } from '@/models/index'
 import { useFetchProducts } from '@/hooks/useFetchProducts'
+import { Categories } from '@/models/index'
 
 const ProductsList = lazy(() => import('@/components/ProductsList'))
 

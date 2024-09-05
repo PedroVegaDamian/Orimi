@@ -1,4 +1,5 @@
 import React from 'react'
+
 import IconClose from '@/assets/icons/icon_close_line_color.svg'
 
 export interface ModalBaseProps {

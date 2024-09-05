@@ -1,6 +1,7 @@
+import { Suspense, lazy } from 'react'
+
 import HeaderImage from '@/assets/portada.png'
 import { Loading } from '@/components/Loading'
-import { Suspense, lazy } from 'react'
 import { useFetchProducts } from '@/hooks/useFetchProducts'
 
 const ProductItem = lazy(() => import('@/components/ProductsList'))

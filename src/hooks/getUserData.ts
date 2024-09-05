@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { PublicUserData } from '@/models/user'
-import { UserData } from '@/models/user'
+
+import { PublicUserData, UserData } from '@/models/user'
 
 type AuthUser = {
 	logged: boolean

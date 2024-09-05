@@ -1,11 +1,12 @@
+import { NavigateFunction } from 'react-router-dom'
 import { create } from 'zustand'
 import { persist, PersistStorage } from 'zustand/middleware'
+
 import { UserData, Address } from '@/models/user'
+import { deleteAddressService } from '@/services/deleteAddress'
 import { getCurrentUser } from '@/services/getUsers'
 import { signOut as firebaseSignOut } from '@/services/signOut'
-import { NavigateFunction } from 'react-router-dom'
 import { updateAddress as updateAddressService } from '@/services/updateAddress'
-import { deleteAddressService } from '@/services/deleteAddress'
 
 interface StoreState {
 	user: UserData | null

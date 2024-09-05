@@ -1,7 +1,8 @@
+import { User, onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
+
 import { auth, db } from '@/firebase'
 import { UserPrimaryData } from '@/models/user'
-import { doc, getDoc } from 'firebase/firestore'
-import { User, onAuthStateChanged } from 'firebase/auth'
 
 export const getUserById = async (userId: string) => {
 	const docRef = doc(db, 'users', userId)

@@ -1,6 +1,10 @@
+import {
+	getAuth,
+	verifyPasswordResetCode,
+	confirmPasswordReset
+} from 'firebase/auth'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getAuth } from 'firebase/auth'
-import { verifyPasswordResetCode, confirmPasswordReset } from 'firebase/auth'
+
 import { ErrorMessage, Label } from '@/components/ui'
 import { useResetPassword } from '@/hooks/useResetPassword'
 

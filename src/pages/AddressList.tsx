@@ -1,20 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useStore } from '@/store'
-import { Title, Radio } from '@/components/ui'
+
+import IconTrash from '@/assets/icons/icon_papelera_black.svg'
+import IconPencil from '@/assets/icons/icon_pencil_black.svg'
+import IconPlusLineBlack from '@/assets/icons/icon_plus_line_black.svg'
+import DeleteAddressModal from '@/components/modals/DeleteAddress'
 import EditAddressModal from '@/components/modals/EditAddress'
 import NewAddressModal from '@/components/modals/NewAddress'
-import DeleteAddressModal from '@/components/modals/DeleteAddress'
-import { fetchAddressesFromFirebase } from '@/services/fetchAddresses'
-import { updateAddress } from '@/services/updateAddress'
+import { Title, Radio } from '@/components/ui'
+import useBodyScrollLock from '@/hooks/useBodyScrollLock'
+import { Address } from '@/models/user'
 import { addAddressToFirebase } from '@/services/addAddresses'
 import { deleteAddressService } from '@/services/deleteAddress'
-import { Address } from '@/models/user'
-
-import IconPencil from '@/assets/icons/icon_pencil_black.svg'
-import IconTrash from '@/assets/icons/icon_papelera_black.svg'
-import IconPlusLineBlack from '@/assets/icons/icon_plus_line_black.svg'
-
-import useBodyScrollLock from '@/hooks/useBodyScrollLock'
+import { fetchAddressesFromFirebase } from '@/services/fetchAddresses'
+import { updateAddress } from '@/services/updateAddress'
+import { useStore } from '@/store'
 
 const AddressListPage = () => {
 	const { user, fetchUser, setDefaultAddress, setSelectedAddressId } = useStore(

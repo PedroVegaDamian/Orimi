@@ -1,9 +1,8 @@
-import IconHeart from '@/assets/icons/icon_heart.svg'
-
-import IconPen from '@/assets/icons/Icon_pen.svg'
 import IconBug from '@/assets/icons/icon_bug.svg'
+import IconHeart from '@/assets/icons/icon_heart.svg'
 import IconKeyboard from '@/assets/icons/Icon_keyboard.svg'
 import IconMedal from '@/assets/icons/icon_medal.svg'
+import IconPen from '@/assets/icons/Icon_pen.svg'
 
 export const Footer = () => {
 	return (

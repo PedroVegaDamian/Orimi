@@ -1,6 +1,7 @@
+import { useState } from 'react'
+
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages'
 import { passwordRegex } from '@/utils/validationsRegex'
-import { useState } from 'react'
 
 export const useResetPassword = () => {
 	const [newPassword, setNewPassword] = useState('')

@@ -1,8 +1,9 @@
+import { doc, getDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { db } from '@/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+
 import { Title } from '@/components/ui'
+import { db } from '@/firebase'
 import { Order } from '@/models/index'
 
 const OrderDetailPage = () => {

@@ -1,18 +1,13 @@
-import { useStore } from '@/store'
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-
-import ModalBase from '@/components/modals/ModalBase'
-import { ModalBaseProps } from '@/components/modals/ModalBase'
-
-import { deleteAccount } from '@/services/deleteAccount'
-import { Button, Input, Title } from '@/components/ui'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 import IconTrash from '@/assets/icons/icon_papelera_black.svg'
-
+import ModalBase, { ModalBaseProps } from '@/components/modals/ModalBase'
+import { Button, Input, Title } from '@/components/ui'
+import { deleteAccount } from '@/services/deleteAccount'
+import { useStore } from '@/store'
 import { useUserStore } from '@/store/userStore'
-
-import toast from 'react-hot-toast'
 
 export const DeleteUserModal = ({ isOpen, close }: ModalBaseProps) => {
 	const user = useStore(state => state.user)

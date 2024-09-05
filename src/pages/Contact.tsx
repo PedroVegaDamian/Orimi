@@ -1,5 +1,7 @@
+import { useFormspark } from '@formspark/use-formspark'
 import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
+
 import {
 	Title,
 	Button,
@@ -8,9 +10,8 @@ import {
 	Label,
 	ErrorMessage
 } from '@/components/ui'
-import { emailRegex } from '@/utils/validationsRegex'
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages'
-import { useFormspark } from '@formspark/use-formspark'
+import { emailRegex } from '@/utils/validationsRegex'
 
 const FORMSPARK_FORM_ID = 'VBuUk83dI'
 

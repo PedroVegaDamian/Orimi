@@ -1,6 +1,7 @@
 import { collection, getDocs, query, limit } from '@firebase/firestore'
-import { OptionsProducts, Product } from '@/models'
+
 import { db } from '@/firebase'
+import { OptionsProducts, Product } from '@/models'
 
 export const getProducts = async (
 	options?: OptionsProducts

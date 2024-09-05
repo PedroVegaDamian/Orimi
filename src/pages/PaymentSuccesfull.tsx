@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom'
-import IconCheck from '@/assets/icons/icon_check.svg'
 import { useEffect } from 'react'
-import { useCartStore } from '@/store/cartStore'
+import { useNavigate } from 'react-router-dom'
+
+import IconCheck from '@/assets/icons/icon_check.svg'
 import addOrder from '@/services/addOrder'
+import { useCartStore } from '@/store/cartStore'
 
 const PaymentSuccesfullPage = () => {
 	const { cart, resetCart } = useCartStore()

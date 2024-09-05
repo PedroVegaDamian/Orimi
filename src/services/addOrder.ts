@@ -1,6 +1,7 @@
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+
 import { db } from '@/firebase'
 import { Product } from '@/models'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 
 type Session = {
 	id: string

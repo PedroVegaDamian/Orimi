@@ -1,13 +1,14 @@
-import { getProduct } from '@/services/getProduct'
 import { useEffect, useState } from 'react'
 // import { ChangeEvent, FormEvent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Product } from '@/models'
 import toast, { Toaster } from 'react-hot-toast'
-import { useCartStore } from '@/store/cartStore'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import IconArrowBack from '@/assets/icons/icon_arrow_left_color.svg'
 import { Decrement } from '@/components/Decrement'
 import { Increment } from '@/components/Increment'
-import IconArrowBack from '@/assets/icons/icon_arrow_left_color.svg'
+import { Product } from '@/models'
+import { getProduct } from '@/services/getProduct'
+import { useCartStore } from '@/store/cartStore'
 
 const ProductPage = () => {
 	// UseParams

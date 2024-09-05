@@ -1,5 +1,5 @@
-import { useCartStore } from '@/store/cartStore'
 import IconMinus from '@/assets/icons/icon_minus_color.svg'
+import { useCartStore } from '@/store/cartStore'
 
 interface QuantityControlProps {
 	id: string | undefined

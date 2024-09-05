@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useUserStore } from '@/store/userStore'
-import IconUser from '@/assets/icons/icon_user_black.svg'
-import IconUserColor from '@/assets/icons/icon_user.svg'
+
 import IconArrow from '@/assets/icons/icon_arrow_right_black.svg'
+import IconUserColor from '@/assets/icons/icon_user.svg'
+import IconUser from '@/assets/icons/icon_user_black.svg'
+import { useUserStore } from '@/store/userStore'
 
 interface RenderLinkUserProps {
 	className?: string

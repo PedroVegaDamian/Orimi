@@ -1,10 +1,11 @@
 import React from 'react'
-import { Product } from '@/models'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import 'react-lazy-load-image-component/src/effects/blur.css'
-import PlaceHolder from '@/assets/icons/placeholder-loading.svg'
-
 import { Link } from 'react-router-dom'
+
+import PlaceHolder from '@/assets/icons/placeholder-loading.svg'
+import { Product } from '@/models'
+
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 interface ProductsListProps {
 	products: Product[]

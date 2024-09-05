@@ -1,5 +1,6 @@
-import { db } from '@/firebase'
 import { doc, deleteDoc } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 
 export const apiDeleteAddress = (addressId: string): Promise<void> => {
 	return new Promise((resolve, reject) => {

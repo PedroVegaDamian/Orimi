@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+
 import ModalBase from './ModalBase'
-import { Address } from '@/models/user'
+
 import {
 	Input,
 	Label,
@@ -9,10 +11,9 @@ import {
 	ErrorMessage,
 	Checkbox
 } from '@/components/ui'
+import { Address } from '@/models/user'
 import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages'
 import { addressRegex } from '@/utils/validationsRegex'
-
-import toast from 'react-hot-toast'
 
 interface EditAddressModalProps {
 	isOpen: boolean

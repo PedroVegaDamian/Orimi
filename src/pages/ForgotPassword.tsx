@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { sendResetPasswordEmail } from '@/services/resetPassword'
 import { useNavigate } from 'react-router-dom'
+
+import { sendResetPasswordEmail } from '@/services/resetPassword'
 
 const ForgotPasswordPage = () => {
 	const [email, setEmail] = useState('')

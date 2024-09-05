@@ -1,5 +1,6 @@
-import { db } from '@/firebase'
 import { doc, updateDoc } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 import { Address } from '@/models/user'
 
 const updateAddress = async (

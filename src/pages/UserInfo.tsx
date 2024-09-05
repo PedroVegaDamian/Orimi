@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useStore } from '@/store'
-import { Title } from '@/components/ui'
-import EditUserModals from '@/components/modals/EditUser'
-import ChangePasswordModal from '@/components/modals/ChangePassword'
 
 import IconPencil from '@/assets/icons/icon_pencil_black.svg'
-import { UserData } from '@/models/user'
+import ChangePasswordModal from '@/components/modals/ChangePassword'
+import EditUserModals from '@/components/modals/EditUser'
+import { Title } from '@/components/ui'
 import useBodyScrollLock from '@/hooks/useBodyScrollLock'
+import { UserData } from '@/models/user'
+import { useStore } from '@/store'
 
 const UserInfoPage = () => {
 	const { user } = useStore(state => ({

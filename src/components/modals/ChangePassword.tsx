@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+
 import ModalBase from './ModalBase'
+
 import { Input, Label, Title, Button, ErrorMessage } from '@/components/ui'
 import { updatePassword } from '@/services/updatePassword'
-import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
 
 interface ChangePasswordModalProps {
 	isOpen: boolean

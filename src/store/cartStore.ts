@@ -1,12 +1,12 @@
-import { CartState } from '@/models'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Product } from '@/models'
+
 import {
 	incrementExistingProduct,
 	addNewProductToCart,
 	addProductToCartWithQuantity
 } from '@/hooks/cartOperation'
+import { Product, CartState } from '@/models'
 
 export const useCartStore = create<CartState>()(
 	persist(

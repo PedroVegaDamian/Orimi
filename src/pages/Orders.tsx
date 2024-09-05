@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { fetchOrdersFromFirebase } from '@/services/fetchOrders'
-import { Title } from '@/components/ui'
-import IconEyeBlack from '@/assets/icons/icon_eye_black.svg'
-import { useUserStore } from '@/store/userStore'
-import { Order } from '@/models'
 import { Link } from 'react-router-dom'
+
+import IconEyeBlack from '@/assets/icons/icon_eye_black.svg'
+import { Title } from '@/components/ui'
+import { Order } from '@/models'
+import { fetchOrdersFromFirebase } from '@/services/fetchOrders'
+import { useUserStore } from '@/store/userStore'
 
 const OrdersPage = () => {
 	const userEmail = useUserStore(state => state.user?.email)

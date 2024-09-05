@@ -1,5 +1,6 @@
-import { db } from '@/firebase'
 import { collection, getDocs } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 import { Address } from '@/models/user'
 
 export const fetchAddressesFromFirebase = async (userId: string) => {

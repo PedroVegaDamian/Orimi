@@ -1,9 +1,10 @@
-import { auth, db } from '@/firebase'
 import { updateProfile, updateEmail } from 'firebase/auth'
 import { doc, updateDoc } from 'firebase/firestore'
-import { phoneRegex, nameRegex, emailRegex } from '@/utils/validationsRegex'
-import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages'
+
+import { auth, db } from '@/firebase'
 import { UserData } from '@/models/user'
+import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages'
+import { phoneRegex, nameRegex, emailRegex } from '@/utils/validationsRegex'
 
 interface ErrorMessages {
 	firstNameError?: string

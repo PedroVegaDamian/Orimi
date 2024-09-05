@@ -1,3 +1,4 @@
+import { FirebaseError } from 'firebase/app'
 import {
 	getAuth,
 	updatePassword as firebaseUpdatePassword,
@@ -11,8 +12,8 @@ import {
 	getFirestore,
 	serverTimestamp
 } from 'firebase/firestore'
-import { FirebaseError } from 'firebase/app'
 import { NavigateFunction } from 'react-router-dom'
+
 import { useUserStore } from '@/store/userStore'
 
 const auth = getAuth()

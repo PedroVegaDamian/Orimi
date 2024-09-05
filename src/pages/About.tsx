@@ -1,15 +1,14 @@
 import { useState } from 'react'
 
-import DefaultText from '@/components/AboutPage/DefaultText'
+import IconArrow from '@/assets/icons/icon_arrow_left_black.svg'
 import CarolinaText from '@/components/AboutPage/CarolinaText'
-import SilvanaText from '@/components/AboutPage/SilvanaText'
+import DefaultText from '@/components/AboutPage/DefaultText'
+import ImageGrid from '@/components/AboutPage/imageGrid'
 import PedroText from '@/components/AboutPage/PedroText'
 import RocioText from '@/components/AboutPage/RocioText'
+import SilvanaText from '@/components/AboutPage/SilvanaText'
 import SocialLinks from '@/components/AboutPage/SocialLinks'
-import ImageGrid from '@/components/AboutPage/imageGrid'
-
 import { Button } from '@/components/ui/Button'
-import IconArrow from '@/assets/icons/icon_arrow_left_black.svg'
 
 export type TextComponentKey =
 	| 'default'

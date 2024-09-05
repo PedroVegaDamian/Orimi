@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getProducts } from '@/services/getProducts'
+
 import { Product as ProductType, OptionsProducts } from '@/models'
+import { getProducts } from '@/services/getProducts'
 
 export const useFetchProducts = (options?: OptionsProducts) => {
 	const [products, setProducts] = useState<ProductType[]>([])

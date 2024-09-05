@@ -1,5 +1,6 @@
-import { UserPrimaryData } from '@/models/user'
 import { create } from 'zustand'
+
+import { UserPrimaryData } from '@/models/user'
 
 interface UserStore {
 	isLoading: boolean

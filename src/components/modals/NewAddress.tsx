@@ -1,5 +1,9 @@
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import React, { useState, useEffect, useMemo } from 'react'
+import toast from 'react-hot-toast'
+
 import ModalBase from './ModalBase'
+
 import { ModalBaseProps } from '@/components/modals/ModalBase'
 import {
 	Input,
@@ -9,14 +13,10 @@ import {
 	ErrorMessage,
 	Checkbox
 } from '@/components/ui'
-import { addressRegex } from '@/utils/validationsRegex'
-import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages'
-
-import { Address } from '@/models/user'
 import { db } from '@/firebase'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
-
-import toast from 'react-hot-toast'
+import { Address } from '@/models/user'
+import { messageErrorCode, CustomErrorCodes } from '@/utils/errorCodeMessages'
+import { addressRegex } from '@/utils/validationsRegex'
 
 interface NewAddressModalProps extends ModalBaseProps {
 	existingAddresses: Address[]

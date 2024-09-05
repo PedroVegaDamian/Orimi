@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+
 import ModalBase from './ModalBase'
+
 import { ModalBaseProps } from '@/components/modals/ModalBase'
 import { Button, Title, Input, Label, ErrorMessage } from '@/components/ui'
 import { UserData } from '@/models/user'
 import { updateProfileServices } from '@/services/updateProfile'
 import { useStore } from '@/store'
-import { nameRegex, phoneRegex } from '@/utils/validationsRegex'
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages'
 import { countryPrefixes } from '@/utils/prefixes'
-import toast from 'react-hot-toast'
+import { nameRegex, phoneRegex } from '@/utils/validationsRegex'
 
 const EditUserModals = ({
 	isOpen,

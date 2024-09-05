@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from '@firebase/firestore'
-import { Product } from '@/models'
+
 import { db } from '@/firebase'
+import { Product } from '@/models'
 
 export const getProduct = async (
 	slug: string

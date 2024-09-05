@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { UserData } from '@/models/user'
-import { auth, db } from '@/firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore'
-import { handleInputChange, validateField } from '@/utils/validateField'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { auth, db } from '@/firebase'
+import { UserData } from '@/models/user'
 import { useUserStore } from '@/store/userStore'
 import { errorMessages, CustomErrorCodes } from '@/utils/errorCodeMessages'
+import { handleInputChange, validateField } from '@/utils/validateField'
 import {
 	nameRegex,
 	phoneRegex,

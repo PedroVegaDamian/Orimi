@@ -1,5 +1,6 @@
-import { auth } from '../firebase'
 import { NavigateFunction } from 'react-router-dom'
+
+import { auth } from '../firebase'
 
 export const signOut = async (navigate: NavigateFunction) => {
 	try {

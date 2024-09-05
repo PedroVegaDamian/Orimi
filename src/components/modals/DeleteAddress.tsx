@@ -1,8 +1,9 @@
+import toast from 'react-hot-toast'
+
 import ModalBase from './ModalBase'
+
 import { ModalBaseProps } from '@/components/modals/ModalBase'
 import { Title, Button } from '@/components/ui'
-
-import toast from 'react-hot-toast'
 
 interface DeleteAddressModalProps extends ModalBaseProps {
 	onDeleteAddress: (addressId: string) => Promise<void>

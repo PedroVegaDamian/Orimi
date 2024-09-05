@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+
 import SadShoppingBag from '@/assets/icons/icon_sad_bag.svg'
 
 export const EmptyCart = () => {

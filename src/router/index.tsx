@@ -3,8 +3,9 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import { LoginProtectedRoute, ProtectedRoute } from './ProtectedRoute'
-import { getCurrentUser } from '@/services/user'
+
 import { Loading } from '@/components/Loading'
+import { getCurrentUser } from '@/services/user'
 
 const HomePage = lazy(() => import('@/pages/Home'))
 const CartPage = lazy(() => import('@/pages/Cart'))

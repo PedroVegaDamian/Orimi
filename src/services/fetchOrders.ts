@@ -1,4 +1,3 @@
-import { db } from '@/firebase'
 import {
 	collection,
 	getDocs,
@@ -9,6 +8,8 @@ import {
 	doc,
 	getDoc
 } from 'firebase/firestore'
+
+import { db } from '@/firebase'
 import { Order } from '@/models/'
 
 export const fetchOrdersFromFirebase = async (

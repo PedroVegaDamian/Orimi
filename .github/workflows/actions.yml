@@ -2,31 +2,34 @@ name: CI Workflow
 
 on:
   push:
-    branches: [main,develop]
+    branches: [main, develop]
   pull_request:
-    branches: [main,develop]
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint-and-test:
+  linter:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [20.x] # Usa la última versión disponible de la serie 20.x
+        node-version: [20.x]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
 
       - name: Install dependencies
         run: npm install --no-frozen-lockfile
 
       - name: Run linter
         run: npm run lint
-        env:
-          CI: true

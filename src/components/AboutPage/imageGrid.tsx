@@ -1,10 +1,10 @@
 import React from 'react'
-import { TextComponentKey } from '@/pages/About'
 
 import carolImage from '@/assets/img/carol.jpg'
 import pedroImage from '@/assets/img/pedro.jpeg'
 import rocioImage from '@/assets/img/rocio.png'
 import silvanaImage from '@/assets/img/silvana.png'
+import { TextComponentKey } from '@/pages/About'
 
 type ImageGridProps = {
 	setName: (name: TextComponentKey) => void

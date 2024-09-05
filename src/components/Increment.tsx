@@ -1,6 +1,6 @@
-import { useCartStore } from '@/store/cartStore'
 import IconPlus from '@/assets/icons/icon_plus_color.svg'
 import { Product } from '@/models'
+import { useCartStore } from '@/store/cartStore'
 interface QuantityControlProps {
 	product: Product | undefined
 }

@@ -1,5 +1,5 @@
-import IconLinkedin from '@/assets/icons/icon_linkedin.svg'
 import IconGithub from '@/assets/icons/icon_github.svg'
+import IconLinkedin from '@/assets/icons/icon_linkedin.svg'
 import IconWebsite from '@/assets/icons/icon_web.svg'
 
 type SocialLinksProps = {

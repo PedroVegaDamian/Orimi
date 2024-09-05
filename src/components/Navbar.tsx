@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import useBodyScrollLock from '@/hooks/useBodyScrollLock'
 
-import Logo from '@/assets/logo.svg'
-import IconBag from '@/assets/icons/icon_bag.svg'
-import IconHamburger from '@/assets/icons/icon_burger_black.svg'
 import IconArrow from '@/assets/icons/icon_arrow_right_black.svg'
 import IconArrowColor from '@/assets/icons/icon_arrow_right_color.svg'
-
+import IconBag from '@/assets/icons/icon_bag.svg'
+import IconHamburger from '@/assets/icons/icon_burger_black.svg'
+import Logo from '@/assets/logo.svg'
 import { RenderLinkUser } from '@/components/RenderLinkUser'
-
+import useBodyScrollLock from '@/hooks/useBodyScrollLock'
 import { useCartStore } from '@/store/cartStore'
 
 export const Navbar = () => {

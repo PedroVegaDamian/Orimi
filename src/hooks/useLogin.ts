@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { signIn } from '@/services/login'
-import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+
 import { auth } from '@/firebase'
+import { signIn } from '@/services/login'
 import { getUserById } from '@/services/user'
 import { useUserStore } from '@/store/userStore'
+import { emailRegex, passwordRegex } from '@/utils/validationsRegex'
 
 export const useLogin = () => {
 	const [email, setEmail] = useState('demo@gmail.com')

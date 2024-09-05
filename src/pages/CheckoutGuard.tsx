@@ -1,6 +1,7 @@
 // src/routes/CheckoutGuard.tsx
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { useNavigationHistory } from '@/utils/useNavigationHistory'
 
 const CheckoutGuard = ({ children }: { children: JSX.Element }) => {

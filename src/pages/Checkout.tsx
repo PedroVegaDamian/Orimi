@@ -1,14 +1,15 @@
-import { loadStripe } from '@stripe/stripe-js'
 import {
 	EmbeddedCheckoutProvider,
 	EmbeddedCheckout
 } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { useCallback } from 'react'
-import { useCartStore } from '@/store/cartStore'
-import { useUserStore } from '@/store/userStore'
 import toast, { Toaster } from 'react-hot-toast'
+
 import IconCopy from '@/assets/icons/icon_copy.svg'
 import { Accordion } from '@/components/ui/Accordion'
+import { useCartStore } from '@/store/cartStore'
+import { useUserStore } from '@/store/userStore'
 
 const stripePromise = loadStripe(import.meta.env.VITE_API_KEY_PUBLIC_STRIPE)
 
