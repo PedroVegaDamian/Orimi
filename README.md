@@ -1,3 +1,5 @@
+[![CI Workflow](https://github.com/PedroVegaDamian/Orimi/actions/workflows/actions.yml/badge.svg)](https://github.com/PedroVegaDamian/Orimi/actions/workflows/actions.yml)
+
 # Orimi E-commerce
 
 Welcome to Orimi, your go-to online store for an exceptional shopping experience. This project is a modern, responsive e-commerce website built to provide users with a seamless and enjoyable shopping journey.
