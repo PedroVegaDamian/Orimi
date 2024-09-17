@@ -4,21 +4,21 @@ import { db } from '@/firebase'
 import { Product } from '@/models'
 
 export const getProduct = async (
-	slug: string
+  slug: string
 ): Promise<Product | undefined> => {
-	const productCollectionRef = query(
-		collection(db, 'products'),
-		where('slug', '==', slug)
-	)
-	const querySnapshot = await getDocs(productCollectionRef)
+  const productCollectionRef = query(
+    collection(db, 'products'),
+    where('slug', '==', slug)
+  )
+  const querySnapshot = await getDocs(productCollectionRef)
 
-	if (!querySnapshot.empty) {
-		const doc = querySnapshot.docs[0]
-		return {
-			id: doc.id,
-			...doc.data()
-		} as Product
-	} else {
-		return undefined
-	}
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0]
+    return {
+      id: doc.id,
+      ...doc.data()
+    } as Product
+  } else {
+    return undefined
+  }
 }

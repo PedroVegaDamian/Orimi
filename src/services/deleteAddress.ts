@@ -3,26 +3,26 @@ import { doc, deleteDoc } from 'firebase/firestore'
 import { db } from '@/firebase'
 
 export const apiDeleteAddress = (addressId: string): Promise<void> => {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			if (addressId) {
-				resolve()
-			} else {
-				reject(new Error('No address ID provided'))
-			}
-		}, 1000)
-	})
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (addressId) {
+        resolve()
+      } else {
+        reject(new Error('No address ID provided'))
+      }
+    }, 1000)
+  })
 }
 
 const deleteAddressService = async (userId: string, addressId: string) => {
-	const addressRef = doc(db, 'users', userId, 'addresses', addressId)
-	try {
-		await deleteDoc(addressRef)
-		console.log(`Address with ID: ${addressId} deleted successfully`)
-	} catch (error) {
-		console.error('Error deleting address:', error)
-		throw error
-	}
+  const addressRef = doc(db, 'users', userId, 'addresses', addressId)
+  try {
+    await deleteDoc(addressRef)
+    console.log(`Address with ID: ${addressId} deleted successfully`)
+  } catch (error) {
+    console.error('Error deleting address:', error)
+    throw error
+  }
 }
 
 export { deleteAddressService }

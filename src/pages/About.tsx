@@ -1,111 +1,127 @@
 import { useState } from 'react'
 
 import IconArrow from '@/assets/icons/icon_arrow_left_black.svg'
-import CarolinaText from '@/components/AboutPage/CarolinaText'
-import DefaultText from '@/components/AboutPage/DefaultText'
-import ImageGrid from '@/components/AboutPage/imageGrid'
-import PedroText from '@/components/AboutPage/PedroText'
-import RocioText from '@/components/AboutPage/RocioText'
-import SilvanaText from '@/components/AboutPage/SilvanaText'
-import SocialLinks from '@/components/AboutPage/SocialLinks'
+import carolImage from '@/assets/img/carol.jpg'
+import pedroImage from '@/assets/img/pedro.jpeg'
+import rocioImage from '@/assets/img/rocio.png'
+import silvanaImage from '@/assets/img/silvana.png'
+import { AvatarGrid } from '@/components/AboutPage/AvatarGrid'
+import { BioOfCarolina } from '@/components/AboutPage/BioOfCarolina'
+import { BioOfPedro } from '@/components/AboutPage/BioOfPedro'
+import { BioOfRocio } from '@/components/AboutPage/BioOfRocio'
+import { BioOfSilvana } from '@/components/AboutPage/BioOfSilvana'
+import { DefaultText } from '@/components/AboutPage/DefaultText'
+import { SocialLinks } from '@/components/AboutPage/SocialLinks'
 import { Button } from '@/components/ui/Button'
 
-export type TextComponentKey =
-	| 'default'
-	| 'carolina'
-	| 'silvana'
-	| 'pedro'
-	| 'rocio'
+type TextComponentKey = 'default' | 'carolina' | 'silvana' | 'pedro' | 'rocio'
 
-const textComponents = {
-	default: DefaultText,
-	carolina: CarolinaText,
-	silvana: SilvanaText,
-	pedro: PedroText,
-	rocio: RocioText
+type BioComponents = Record<TextComponentKey, React.FC>
+
+interface AvatarImgProps {
+  src: string
+  alt: string
+  name: TextComponentKey
+}
+
+const bioComponents: BioComponents = {
+  default: DefaultText,
+  carolina: BioOfCarolina,
+  silvana: BioOfSilvana,
+  pedro: BioOfPedro,
+  rocio: BioOfRocio
 }
 
 const socialLinks = {
-	default: {
-		linkedin: '#',
-		nameLinkedin: '',
-		github: '#',
-		nameGit: '',
-		website: '#',
-		nameWeb: ''
-	},
-	carolina: {
-		linkedin: 'https://www.linkedin.com/in/carolhersant/',
-		github: 'https://github.com/Carolhs92',
-		website: 'http://carolinaherreradesigner.es/'
-	},
-	silvana: {
-		linkedin: 'https://www.linkedin.com/in/silvana-loureiro/',
-		github: 'https://github.com/SLouQA',
-		website: ''
-	},
-	pedro: {
-		linkedin: 'https://www.linkedin.com/in/pedrovegadamian/',
-		github: 'https://github.com/PedroVegaDamian',
-		website: 'https://pedrovega.netlify.app/'
-	},
-	rocio: {
-		linkedin: 'https://www.linkedin.com/in/rocio-peralta-4396333a/',
-		github: 'https://github.com/rocio-peralta',
-		website: ''
-	}
+  carolina: {
+    linkedin: 'https://www.linkedin.com/in/carolhersant/',
+    github: 'https://github.com/Carolhs92',
+    website: 'http://carolinaherreradesigner.es/'
+  },
+  silvana: {
+    linkedin: 'https://www.linkedin.com/in/silvana-loureiro/',
+    github: 'https://github.com/SLouQA',
+    website: ''
+  },
+  pedro: {
+    linkedin: 'https://www.linkedin.com/in/pedrovegadamian/',
+    github: 'https://github.com/PedroVegaDamian',
+    website: 'https://pedrovega.netlify.app/'
+  },
+  rocio: {
+    linkedin: 'https://www.linkedin.com/in/rocio-peralta-4396333a/',
+    github: 'https://github.com/rocio-peralta',
+    website: ''
+  }
 }
 
+const avatars: AvatarImgProps[] = [
+  { src: carolImage, alt: 'Carolina', name: 'carolina' },
+  { src: pedroImage, alt: 'Pedro', name: 'pedro' },
+  { src: rocioImage, alt: 'Rocio', name: 'rocio' },
+  { src: silvanaImage, alt: 'Silvana', name: 'silvana' }
+]
+
 const AboutPage = () => {
-	const [name, setName] = useState<TextComponentKey>('default')
-	const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [nameSelected, setNameSelected] = useState<TextComponentKey>('default')
 
-	const handleSetName = (name: TextComponentKey) => {
-		setName(name)
-		if (name === 'default') {
-			setSelectedImage(null)
-			window.scrollTo({ top: 0, behavior: 'smooth' })
-		}
-	}
+  const links = nameSelected !== 'default' && socialLinks[nameSelected]
 
-	const RenderedText = textComponents[name] ? textComponents[name] : DefaultText
-	const links = socialLinks[name]
+  const BioComponentSelected = bioComponents[nameSelected] || DefaultText
+  const SocialLinksComponentSelected = () => {
+    if (links) {
+      return (
+        <div>
+          <hr className="border-grey_color mx-auto" />
 
-	return (
-		<main className="min-h-screen max-w-screen-xl mx-auto">
-			<div className="flex flex-col-reverse lg:flex-row">
-				<section className="w-full pr-10 mb-[100px] lg:mb-0 lg:w-[64%] lg:col-span-2">
-					<RenderedText />
-					{name !== 'default' && (
-						<>
-							<hr className="border-grey_color w-[90%] mx-auto lg:ml-[100px]" />
-							<SocialLinks
-								linkedin={links.linkedin}
-								github={links.github}
-								website={links.website}
-							/>
-							<div className="flex justify-center md:justify-start mb-[50px] md:ml-9 lg:ml-[100px]">
-								<Button type="button" onClick={() => handleSetName('default')}>
-									<img
-										src={IconArrow}
-										alt="arrow icon"
-										className="inline mr-2"
-									/>
-									About us
-								</Button>
-							</div>
-						</>
-					)}
-				</section>
+          <SocialLinks
+            github={links.github}
+            website={links.website}
+            linkedin={links.linkedin}
+          />
 
-				<ImageGrid
-					setName={handleSetName}
-					selectedImage={selectedImage}
-					setSelectedImage={setSelectedImage}
-				/>
-			</div>
-		</main>
-	)
+          <Button
+            type="button"
+            extraClass="block mx-auto md:inline-block"
+            onClick={() => handleSetNameSelected('default')}
+          >
+            <img src={IconArrow} alt="arrow icon" className="inline mr-2" />
+            About us
+          </Button>
+        </div>
+      )
+    }
+  }
+
+  const handleSetNameSelected = (name: TextComponentKey) => {
+    if (name === 'default') window.scrollTo({ top: 0, behavior: 'smooth' })
+    setNameSelected(name)
+  }
+
+  return (
+    <div className="max-w-screen-xl mx-auto">
+      <div className="flex flex-col lg:flex-row-reverse">
+        <AvatarGrid>
+          {avatars.map(avatar => (
+            <AvatarGrid.Image
+              src={avatar.src}
+              alt={avatar.alt}
+              key={avatar.name}
+              onClick={() => handleSetNameSelected(avatar.name)}
+              className={
+                nameSelected === avatar.name ? 'border-primary_800_color' : ''
+              }
+            />
+          ))}
+        </AvatarGrid>
+
+        <section className="lg:w-[64%] px-4 mb-8">
+          <BioComponentSelected />
+          <SocialLinksComponentSelected />
+        </section>
+      </div>
+    </div>
+  )
 }
 
 export default AboutPage
