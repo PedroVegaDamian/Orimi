@@ -7,62 +7,62 @@ import IconUser from '@/assets/icons/icon_user_black.svg'
 import { useUserStore } from '@/store/userStore'
 
 interface RenderLinkUserProps {
-	className?: string
-	onClick?: () => void
+  className?: string
+  onClick?: () => void
 }
 
 export const RenderLinkUser = ({
-	className = '',
-	onClick
+  className = '',
+  onClick
 }: RenderLinkUserProps) => {
-	const user = useUserStore(state => state.user)
-	const isLoading = useUserStore(state => state.isLoading)
-	const location = useLocation()
-	const [icon, setIcon] = useState(IconUser)
+  const user = useUserStore(state => state.user)
+  const isLoading = useUserStore(state => state.isLoading)
+  const location = useLocation()
+  const [icon, setIcon] = useState(IconUser)
 
-	useEffect(() => {
-		if (location.pathname === '/login') {
-			setIcon(IconUserColor)
-		} else {
-			setIcon(IconUser)
-		}
-	}, [location.pathname])
+  useEffect(() => {
+    if (location.pathname === '/login') {
+      setIcon(IconUserColor)
+    } else {
+      setIcon(IconUser)
+    }
+  }, [location.pathname])
 
-	if (isLoading) return null
+  if (isLoading) return null
 
-	if (user) {
-		return (
-			<Link
-				to="/profile"
-				className={`block bg-primary_color py-3 px-4 rounded-xl max-w-[10rem] ${className} overflow-hidden text-ellipsis whitespace-nowrap`}
-				onClick={onClick}
-			>
-				<span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-					Hi {user.firstName}!
-				</span>
-			</Link>
-		)
-	}
+  if (user) {
+    return (
+      <Link
+        to="/profile"
+        className={`block bg-primary_color py-3 px-4 rounded-xl max-w-[10rem] ${className} overflow-hidden text-ellipsis whitespace-nowrap`}
+        onClick={onClick}
+      >
+        <span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+          Hi {user.firstName}!
+        </span>
+      </Link>
+    )
+  }
 
-	return (
-		<>
-			<Link
-				className={`ml-32 hidden lg:block ${className}`}
-				to="/login"
-				onClick={onClick}
-			>
-				<img src={icon} alt="User Icon" />
-			</Link>
-			<Link
-				className={`lg:ml-32 lg:hidden block ${className}`}
-				to="/login"
-				onClick={onClick}
-			>
-				Profile{' '}
-				<img className="lg:hidden" src={IconArrow} alt="Arrow Right Icon" />
-			</Link>
-		</>
-	)
+  return (
+    <>
+      <Link
+        className={`ml-32 hidden lg:block ${className}`}
+        to="/login"
+        onClick={onClick}
+      >
+        <img src={icon} alt="User Icon" />
+      </Link>
+      <Link
+        className={`lg:ml-32 lg:hidden block ${className}`}
+        to="/login"
+        onClick={onClick}
+      >
+        Profile{' '}
+        <img className="lg:hidden" src={IconArrow} alt="Arrow Right Icon" />
+      </Link>
+    </>
+  )
 }
 
 export default RenderLinkUser

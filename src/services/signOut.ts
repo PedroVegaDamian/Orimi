@@ -3,12 +3,12 @@ import { NavigateFunction } from 'react-router-dom'
 import { auth } from '../firebase'
 
 export const signOut = async (navigate: NavigateFunction) => {
-	try {
-		await auth.signOut()
-		localStorage.removeItem('user')
-		console.log('Usuario ha cerrado sesión')
-		navigate('/login')
-	} catch (error) {
-		console.error('Error al cerrar sesión:', error)
-	}
+  try {
+    await auth.signOut()
+    localStorage.removeItem('user')
+    console.log('Usuario ha cerrado sesión')
+    navigate('/login')
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  }
 }

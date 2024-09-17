@@ -4,20 +4,20 @@ import { Product as ProductType, OptionsProducts } from '@/models'
 import { getProducts } from '@/services/getProducts'
 
 export const useFetchProducts = (options?: OptionsProducts) => {
-	const [products, setProducts] = useState<ProductType[]>([])
-	const [loading, setLoading] = useState<boolean>(true)
+  const [products, setProducts] = useState<ProductType[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			setLoading(true)
-			const productsData = await getProducts(options)
-			setProducts(productsData)
-			setLoading(false)
-		}
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true)
+      const productsData = await getProducts(options)
+      setProducts(productsData)
+      setLoading(false)
+    }
 
-		fetchProducts()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+    fetchProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-	return { products, loading }
+  return { products, loading }
 }

@@ -3,10 +3,10 @@ import { defineConfig } from 'vite'
 import { checker } from 'vite-plugin-checker'
 
 export default defineConfig({
-	plugins: [react(), checker({ typescript: true })],
-	resolve: {
-		alias: {
-			'@': '/src'
-		}
-	}
+  plugins: [react(), checker({ typescript: true })],
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
+  }
 })

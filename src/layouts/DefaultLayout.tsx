@@ -7,35 +7,35 @@ import { getCurrentUser, getUserById } from '@/services/user'
 import { useUserStore } from '@/store/userStore'
 
 const DefaultLayout = () => {
-	const setUser = useUserStore(state => state.setUser)
-	const setLoading = useUserStore(state => state.setLoading)
+  const setUser = useUserStore(state => state.setUser)
+  const setLoading = useUserStore(state => state.setLoading)
 
-	const handleAuth = async () => {
-		try {
-			setLoading(true)
-			const user = await getCurrentUser()
-			const userData = await getUserById(user?.uid as string)
-			setUser(userData)
-		} catch (error) {
-			console.error(error)
-			setLoading(false)
-		} finally {
-			setLoading(false)
-		}
-	}
+  const handleAuth = async () => {
+    try {
+      setLoading(true)
+      const user = await getCurrentUser()
+      const userData = await getUserById(user?.uid as string)
+      setUser(userData)
+    } catch (error) {
+      console.error(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-	handleAuth()
+  handleAuth()
 
-	return (
-		<main className="bg-bg_color">
-			<ScrollToTop />
-			<Navbar />
-			<section className="min-h-[calc(100vh-107px)]">
-				<Outlet />
-			</section>
-			<Footer />
-		</main>
-	)
+  return (
+    <main className="bg-bg_color grid grid-rows-[auto_1fr_auto] min-h-screen">
+      <ScrollToTop />
+      <Navbar />
+      <section>
+        <Outlet />
+      </section>
+      <Footer />
+    </main>
+  )
 }
 
 export default DefaultLayout
